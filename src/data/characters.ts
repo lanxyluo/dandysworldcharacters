@@ -1,4 +1,39 @@
-import { Character } from '../types/character';
+export interface Character {
+  id: string;
+  name: string;
+  fullName: string;
+  type: 'main' | 'regular' | 'event';
+  rarity: 'legendary' | 'common';
+  image: string;
+  description: string;
+  stats: {
+    hearts: number;
+    skillCheck: number;
+    movementSpeed: number;
+    stamina: number;
+    stealth: number;
+    extractionSpeed: number;
+  };
+  abilities: {
+    active?: {
+      name: string;
+      description: string;
+      cooldown: number;
+    };
+    passive?: {
+      name: string;
+      description: string;
+    };
+  };
+  requirements: {
+    ichor?: number;
+    ornaments?: number;
+    research?: string;
+    mastery?: string;
+    other?: string[];
+    note?: string;
+  };
+}
 
 export const characters: Character[] = [
   {
@@ -7,7 +42,7 @@ export const characters: Character[] = [
     fullName: "Astro Novalite",
     type: "main",
     rarity: "legendary",
-    image: "/images/astro.png",
+    image: "🌙",
     description: "A cosmic moon character with maximum stealth abilities",
     stats: {
       hearts: 2,
@@ -40,7 +75,7 @@ export const characters: Character[] = [
     fullName: "Vee Version 1",
     type: "main",
     rarity: "legendary",
-    image: "/images/vee.png",
+    image: "📺",
     description: "A TV-headed character that can highlight Twisteds",
     stats: {
       hearts: 2,
@@ -73,7 +108,7 @@ export const characters: Character[] = [
     fullName: "Pebble Dancifer Jr.",
     type: "main",
     rarity: "legendary",
-    image: "/images/pebble.png",
+    image: "🐕",
     description: "Dandy's pet rock with maximum movement speed",
     stats: {
       hearts: 2,
@@ -101,12 +136,78 @@ export const characters: Character[] = [
     }
   },
   {
+    id: "shelly",
+    name: "Shelly",
+    fullName: "Shelly Fossilian",
+    type: "main",
+    rarity: "legendary",
+    image: "🐚",
+    description: "A fossilized dinosaur character with support abilities",
+    stats: {
+      hearts: 2,
+      skillCheck: 5,
+      movementSpeed: 2,
+      stamina: 3,
+      stealth: 4,
+      extractionSpeed: 2
+    },
+    abilities: {
+      active: {
+        name: "Inspiration",
+        description: "Boosts extraction speed of a selected Toon by 75% for 15 seconds",
+        cooldown: 60
+      },
+      passive: {
+        name: "Motivation",
+        description: "Gains 25% movement speed boost when any machine is completed"
+      }
+    },
+    requirements: {
+      ichor: 4250,
+      research: "100% Research on Twisted Shelly",
+      mastery: "Complete all Mastery Quests on Tisha"
+    }
+  },
+  {
+    id: "sprout",
+    name: "Sprout",
+    fullName: "Sprout Seedly",
+    type: "main",
+    rarity: "legendary",
+    image: "🌱",
+    description: "A strawberry character with healing abilities",
+    stats: {
+      hearts: 2,
+      skillCheck: 4,
+      movementSpeed: 2,
+      stamina: 4,
+      stealth: 3,
+      extractionSpeed: 3
+    },
+    abilities: {
+      active: {
+        name: "Baked Sweets",
+        description: "Heals a targeted Toon by 1 Heart at the cost of 100 Tapes",
+        cooldown: 100
+      },
+      passive: {
+        name: "Attention to Detail",
+        description: "Can see where all other alive Toons are and their health status"
+      }
+    },
+    requirements: {
+      ichor: 4500,
+      research: "100% Research on Twisted Sprout",
+      mastery: "Complete all Mastery Quests on Cosmo"
+    }
+  },
+  {
     id: "boxten",
     name: "Boxten",
     fullName: "Boxten",
     type: "regular",
     rarity: "common",
-    image: "/images/boxten.png",
+    image: "📦",
     description: "A purple music box character, one of the starter Toons",
     stats: {
       hearts: 3,
@@ -133,7 +234,7 @@ export const characters: Character[] = [
     fullName: "Poppy",
     type: "regular",
     rarity: "common",
-    image: "/images/poppy.png",
+    image: "🫧",
     description: "A light cyan bubble character, one of the starter Toons",
     stats: {
       hearts: 3,
@@ -152,6 +253,40 @@ export const characters: Character[] = [
     requirements: {
       ichor: 0,
       note: "Starter Toon option"
+    }
+  },
+  {
+    id: "bobette",
+    name: "Bobette",
+    fullName: "Bobette the Bauble",
+    type: "event",
+    rarity: "legendary",
+    image: "🎄",
+    description: "A Christmas bauble character with festive abilities",
+    stats: {
+      hearts: 2,
+      skillCheck: 5,
+      movementSpeed: 3,
+      stamina: 5,
+      stealth: 1,
+      extractionSpeed: 1
+    },
+    abilities: {
+      active: {
+        name: "Precious Packaging",
+        description: "Wraps herself in a gift box, becoming invisible but unable to move for 8 seconds",
+        cooldown: 90
+      },
+      passive: {
+        name: "Festive Aura",
+        description: "Boosts stamina recovery speed of nearby Toons by 50%"
+      }
+    },
+    requirements: {
+      ornaments: 3000,
+      ichor: 2500,
+      research: "100% Research on Twisted Bobette",
+      note: "Christmas Event Only"
     }
   }
 ];

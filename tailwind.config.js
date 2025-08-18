@@ -7,18 +7,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        'dark-bg': '#0a0a0a',
-        'card-bg': '#1a1a1a',
-        'border-gray': '#333333',
-        'rainbow': 'linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080)'
+        'bg-primary': '#0a0a0a',
+        'bg-secondary': '#1a1a1a',
+        'bg-card': '#2d2d2d',
+        'text-primary': '#ffffff',
+        'text-secondary': '#b0b0b0',
+        'accent-main': '#6366f1',
+        'rainbow-1': '#ff6b6b',
+        'rainbow-2': '#ffd93d',
+        'rainbow-3': '#6bcf7f',
+        'rainbow-4': '#4d96ff',
+        'rainbow-5': '#9c88ff',
       },
       animation: {
-        'rainbow-border': 'rainbow-border 3s linear infinite',
+        'gradient': 'gradient 3s ease infinite',
+        'float': 'float 3s ease-in-out infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
-        'rainbow-border': {
-          '0%, 100%': { 'border-image': 'linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080) 1' },
-          '50%': { 'border-image': 'linear-gradient(45deg, #ff0080, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff) 1' }
+        gradient: {
+          '0%, 100%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
         }
       }
     },

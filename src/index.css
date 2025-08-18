@@ -2,17 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #0a0a0a;
-  color: white;
+body { 
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
+.rainbow-border {
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d96ff, #9c88ff, #ff6b6b);
+  background-size: 300% 300%;
+  animation: gradient 3s ease infinite;
+  padding: 2px;
+  border-radius: 12px;
+}
+
+.rainbow-border-content {
+  background: #2d2d2d;
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+}
+
+.stat-bar {
+  background: linear-gradient(90deg, #374151 0%, #6b7280 100%);
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+  background-size: 200% 200%;
+  animation: gradient 4s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-effect {
+  background: rgba(45, 45, 45, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.filter-btn {
+  @apply px-4 py-2 rounded-lg bg-bg-card text-text-secondary border border-gray-600 hover:border-accent-main hover:text-accent-main transition-all;
+}
+
+.filter-btn.active {
+  @apply bg-accent-main text-white border-accent-main;
 }

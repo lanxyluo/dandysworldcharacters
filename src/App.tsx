@@ -1,82 +1,77 @@
-import React, { useState } from 'react';
+import { useState, useMemo } from 'react';
+import Navigation from './components/Navigation';
+import HeroSection from './components/HeroSection';
+import SearchAndFilter from './components/SearchAndFilter';
 import CharacterCard from './components/CharacterCard';
 import CharacterModal from './components/CharacterModal';
-import { characters } from './data/characters';
-import { Character } from './types/character';
+import Footer from './components/Footer';
+import { characters, Character } from './data/characters';
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentFilter, setCurrentFilter] = useState('all');
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Filter and search characters
+  const filteredCharacters = useMemo(() => {
+    return characters.filter(character => {
+      const matchesFilter = currentFilter === 'all' || character.type === currentFilter;
+      const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          character.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesFilter && matchesSearch;
+    });
+  }, [searchTerm, currentFilter]);
 
   const handleCharacterClick = (character: Character) => {
     setSelectedCharacter(character);
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setIsModalOpen(false);
     setSelectedCharacter(null);
   };
 
-  const mainCharacters = characters.filter(c => c.type === 'main');
-  const regularCharacters = characters.filter(c => c.type === 'regular');
-  const legendaryCharacters = characters.filter(c => c.rarity === 'legendary');
-  const commonCharacters = characters.filter(c => c.rarity === 'common');
-
   return (
-    <div className="min-h-screen bg-dark-bg">
-      {/* Header */}
-      <header className="bg-card-bg border-b border-gray-700">
-        <div className="container mx-auto px-4 py-6">
-          <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Dandy's World Characters
-          </h1>
-          <p className="text-center text-gray-400 mt-2">
-            Discover the amazing characters from Dandy's World
-          </p>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-card-bg rounded-lg p-4 text-center border border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-300">Total Characters</h3>
-            <p className="text-3xl font-bold text-white">{characters.length}</p>
-          </div>
-          <div className="bg-card-bg rounded-lg p-4 text-center border border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-300">Main Characters</h3>
-            <p className="text-3xl font-bold text-yellow-400">{mainCharacters.length}</p>
-          </div>
-          <div className="bg-card-bg rounded-lg p-4 text-center border border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-300">Legendary</h3>
-            <p className="text-3xl font-bold text-orange-400">{legendaryCharacters.length}</p>
-          </div>
-          <div className="bg-card-bg rounded-lg p-4 text-center border border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-300">Common</h3>
-            <p className="text-3xl font-bold text-gray-400">{commonCharacters.length}</p>
+    <div className="min-h-screen text-white">
+      <Navigation />
+      
+      <HeroSection />
+      
+      <SearchAndFilter
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        currentFilter={currentFilter}
+        onFilterChange={setCurrentFilter}
+      />
+      
+      {/* Characters Grid */}
+      <section id="characters" className="px-4 pb-16">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            All Characters
+          </h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            {filteredCharacters.map((character) => (
+              <CharacterCard
+                key={character.id}
+                character={character}
+                onClick={() => handleCharacterClick(character)}
+              />
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Characters Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {characters.map((character) => (
-            <CharacterCard
-              key={character.id}
-              character={character}
-              onClick={handleCharacterClick}
-            />
-          ))}
-        </div>
-      </main>
-
-      {/* Character Modal */}
       <CharacterModal
         character={selectedCharacter}
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        onClose={closeModal}
       />
+      
+      <Footer />
     </div>
   );
 }
