@@ -1,40 +1,4 @@
-export interface Character {
-  id: string;
-  name: string;
-  fullName: string;
-  type: 'main' | 'regular' | 'event';
-  rarity: 'legendary' | 'common';
-  image: string;
-  description: string;
-  stats: {
-    hearts: number;
-    skillCheck: number;
-    movementSpeed: number;
-    stamina: number;
-    stealth: number;
-    extractionSpeed: number;
-  };
-  abilities: {
-    active?: {
-      name: string;
-      description: string;
-      cooldown: number;
-    };
-    passive?: {
-      name: string;
-      description: string;
-    };
-  };
-  requirements: {
-    ichor?: number;
-    ornaments?: number;
-    baskets?: number;  // 新增：复活节活动货币
-    research?: string;
-    mastery?: string;
-    other?: string[];
-    note?: string;
-  };
-}
+import { Character } from '../types/character';
 
 export const characters: Character[] = [
   {
@@ -219,6 +183,11 @@ export const characters: Character[] = [
       extractionSpeed: 3
     },
     abilities: {
+      active: {
+        name: "Music Box",
+        description: "Plays music that boosts extraction speed for all nearby Toons",
+        cooldown: 120
+      },
       passive: {
         name: "Music Box",
         description: "Grants 6% more extraction speed per Toon in the run"
@@ -246,6 +215,11 @@ export const characters: Character[] = [
       extractionSpeed: 3
     },
     abilities: {
+      active: {
+        name: "Bubble Burst",
+        description: "Creates a burst of bubbles that temporarily increases movement speed",
+        cooldown: 90
+      },
       passive: {
         name: "Poppy's Boost",
         description: "Increases movement speed when stamina is full"

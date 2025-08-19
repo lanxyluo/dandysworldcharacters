@@ -1,5 +1,5 @@
 import React from 'react';
-import { Character } from '../data/characters';
+import { Character } from '../types/character';
 
 interface CharacterModalProps {
   character: Character | null;
@@ -54,9 +54,9 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, isOpen, onCl
                       <span className="capitalize">{formatStatName(stat)}</span>
                       <div className="flex items-center space-x-3">
                         <div className="stat-bar w-24">
-                          <div className="stat-fill" style={{ width: `${(value / 5) * 100}%` }}></div>
+                          <div className="stat-fill" style={{ width: `${((value as number) / 5) * 100}%` }}></div>
                         </div>
-                        <span className="text-accent-main font-bold">{value}/5</span>
+                        <span className="text-accent-main font-bold">{value as number}/5</span>
                       </div>
                     </div>
                   ))}
@@ -112,7 +112,7 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, isOpen, onCl
                       <span>{character.requirements.mastery}</span>
                     </div>
                   )}
-                  {character.requirements.other && character.requirements.other.map((req, index) => (
+                  {character.requirements.other && character.requirements.other.map((req: string, index: number) => (
                     <div key={index} className="flex items-center space-x-2">
                       <span className="text-rainbow-5">❗</span>
                       <span>{req}</span>

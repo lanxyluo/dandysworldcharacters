@@ -1,5 +1,5 @@
 import React from 'react';
-import { Character } from '../data/characters';
+import { Character } from '../types/character';
 
 interface CharacterCardProps {
   character: Character;
@@ -32,9 +32,9 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
                   <span className="capitalize">{formatStatName(stat)}</span>
                   <div className="flex items-center space-x-2">
                     <div className="stat-bar w-16">
-                      <div className="stat-fill" style={{ width: `${(value / 5) * 100}%` }}></div>
+                      <div className="stat-fill" style={{ width: `${((value as number) / 5) * 100}%` }}></div>
                     </div>
-                    <span className="text-accent-main font-semibold w-6">{value}</span>
+                    <span className="text-accent-main font-semibold w-6">{value as number}</span>
                   </div>
                 </div>
               ))}
@@ -58,9 +58,9 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
                   <span className="capitalize">{formatStatName(stat)}</span>
                   <div className="flex items-center space-x-2">
                     <div className="stat-bar w-16">
-                      <div className="stat-fill" style={{ width: `${(value / 5) * 100}%` }}></div>
+                      <div className="stat-fill" style={{ width: `${((value as number) / 5) * 100}%` }}></div>
                     </div>
-                    <span className="text-accent-main font-semibold w-6">{value}</span>
+                    <span className="text-accent-main font-semibold w-6">{value as number}</span>
                   </div>
                 </div>
               ))}
