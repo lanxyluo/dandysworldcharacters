@@ -8,6 +8,13 @@ const Navigation: React.FC = () => {
     return location.pathname === path;
   };
 
+  const menuItems = [
+    { name: 'Characters', href: '/', icon: '👥' },
+    { name: 'Compare', href: '/compare', icon: '⚖️' },
+    { name: 'Calculator', href: '/calculator', icon: '🧮' },
+    { name: 'Community', href: '/community', icon: '💬' }
+  ];
+
   return (
     <nav className="fixed top-0 w-full z-50 glass-effect">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,20 +32,24 @@ const Navigation: React.FC = () => {
           </div>
           
           <div className="hidden md:flex items-center space-x-6">
-            <Link 
-              to="/" 
-              className={`hover:text-accent-main transition-colors ${isActive('/') ? 'text-accent-main' : ''}`}
-            >
-              Characters
-            </Link>
-            <Link 
-              to="/compare" 
-              className={`hover:text-accent-main transition-colors ${isActive('/compare') ? 'text-accent-main' : ''}`}
-            >
-              Compare
-            </Link>
-            <a href="#guides" className="hover:text-accent-main transition-colors">Guides</a>
-            <a href="#updates" className="hover:text-accent-main transition-colors">Updates</a>
+            {menuItems.map((item) => (
+              <Link 
+                key={item.name}
+                to={item.href} 
+                className={`flex items-center space-x-2 hover:text-accent-main transition-colors ${
+                  isActive(item.href) ? 'text-accent-main' : ''
+                } ${
+                  item.name === 'Calculator' 
+                    ? 'hover:text-purple-300 hover:scale-105 transform transition-all duration-200' 
+                    : ''
+                }`}
+              >
+                <span className={`text-lg ${item.name === 'Calculator' ? 'animate-pulse' : ''}`}>
+                  {item.icon}
+                </span>
+                <span>{item.name}</span>
+              </Link>
+            ))}
           </div>
           
           <button className="md:hidden p-2 rounded-lg hover:bg-bg-card transition-colors">
