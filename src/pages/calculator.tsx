@@ -5,6 +5,7 @@ import SEO from '../components/SEO';
 import ResearchCalculator from '../components/calculator/ResearchCalculator';
 import UnlockOptimizer from '../components/calculator/UnlockOptimizer';
 import CombinedStrategy from '../components/calculator/CombinedStrategy';
+import FeedbackButton from '../components/FeedbackButton';
 
 const CalculatorPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'research' | 'unlock' | 'strategy'>('research');
@@ -76,6 +77,10 @@ const CalculatorPage: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* 用户反馈按钮 */}
+      <FeedbackButton currentTab={activeTab} />
+      
       <Footer />
     </>
   );
