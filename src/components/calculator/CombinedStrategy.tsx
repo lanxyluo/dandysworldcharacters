@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { UserProgress, loadUserProgress, updateUserProgress } from '../../utils/storage';
 
 interface Character {
   id: string;
@@ -140,6 +141,40 @@ const CombinedStrategy: React.FC = () => {
 
   const [strategy, setStrategy] = useState<StrategyStep[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [lastSaved, setLastSaved] = useState<string>('');
+
+  // 加载保存的用户进度
+  useEffect(() => {
+    const savedProgress = loadUserProgress();
+    if (savedProgress) {
+      setStrategyInput(prev => ({
+        ...prev,
+        currentIchor: savedProgress.currentIchor,
+        ownedCharacters: savedProgress.ownedCharacters,
+        researchProgress: savedProgress.researchProgress
+      }));
+      setLastSaved(savedProgress.lastUpdated);
+    }
+  }, []);
+
+  // 自动保存用户进度
+  const saveProgress = () => {
+    const progress: UserProgress = {
+      ownedCharacters: strategyInput.ownedCharacters,
+      currentIchor: strategyInput.currentIchor,
+      researchProgress: strategyInput.researchProgress,
+      lastUpdated: new Date().toISOString()
+    };
+    updateUserProgress(progress, progress);
+    setLastSaved(progress.lastUpdated);
+  };
+
+  // 当数据变化时自动保存
+  useEffect(() => {
+    if (lastSaved) { // 避免初始加载时保存
+      saveProgress();
+    }
+  }, [strategyInput.currentIchor, strategyInput.ownedCharacters, strategyInput.researchProgress]);
 
   const generateStrategy = async () => {
     setIsLoading(true);
@@ -216,6 +251,15 @@ const CombinedStrategy: React.FC = () => {
         <h2 className="text-2xl font-bold text-text-primary mb-6 text-center">
           Combined Strategy Planner
         </h2>
+        
+        {/* 保存状态指示器 */}
+        {lastSaved && (
+          <div className="text-center mb-4">
+            <span className="text-xs text-text-secondary">
+              Last saved: {new Date(lastSaved).toLocaleString()}
+            </span>
+          </div>
+        )}
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* 左侧：策略配置 */}

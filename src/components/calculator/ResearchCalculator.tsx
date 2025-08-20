@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UserProgress, loadUserProgress, updateUserProgress } from '../../utils/storage';
 
 // 组件数据结构
 interface ResearchData {
@@ -36,6 +37,7 @@ const ResearchCalculator: React.FC = () => {
   });
 
   const [result, setResult] = useState<any>(null);
+  const [lastSaved, setLastSaved] = useState<string>('');
 
   // 模拟角色数据 - 实际应该从数据库获取
   const twistedCharacters = [
@@ -45,6 +47,46 @@ const ResearchCalculator: React.FC = () => {
     'Twisted Diana',
     'Twisted Edward'
   ];
+
+  // 加载保存的用户进度
+  useEffect(() => {
+    const savedProgress = loadUserProgress();
+    if (savedProgress && savedProgress.researchProgress) {
+      // 找到第一个有进度的角色作为默认选择
+      const firstWithProgress = Object.entries(savedProgress.researchProgress).find(([, progress]) => progress > 0);
+      if (firstWithProgress) {
+        setResearchData(prev => ({
+          ...prev,
+          twistedName: firstWithProgress[0],
+          currentProgress: firstWithProgress[1]
+        }));
+      }
+      setLastSaved(savedProgress.lastUpdated);
+    }
+  }, []);
+
+  // 自动保存用户进度
+  const saveProgress = () => {
+    if (researchData.twistedName) {
+      const progress: UserProgress = {
+        ownedCharacters: [],
+        currentIchor: 0,
+        researchProgress: {
+          [researchData.twistedName]: researchData.currentProgress
+        },
+        lastUpdated: new Date().toISOString()
+      };
+      updateUserProgress(progress, progress);
+      setLastSaved(progress.lastUpdated);
+    }
+  };
+
+  // 当数据变化时自动保存
+  useEffect(() => {
+    if (lastSaved && researchData.twistedName) { // 避免初始加载时保存
+      saveProgress();
+    }
+  }, [researchData.twistedName, researchData.currentProgress]);
 
   useEffect(() => {
     if (researchData.twistedName && researchData.currentProgress >= 0) {
@@ -66,6 +108,15 @@ const ResearchCalculator: React.FC = () => {
         <h2 className="text-2xl font-bold text-text-primary mb-6 text-center">
           Research Progress Calculator
         </h2>
+        
+        {/* 保存状态指示器 */}
+        {lastSaved && (
+          <div className="text-center mb-4">
+            <span className="text-xs text-text-secondary">
+              Last saved: {new Date(lastSaved).toLocaleString()}
+            </span>
+          </div>
+        )}
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* 左侧表单 */}
@@ -107,37 +158,42 @@ const ResearchCalculator: React.FC = () => {
               </div>
             </div>
 
-            {/* 是否使用Rodger */}
+            {/* 目标进度 */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">
+                Target Progress: {researchData.targetProgress}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={researchData.targetProgress}
+                onChange={(e) => handleInputChange('targetProgress', parseInt(e.target.value))}
+                className="w-full h-2 bg-bg-secondary rounded-lg appearance-none cursor-pointer slider"
+              />
+              <div className="flex justify-between text-xs text-text-secondary mt-1">
+                <span>0%</span>
+                <span>50%</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+            {/* Rodger使用选项 */}
             <div className="flex items-center space-x-3">
               <input
                 type="checkbox"
                 id="useRodger"
                 checked={researchData.useRodger}
                 onChange={(e) => handleInputChange('useRodger', e.target.checked)}
-                className="w-4 h-4 text-accent-main bg-bg-secondary border-gray-600 rounded focus:ring-accent-main focus:ring-2"
+                className="w-4 h-4 text-accent-main bg-bg-card border-gray-600 rounded"
               />
-              <label htmlFor="useRodger" className="text-sm font-medium text-text-primary">
-                Use Rodger (2x research progress)
+              <label htmlFor="useRodger" className="text-sm text-text-primary">
+                Use Rodger (2x research speed)
               </label>
-            </div>
-
-            {/* 目标进度 */}
-            <div>
-              <label className="block text-sm font-medium text-text-secondary mb-2">
-                Target Progress (%)
-              </label>
-              <input
-                type="number"
-                min="0"
-                max="100"
-                value={researchData.targetProgress}
-                onChange={(e) => handleInputChange('targetProgress', parseInt(e.target.value))}
-                className="w-full px-4 py-3 bg-bg-secondary border border-gray-600 rounded-lg text-text-primary focus:ring-2 focus:ring-accent-main focus:border-transparent"
-              />
             </div>
           </div>
 
-          {/* 右侧结果显示 */}
+          {/* 右侧结果 */}
           <div className="bg-bg-secondary rounded-lg p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Calculation Results</h3>
             
@@ -147,7 +203,7 @@ const ResearchCalculator: React.FC = () => {
                   <div className="text-2xl font-bold text-accent-main mb-2">
                     {result.floorsNeeded}
                   </div>
-                  <div className="text-sm text-text-secondary">Floors Needed</div>
+                  <div className="text-sm text-text-secondary">Research Floors Needed</div>
                 </div>
                 
                 <div className="bg-bg-card rounded-lg p-4">
@@ -165,7 +221,7 @@ const ResearchCalculator: React.FC = () => {
               </div>
             ) : (
               <div className="text-text-secondary text-center py-8">
-                Fill in the form to see calculation results
+                Select a character and set progress to see calculation results
               </div>
             )}
           </div>

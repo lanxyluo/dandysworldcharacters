@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 import ResearchCalculator from '../components/calculator/ResearchCalculator';
 import UnlockOptimizer from '../components/calculator/UnlockOptimizer';
 import CombinedStrategy from '../components/calculator/CombinedStrategy';
@@ -10,6 +11,14 @@ const CalculatorPage: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandy's World Calculator - Character Unlock & Research Optimizer"
+        description="Optimize your Dandy's World character unlocks and research progress. Calculate the most efficient path to unlock characters and complete research."
+        keywords="Dandy's World, calculator, character unlock, research optimizer, Ichor calculator, Rodger, twisted research"
+        ogTitle="Dandy's World Calculator"
+        ogDescription="The ultimate tool for optimizing your Dandy's World progression"
+        canonical="/calculator"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

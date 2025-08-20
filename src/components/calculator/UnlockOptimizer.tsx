@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { UserProgress, loadUserProgress, updateUserProgress } from '../../utils/storage';
 
 interface Character {
   id: string;
@@ -48,6 +49,36 @@ const UnlockOptimizer: React.FC = () => {
   const [currentIchor, setCurrentIchor] = useState(500);
   const [ownedCharacters, setOwnedCharacters] = useState<string[]>([]);
   const [recommendation, setRecommendation] = useState<UnlockRecommendation | null>(null);
+  const [lastSaved, setLastSaved] = useState<string>('');
+
+  // 加载保存的用户进度
+  useEffect(() => {
+    const savedProgress = loadUserProgress();
+    if (savedProgress) {
+      setCurrentIchor(savedProgress.currentIchor);
+      setOwnedCharacters(savedProgress.ownedCharacters);
+      setLastSaved(savedProgress.lastUpdated);
+    }
+  }, []);
+
+  // 自动保存用户进度
+  const saveProgress = () => {
+    const progress: UserProgress = {
+      ownedCharacters,
+      currentIchor,
+      researchProgress: {}, // 这个组件不需要研究进度
+      lastUpdated: new Date().toISOString()
+    };
+    updateUserProgress(progress, progress);
+    setLastSaved(progress.lastUpdated);
+  };
+
+  // 当数据变化时自动保存
+  useEffect(() => {
+    if (lastSaved) { // 避免初始加载时保存
+      saveProgress();
+    }
+  }, [currentIchor, ownedCharacters]);
 
   // 推荐算法逻辑
   const getUnlockRecommendation = (currentIchor: number, ownedCharacters: string[]): UnlockRecommendation => {
@@ -113,6 +144,15 @@ const UnlockOptimizer: React.FC = () => {
         <h2 className="text-2xl font-bold text-text-primary mb-6 text-center">
           Unlock Optimizer
         </h2>
+        
+        {/* 保存状态指示器 */}
+        {lastSaved && (
+          <div className="text-center mb-4">
+            <span className="text-xs text-text-secondary">
+              Last saved: {new Date(lastSaved).toLocaleString()}
+            </span>
+          </div>
+        )}
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* 左侧：输入配置 */}
