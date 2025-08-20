@@ -1,55 +1,110 @@
 import React, { useState } from 'react';
 
-interface UnlockData {
-  characterName: string;
-  unlockCost: number;
-  priority: 'high' | 'medium' | 'low';
-  isUnlocked: boolean;
+interface Character {
+  id: string;
+  name: string;
+  ichorCost: number;
+  type: 'common' | 'uncommon' | 'rare' | 'main';
+  abilities: string[];
+  researchBonus?: number; // Rodger特有
+  unlockRequirements?: string[];
+  priority: number; // 1-5, 5为最高优先级
+}
+
+// 角色优先级数据
+const characterPriorities = [
+  // 最高优先级 - 必须早期解锁
+  { name: 'Rodger', ichorCost: 1000, priority: 5, reason: '2x research speed, essential for unlocking others' },
+  { name: 'Poppy', ichorCost: 100, priority: 5, reason: 'Cheap starter with speed boost' },
+  
+  // 高优先级 - 主角色
+  { name: 'Astro', ichorCost: 3000, priority: 4, reason: 'Main character with unique abilities' },
+  { name: 'Vee', ichorCost: 4000, priority: 4, reason: 'Main character, requires Dandy run' },
+  { name: 'Pebble', ichorCost: 4000, priority: 4, reason: 'Main character, high difficulty' },
+  { name: 'Shelly', ichorCost: 3500, priority: 4, reason: 'Fast main character' },
+  
+  // 中等优先级 - 实用角色
+  { name: 'Goob', ichorCost: 1200, priority: 3, reason: 'Pull ability, good for team play' },
+  { name: 'Boxten', ichorCost: 200, priority: 3, reason: 'Fast machine completion' },
+  { name: 'Tisha', ichorCost: 350, priority: 3, reason: 'Movement speed and cleaning' },
+  
+  // 较低优先级 - 特殊用途
+  { name: 'Brightney', ichorCost: 800, priority: 2, reason: 'Light source, specific maps' },
+  { name: 'Scraps', ichorCost: 1500, priority: 2, reason: 'Ranged attack, advanced players' },
+  
+  // 最低优先级 - 收藏用途
+  { name: 'Shrimpo', ichorCost: 50, priority: 1, reason: 'Meme character, very weak' }
+];
+
+interface UnlockRecommendation {
+  recommendation: string;
+  reason?: string;
+  target: typeof characterPriorities[0];
+  canAfford: boolean;
+  alternatives?: typeof characterPriorities[0][];
 }
 
 const UnlockOptimizer: React.FC = () => {
-  const [unlockData, setUnlockData] = useState<UnlockData[]>([
-    { characterName: 'Character A', unlockCost: 1000, priority: 'high', isUnlocked: false },
-    { characterName: 'Character B', unlockCost: 800, priority: 'medium', isUnlocked: false },
-    { characterName: 'Character C', unlockCost: 1200, priority: 'low', isUnlocked: false },
-    { characterName: 'Character D', unlockCost: 600, priority: 'high', isUnlocked: false },
-  ]);
+  const [currentIchor, setCurrentIchor] = useState(500);
+  const [ownedCharacters, setOwnedCharacters] = useState<string[]>([]);
+  const [recommendation, setRecommendation] = useState<UnlockRecommendation | null>(null);
 
-  const [totalCost, setTotalCost] = useState(0);
-  const [recommendedOrder, setRecommendedOrder] = useState<UnlockData[]>([]);
+  // 推荐算法逻辑
+  const getUnlockRecommendation = (currentIchor: number, ownedCharacters: string[]): UnlockRecommendation => {
+    const availableCharacters = characterPriorities.filter(char => 
+      !ownedCharacters.includes(char.name) && char.ichorCost <= currentIchor
+    );
+    
+    if (availableCharacters.length === 0) {
+      const nextCheapest = characterPriorities
+        .filter(char => !ownedCharacters.includes(char.name))
+        .sort((a, b) => a.ichorCost - b.ichorCost)[0];
+      
+      return {
+        recommendation: `Save ${nextCheapest.ichorCost - currentIchor} more Ichor for ${nextCheapest.name}`,
+        target: nextCheapest,
+        canAfford: false
+      };
+    }
+    
+    const bestOption = availableCharacters.sort((a, b) => b.priority - a.priority)[0];
+    
+    return {
+      recommendation: `Unlock ${bestOption.name} next`,
+      reason: bestOption.reason,
+      target: bestOption,
+      canAfford: true,
+      alternatives: availableCharacters.slice(1, 3)
+    };
+  };
 
   const calculateOptimization = () => {
-    const sortedByPriority = [...unlockData]
-      .filter(char => !char.isUnlocked)
-      .sort((a, b) => {
-        const priorityOrder = { high: 3, medium: 2, low: 1 };
-        if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
-          return priorityOrder[b.priority] - priorityOrder[a.priority];
-        }
-        return a.unlockCost - b.unlockCost;
-      });
-
-    setRecommendedOrder(sortedByPriority);
-    setTotalCost(sortedByPriority.reduce((sum, char) => sum + char.unlockCost, 0));
+    const result = getUnlockRecommendation(currentIchor, ownedCharacters);
+    setRecommendation(result);
   };
 
-  const handleCharacterChange = (index: number, field: keyof UnlockData, value: any) => {
-    const newData = [...unlockData];
-    newData[index] = { ...newData[index], [field]: value };
-    setUnlockData(newData);
+  const toggleCharacterOwnership = (characterName: string) => {
+    setOwnedCharacters(prev => 
+      prev.includes(characterName) 
+        ? prev.filter(name => name !== characterName)
+        : [...prev, characterName]
+    );
   };
 
-  const addCharacter = () => {
-    setUnlockData([...unlockData, {
-      characterName: `Character ${unlockData.length + 1}`,
-      unlockCost: 0,
-      priority: 'medium',
-      isUnlocked: false
-    }]);
+  const getPriorityColor = (priority: number) => {
+    if (priority === 5) return 'bg-red-600';
+    if (priority === 4) return 'bg-orange-600';
+    if (priority === 3) return 'bg-yellow-600';
+    if (priority === 2) return 'bg-blue-600';
+    return 'bg-green-600';
   };
 
-  const removeCharacter = (index: number) => {
-    setUnlockData(unlockData.filter((_, i) => i !== index));
+  const getPriorityText = (priority: number) => {
+    if (priority === 5) return 'Critical';
+    if (priority === 4) return 'High';
+    if (priority === 3) return 'Medium';
+    if (priority === 2) return 'Low';
+    return 'Very Low';
   };
 
   return (
@@ -60,122 +115,132 @@ const UnlockOptimizer: React.FC = () => {
         </h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* 左侧：角色管理 */}
-          <div>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-text-primary">Character Management</h3>
-              <button
-                onClick={addCharacter}
-                className="px-4 py-2 bg-accent-main text-white rounded-lg hover:bg-accent-main/80 transition-colors"
-              >
-                Add Character
-              </button>
+          {/* 左侧：输入配置 */}
+          <div className="space-y-6">
+            {/* 当前Ichor数量 */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">
+                Current Ichor: {currentIchor.toLocaleString()}
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="10000"
+                step="100"
+                value={currentIchor}
+                onChange={(e) => setCurrentIchor(parseInt(e.target.value))}
+                className="w-full h-2 bg-bg-secondary rounded-lg appearance-none cursor-pointer slider"
+              />
+              <div className="flex justify-between text-xs text-text-secondary mt-1">
+                <span>0</span>
+                <span>5,000</span>
+                <span>10,000</span>
+              </div>
             </div>
-            
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {unlockData.map((character, index) => (
-                <div key={index} className="bg-bg-secondary rounded-lg p-4">
-                  <div className="grid grid-cols-2 gap-4 mb-3">
+
+            {/* 已拥有角色 */}
+            <div>
+              <h3 className="text-lg font-semibold text-text-primary mb-3">Owned Characters</h3>
+              <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                {characterPriorities.map((char) => (
+                  <label key={char.name} className="flex items-center space-x-2 cursor-pointer">
                     <input
-                      type="text"
-                      value={character.characterName}
-                      onChange={(e) => handleCharacterChange(index, 'characterName', e.target.value)}
-                      className="px-3 py-2 bg-bg-card border border-gray-600 rounded text-text-primary"
-                      placeholder="Character name"
+                      type="checkbox"
+                      checked={ownedCharacters.includes(char.name)}
+                      onChange={() => toggleCharacterOwnership(char.name)}
+                      className="w-4 h-4 text-accent-main bg-bg-card border-gray-600 rounded"
                     />
-                    <input
-                      type="number"
-                      value={character.unlockCost}
-                      onChange={(e) => handleCharacterChange(index, 'unlockCost', parseInt(e.target.value) || 0)}
-                      className="px-3 py-2 bg-bg-card border border-gray-600 rounded text-text-primary"
-                      placeholder="Cost"
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <select
-                      value={character.priority}
-                      onChange={(e) => handleCharacterChange(index, 'priority', e.target.value as 'high' | 'medium' | 'low')}
-                      className="px-3 py-2 bg-bg-card border border-gray-600 rounded text-text-primary"
-                    >
-                      <option value="high">High Priority</option>
-                      <option value="medium">Medium Priority</option>
-                      <option value="low">Low Priority</option>
-                    </select>
-                    
-                    <div className="flex items-center space-x-3">
-                      <label className="flex items-center space-x-2 text-text-primary">
-                        <input
-                          type="checkbox"
-                          checked={character.isUnlocked}
-                          onChange={(e) => handleCharacterChange(index, 'isUnlocked', e.target.checked)}
-                          className="w-4 h-4 text-accent-main bg-bg-card border-gray-600 rounded"
-                        />
-                        <span className="text-sm">Unlocked</span>
-                      </label>
-                      
-                      <button
-                        onClick={() => removeCharacter(index)}
-                        className="px-2 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                    <span className="text-sm text-text-primary">{char.name}</span>
+                  </label>
+                ))}
+              </div>
             </div>
-            
+
             <button
               onClick={calculateOptimization}
-              className="w-full mt-6 px-6 py-3 bg-accent-main text-white rounded-lg hover:bg-accent-main/80 transition-colors font-medium"
+              className="w-full px-6 py-3 bg-accent-main text-white rounded-lg hover:bg-accent-main/80 transition-colors font-medium"
             >
-              Calculate Optimal Unlock Order
+              Get Unlock Recommendation
             </button>
           </div>
 
-          {/* 右侧：优化结果 */}
+          {/* 右侧：推荐结果 */}
           <div className="bg-bg-secondary rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-text-primary mb-4">Optimization Results</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4">Unlock Recommendation</h3>
             
-            {recommendedOrder.length > 0 ? (
-              <div className="space-y-4">
-                <div className="bg-bg-card rounded-lg p-4">
-                  <div className="text-2xl font-bold text-accent-main mb-2">
-                    {totalCost.toLocaleString()}
+            {recommendation ? (
+              <div className="space-y-6">
+                {/* 主要推荐 */}
+                <div className={`bg-bg-card rounded-lg p-4 border-l-4 ${
+                  recommendation.canAfford ? 'border-green-500' : 'border-yellow-500'
+                }`}>
+                  <div className="text-xl font-bold text-text-primary mb-2">
+                    {recommendation.recommendation}
                   </div>
-                  <div className="text-sm text-text-secondary">Total Cost</div>
+                  {recommendation.reason && (
+                    <div className="text-sm text-text-secondary mb-3">
+                      {recommendation.reason}
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold text-accent-main">
+                      {recommendation.target.ichorCost.toLocaleString()} Ichor
+                    </span>
+                    <span className={`px-3 py-1 rounded text-sm font-medium text-white ${getPriorityColor(recommendation.target.priority)}`}>
+                      {getPriorityText(recommendation.target.priority)}
+                    </span>
+                  </div>
                 </div>
-                
+
+                {/* 替代选择 */}
+                {recommendation.alternatives && recommendation.alternatives.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-text-primary mb-3">Alternative Options:</h4>
+                    <div className="space-y-2">
+                      {recommendation.alternatives.map((char, index) => (
+                        <div key={index} className="flex justify-between items-center bg-bg-card rounded-lg p-3">
+                          <div className="flex items-center space-x-3">
+                            <span className="text-text-primary">{char.name}</span>
+                            <span className={`px-2 py-1 rounded text-xs font-medium text-white ${getPriorityColor(char.priority)}`}>
+                              {getPriorityText(char.priority)}
+                            </span>
+                          </div>
+                          <span className="text-text-secondary">{char.ichorCost.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 所有角色优先级列表 */}
                 <div>
-                  <h4 className="font-medium text-text-primary mb-3">Recommended Unlock Order:</h4>
-                  <div className="space-y-2">
-                    {recommendedOrder.map((character, index) => (
-                      <div key={index} className="flex justify-between items-center bg-bg-card rounded-lg p-3">
-                        <div className="flex items-center space-x-3">
-                          <span className="w-6 h-6 bg-accent-main text-white rounded-full flex items-center justify-center text-sm font-bold">
-                            {index + 1}
-                          </span>
-                          <span className="text-text-primary">{character.characterName}</span>
+                  <h4 className="font-medium text-text-primary mb-3">Character Priority List:</h4>
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {characterPriorities
+                      .filter(char => !ownedCharacters.includes(char.name))
+                      .map((char, index) => (
+                        <div key={index} className="flex justify-between items-center bg-bg-card rounded-lg p-3">
+                          <div className="flex items-center space-x-3">
+                            <span className="w-6 h-6 bg-accent-main text-white rounded-full flex items-center justify-center text-sm font-bold">
+                              {index + 1}
+                            </span>
+                            <span className="text-text-primary">{char.name}</span>
+                            <span className={`px-2 py-1 rounded text-xs font-medium text-white ${getPriorityColor(char.priority)}`}>
+                              {getPriorityText(char.priority)}
+                            </span>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-text-secondary">{char.ichorCost.toLocaleString()}</div>
+                            <div className="text-xs text-text-secondary">{char.reason}</div>
+                          </div>
                         </div>
-                        <div className="flex items-center space-x-3">
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
-                            character.priority === 'high' ? 'bg-red-600 text-white' :
-                            character.priority === 'medium' ? 'bg-yellow-600 text-white' :
-                            'bg-green-600 text-white'
-                          }`}>
-                            {character.priority}
-                          </span>
-                          <span className="text-text-secondary">{character.unlockCost.toLocaleString()}</span>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               </div>
             ) : (
               <div className="text-text-secondary text-center py-8">
-                Click "Calculate Optimal Unlock Order" to see results
+                Configure your current Ichor and owned characters, then click "Get Unlock Recommendation"
               </div>
             )}
           </div>
