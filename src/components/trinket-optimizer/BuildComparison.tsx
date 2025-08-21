@@ -17,19 +17,19 @@ const BuildComparison: React.FC<BuildComparisonProps> = ({ builds, onClose }) =>
   const [sortBy, setSortBy] = useState<string>('overall');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  // 生成比较指标
+  // Generate comparison metrics
   const generateComparisonMetrics = (): ComparisonMetric[] => {
     const metrics: ComparisonMetric[] = [];
     
-    // 基础效果指标
+    // Basic effectiveness metrics
     const effectMetrics = [
-      { name: 'overall', label: '总体效果', unit: '★', weight: 1.0 },
-      { name: 'damage', label: '伤害能力', unit: '★', weight: 0.8 },
-      { name: 'survival', label: '生存能力', unit: '★', weight: 0.9 },
-      { name: 'utility', label: '实用价值', unit: '★', weight: 0.7 },
-      { name: 'teamSupport', label: '团队支援', unit: '★', weight: 0.6 },
-      { name: 'soloPlay', label: '单人游戏', unit: '★', weight: 0.8 },
-      { name: 'highFloor', label: '高楼层表现', unit: '★', weight: 0.9 }
+      { name: 'overall', label: 'Overall Effect', unit: '★', weight: 1.0 },
+      { name: 'damage', label: 'Damage', unit: '★', weight: 0.8 },
+      { name: 'survival', label: 'Survival', unit: '★', weight: 0.9 },
+      { name: 'utility', label: 'Utility', unit: '★', weight: 0.7 },
+      { name: 'teamSupport', label: 'Team Support', unit: '★', weight: 0.6 },
+      { name: 'soloPlay', label: 'Solo Play', unit: '★', weight: 0.8 },
+      { name: 'highFloor', label: 'High Floor', unit: '★', weight: 0.9 }
     ];
 
     effectMetrics.forEach(metric => {
@@ -49,42 +49,44 @@ const BuildComparison: React.FC<BuildComparisonProps> = ({ builds, onClose }) =>
       }
     });
 
-    // 元数据指标
-    if (selectedMetrics.includes('meta')) {
+    // Additional metrics
+    if (selectedMetrics.includes('confidence')) {
+      const values: { [buildId: string]: number } = {};
+      builds.forEach(build => {
+        values[build.id] = build.confidence;
+      });
       metrics.push({
-        name: 'meta',
-        label: '元数据评分',
+        name: 'confidence',
+        label: 'Confidence',
         unit: '★',
-        weight: 0.7,
-        values: builds.reduce((acc, build) => {
-          const metaScore = (build.metaAnalysis.popularity + build.metaAnalysis.winRate) / 20;
-          acc[build.id] = Math.min(5, metaScore);
-          return acc;
-        }, {} as { [buildId: string]: number })
+        weight: 0.5,
+        values
       });
     }
 
-    // 获取难度指标
-    if (selectedMetrics.includes('acquisition')) {
+    if (selectedMetrics.includes('metaTier')) {
+      const values: { [buildId: string]: number } = {};
+      builds.forEach(build => {
+        const tierScore = build.metaAnalysis.tier === 'S' ? 5 : 
+                         build.metaAnalysis.tier === 'A' ? 4 : 
+                         build.metaAnalysis.tier === 'B' ? 3 : 
+                         build.metaAnalysis.tier === 'C' ? 2 : 1;
+        values[build.id] = tierScore;
+      });
       metrics.push({
-        name: 'acquisition',
-        label: '获取难度',
-        unit: '★',
-        weight: 0.5,
-        values: builds.reduce((acc, build) => {
-          const difficultyMap = { 'beginner': 5, 'intermediate': 3, 'advanced': 1 };
-          acc[build.id] = difficultyMap[build.difficulty];
-          return acc;
-        }, {} as { [buildId: string]: number })
+        name: 'metaTier',
+        label: 'Meta Tier',
+        unit: '',
+        weight: 0.6,
+        values
       });
     }
 
     return metrics;
   };
 
-  // 计算加权总分
-  const calculateWeightedScore = (build: IntelligentRecommendation): number => {
-    const metrics = generateComparisonMetrics();
+  // Calculate weighted score
+  const calculateWeightedScore = (build: IntelligentRecommendation, metrics: ComparisonMetric[]): number => {
     let totalScore = 0;
     let totalWeight = 0;
 
@@ -97,72 +99,116 @@ const BuildComparison: React.FC<BuildComparisonProps> = ({ builds, onClose }) =>
     return totalWeight > 0 ? totalScore / totalWeight : 0;
   };
 
-  // 排序构建
-  const sortedBuilds = [...builds].sort((a, b) => {
-    const aScore = calculateWeightedScore(a);
-    const bScore = calculateWeightedScore(b);
+  // Perform build comparison
+  const performComparison = (): BuildComparisonType => {
+    const metrics = generateComparisonMetrics();
     
-    if (sortOrder === 'asc') {
-      return aScore - bScore;
-    } else {
-      return bScore - aScore;
-    }
-  });
+    // Calculate scores for each build
+    const scores = builds.map(build => ({
+      buildId: build.id,
+      buildName: build.name,
+      overallScore: calculateWeightedScore(build, metrics),
+      metricScores: metrics.reduce((acc, metric) => {
+        acc[metric.name] = metric.values[build.id] || 0;
+        return acc;
+      }, {} as { [key: string]: number })
+    }));
 
-  // 确定获胜构建
-  const winner = sortedBuilds[0];
+    // Sort builds by selected metric
+    const sortedScores = [...scores].sort((a, b) => {
+      const aValue = sortBy === 'overall' ? a.overallScore : a.metricScores[sortBy] || 0;
+      const bValue = sortBy === 'overall' ? b.overallScore : b.metricScores[sortBy] || 0;
+      return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+    });
 
-  // 生成分析报告
-  const generateAnalysis = (): string => {
-    if (builds.length < 2) return '需要至少两个构建进行比较';
+    // Find winner
+    const winner = sortedScores[0];
+
+    // Generate insights
+    const insights = [];
     
-    const topBuild = sortedBuilds[0];
-    const secondBuild = sortedBuilds[1];
-    const topScore = calculateWeightedScore(topBuild);
-    const secondScore = calculateWeightedScore(secondBuild);
+    // Winner insight
+    insights.push(`${winner.buildName} ranks highest with an overall score of ${winner.overallScore.toFixed(2)}/5`);
     
-    let analysis = `${topBuild.name} 以 ${topScore.toFixed(2)} 分获得最高评分。`;
-    
-    if (topScore - secondScore > 1) {
-      analysis += ` 相比第二名 ${secondBuild.name} (${secondScore.toFixed(2)}分) 有显著优势。`;
-    } else if (topScore - secondScore > 0.5) {
-      analysis += ` 相比第二名 ${secondBuild.name} (${secondScore.toFixed(2)}分) 有轻微优势。`;
-    } else {
-      analysis += ` 与第二名 ${secondBuild.name} (${secondScore.toFixed(2)}分) 表现相近。`;
-    }
-
-    // 分析各构建的优缺点
-    analysis += `\n\n${topBuild.name} 的优势：`;
-    const topStrengths = topBuild.metaAnalysis.strengths.slice(0, 3);
-    analysis += topStrengths.join('、');
-
-    if (topBuild.metaAnalysis.weaknesses.length > 0) {
-      analysis += `\n\n需要注意的弱点：${topBuild.metaAnalysis.weaknesses.slice(0, 2).join('、')}`;
+    // Performance gaps
+    if (sortedScores.length > 1) {
+      const gap = winner.overallScore - sortedScores[1].overallScore;
+      if (gap > 0.5) {
+        insights.push(`Significant performance gap of ${gap.toFixed(2)} points between top builds`);
+      } else if (gap < 0.2) {
+        insights.push(`Very close competition with only ${gap.toFixed(2)} points difference`);
+      }
     }
 
-    return analysis;
+    // Metric analysis
+    metrics.forEach(metric => {
+      const maxValue = Math.max(...Object.values(metric.values));
+      const bestBuilds = builds.filter(build => metric.values[build.id] === maxValue);
+      if (bestBuilds.length === 1) {
+        insights.push(`${bestBuilds[0].name} excels in ${metric.label} (${maxValue}/${metric.unit})`);
+      }
+    });
+
+    return {
+      buildScores: scores,
+      winner: winner.buildId,
+      sortedBuilds: sortedScores.map(s => s.buildId),
+      insights,
+      comparisonMatrix: metrics
+    };
   };
 
-  // 渲染指标选择器
+  const comparison = performComparison();
+  const winnerBuild = builds.find(b => b.id === comparison.winner);
+
+  // Export comparison results
+  const exportComparison = () => {
+    const exportData = {
+      timestamp: new Date().toISOString(),
+      builds: builds.map(build => ({
+        id: build.id,
+        name: build.name,
+        effectiveness: build.effectiveness,
+        confidence: build.confidence,
+        metaAnalysis: build.metaAnalysis
+      })),
+      comparison,
+      selectedMetrics,
+      sortBy,
+      sortOrder
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+      type: 'application/json'
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `build-comparison-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Render metric selector
   const renderMetricSelector = () => {
     const allMetrics = [
-      { name: 'overall', label: '总体效果' },
-      { name: 'damage', label: '伤害能力' },
-      { name: 'survival', label: '生存能力' },
-      { name: 'utility', label: '实用价值' },
-      { name: 'teamSupport', label: '团队支援' },
-      { name: 'soloPlay', label: '单人游戏' },
-      { name: 'highFloor', label: '高楼层表现' },
-      { name: 'meta', label: '元数据评分' },
-      { name: 'acquisition', label: '获取难度' }
+      { name: 'overall', label: 'Overall Effect' },
+      { name: 'damage', label: 'Damage' },
+      { name: 'survival', label: 'Survival' },
+      { name: 'utility', label: 'Utility' },
+      { name: 'teamSupport', label: 'Team Support' },
+      { name: 'soloPlay', label: 'Solo Play' },
+      { name: 'highFloor', label: 'High Floor' },
+      { name: 'confidence', label: 'Confidence' },
+      { name: 'metaTier', label: 'Meta Tier' }
     ];
 
     return (
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-          📊 选择比较指标
-        </h3>
-        <div className="flex flex-wrap gap-2">
+      <div className="space-y-4">
+        <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Select Comparison Metrics
+        </h4>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {allMetrics.map(metric => (
             <label key={metric.name} className="flex items-center space-x-2 cursor-pointer">
               <input
@@ -187,184 +233,140 @@ const BuildComparison: React.FC<BuildComparisonProps> = ({ builds, onClose }) =>
     );
   };
 
-  // 渲染排序控制
-  const renderSortControls = () => {
-    const sortOptions = [
-      { value: 'overall', label: '总体效果' },
-      { value: 'damage', label: '伤害能力' },
-      { value: 'survival', label: '生存能力' },
-      { value: 'utility', label: '实用价值' },
-      { value: 'weighted', label: '加权总分' }
-    ];
-
-    return (
-      <div className="mb-6 flex flex-wrap items-center gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            排序依据
-          </label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {sortOptions.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            排序顺序
-          </label>
-          <div className="flex">
-            <button
-              onClick={() => setSortOrder('desc')}
-              className={`px-3 py-2 text-sm font-medium rounded-l-md border ${
-                sortOrder === 'desc'
-                  ? 'bg-blue-500 text-white border-blue-500'
-                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
-              }`}
-            >
-              降序
-            </button>
-            <button
-              onClick={() => setSortOrder('asc')}
-              className={`px-3 py-2 text-sm font-medium rounded-r-md border-t border-r border-b ${
-                sortOrder === 'asc'
-                  ? 'bg-blue-500 text-white border-blue-500'
-                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
-              }`}
-            >
-              升序
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // 渲染比较表格
+  // Render comparison table
   const renderComparisonTable = () => {
     const metrics = generateComparisonMetrics();
 
     return (
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+        <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
           <thead>
-            <tr className="border-b border-gray-200 dark:border-gray-700">
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                构建
+            <tr className="bg-gray-100 dark:bg-gray-700">
+              <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left text-gray-900 dark:text-white">
+                Build
               </th>
               {metrics.map(metric => (
-                <th key={metric.name} className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th key={metric.name} className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center text-gray-900 dark:text-white">
                   {metric.label}
-                  <div className="text-xs text-gray-400">权重: {metric.weight}</div>
+                  <br />
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    Weight: {metric.weight}
+                  </span>
                 </th>
               ))}
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                加权总分
+              <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center text-gray-900 dark:text-white">
+                Overall Score
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {sortedBuilds.map((build, index) => (
-              <tr key={build.id} className={`${index === 0 ? 'bg-yellow-50 dark:bg-yellow-900/20' : ''}`}>
-                <td className="px-4 py-4">
-                  <div className="flex items-center space-x-3">
-                    {index === 0 && (
-                      <span className="text-yellow-500 text-lg">🥇</span>
-                    )}
-                    <div>
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {build.name}
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
-                        {build.difficulty} • {build.metaAnalysis.tier} Tier
-                      </div>
-                    </div>
-                  </div>
-                </td>
+          <tbody>
+            {comparison.buildScores
+              .sort((a, b) => b.overallScore - a.overallScore)
+              .map((score, index) => {
+                const build = builds.find(b => b.id === score.buildId)!;
+                const isWinner = score.buildId === comparison.winner;
                 
-                {metrics.map(metric => (
-                  <td key={metric.name} className="px-4 py-4 text-center">
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      {metric.values[build.id]?.toFixed(1) || '0.0'}
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {metric.unit}
-                    </div>
-                  </td>
-                ))}
-                
-                <td className="px-4 py-4 text-center">
-                  <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                    {calculateWeightedScore(build).toFixed(2)}
-                  </div>
-                </td>
-              </tr>
-            ))}
+                return (
+                  <tr key={score.buildId} className={`${
+                    isWinner ? 'bg-green-50 dark:bg-green-900/20' : 'bg-white dark:bg-gray-800'
+                  } ${index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-700' : ''}`}>
+                    <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                      <div className="flex items-center space-x-2">
+                        {isWinner && <span className="text-yellow-500">👑</span>}
+                        <div>
+                          <div className="font-semibold text-gray-900 dark:text-white">
+                            {build.name}
+                          </div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">
+                            Rank #{index + 1}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    {metrics.map(metric => {
+                      const value = metric.values[score.buildId] || 0;
+                      const maxValue = Math.max(...Object.values(metric.values));
+                      const isHighest = value === maxValue;
+                      
+                      return (
+                        <td key={metric.name} className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
+                          <span className={`font-medium ${
+                            isHighest ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-white'
+                          }`}>
+                            {value.toFixed(1)}{metric.unit}
+                          </span>
+                          {isHighest && <span className="ml-1 text-green-500">⭐</span>}
+                        </td>
+                      );
+                    })}
+                    <td className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
+                      <span className={`text-lg font-bold ${
+                        isWinner ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-white'
+                      }`}>
+                        {score.overallScore.toFixed(2)}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>
     );
   };
 
-  // 渲染获胜构建详情
-  const renderWinnerDetails = () => {
-    if (!winner) return null;
-
+  // Render analysis insights
+  const renderInsights = () => {
     return (
-      <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-6 mb-6">
-        <div className="flex items-center space-x-3 mb-4">
-          <span className="text-4xl">🏆</span>
-          <div>
-            <h3 className="text-xl font-bold text-yellow-800 dark:text-yellow-200">
-              获胜构建: {winner.name}
-            </h3>
-            <p className="text-yellow-700 dark:text-yellow-300">
-              加权总分: {calculateWeightedScore(winner).toFixed(2)}
-            </p>
-          </div>
+      <div className="space-y-4">
+        <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Analysis Insights
+        </h4>
+        <div className="space-y-3">
+          {comparison.insights.map((insight, index) => (
+            <div key={index} className="flex items-start space-x-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <span className="text-blue-500 text-lg">💡</span>
+              <p className="text-blue-800 dark:text-blue-200 text-sm">
+                {insight}
+              </p>
+            </div>
+          ))}
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {winner.effectiveness.overall}
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">总体效果</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-              {winner.confidence}
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">置信度</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-              {winner.metaAnalysis.tier}
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">元数据等级</div>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
-  // 渲染分析报告
-  const renderAnalysis = () => {
-    return (
-      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 mb-6">
-        <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-200 mb-3">
-          📋 分析报告
-        </h3>
-        <div className="text-blue-800 dark:text-blue-200 whitespace-pre-line">
-          {generateAnalysis()}
-        </div>
+        {winnerBuild && (
+          <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+            <h5 className="text-lg font-semibold text-green-900 dark:text-green-200 mb-3 flex items-center">
+              <span className="mr-2">👑</span>
+              Winner: {winnerBuild.name}
+            </h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <div className="text-sm text-green-700 dark:text-green-300">Overall</div>
+                <div className="text-lg font-bold text-green-800 dark:text-green-200">
+                  {winnerBuild.effectiveness.overall}/5
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-green-700 dark:text-green-300">Confidence</div>
+                <div className="text-lg font-bold text-green-800 dark:text-green-200">
+                  {winnerBuild.confidence}/5
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-green-700 dark:text-green-300">Meta Tier</div>
+                <div className="text-lg font-bold text-green-800 dark:text-green-200">
+                  {winnerBuild.metaAnalysis.tier}
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-green-700 dark:text-green-300">Difficulty</div>
+                <div className="text-lg font-bold text-green-800 dark:text-green-200 capitalize">
+                  {winnerBuild.difficulty}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -372,81 +374,108 @@ const BuildComparison: React.FC<BuildComparisonProps> = ({ builds, onClose }) =>
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-7xl w-full max-h-[90vh] overflow-y-auto">
-        {/* 头部 */}
+        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            🔍 构建比较分析
+            🔍 Build Comparison Analysis
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={exportComparison}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            >
+              📊 Export Results
+            </button>
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+            >
+              Close
+            </button>
+          </div>
         </div>
 
-        {/* 内容 */}
-        <div className="p-6">
-          {/* 指标选择器 */}
-          {renderMetricSelector()}
+        {/* Content */}
+        <div className="p-6 space-y-8">
+          {/* Configuration */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Metric selector */}
+            <div>
+              {renderMetricSelector()}
+            </div>
 
-          {/* 排序控制 */}
-          {renderSortControls()}
+            {/* Sort options */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Sorting Options
+              </h4>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Sort by:
+                  </label>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="overall">Overall Score</option>
+                    <option value="damage">Damage</option>
+                    <option value="survival">Survival</option>
+                    <option value="utility">Utility</option>
+                    <option value="teamSupport">Team Support</option>
+                    <option value="soloPlay">Solo Play</option>
+                    <option value="highFloor">High Floor</option>
+                    <option value="confidence">Confidence</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Order:
+                  </label>
+                  <div className="flex space-x-4">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="sortOrder"
+                        value="desc"
+                        checked={sortOrder === 'desc'}
+                        onChange={(e) => setSortOrder(e.target.value as 'desc')}
+                        className="text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Highest First
+                      </span>
+                    </label>
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="sortOrder"
+                        value="asc"
+                        checked={sortOrder === 'asc'}
+                        onChange={(e) => setSortOrder(e.target.value as 'asc')}
+                        className="text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Lowest First
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          {/* 获胜构建详情 */}
-          {renderWinnerDetails()}
-
-          {/* 分析报告 */}
-          {renderAnalysis()}
-
-          {/* 比较表格 */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              📊 详细对比
+          {/* Comparison table */}
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              📊 Detailed Comparison
             </h3>
             {renderComparisonTable()}
           </div>
 
-          {/* 操作按钮 */}
-          <div className="flex justify-end space-x-3">
-            <button
-              onClick={() => {
-                // 导出比较结果
-                const comparisonData = {
-                  builds: sortedBuilds.map(build => ({
-                    name: build.name,
-                    score: calculateWeightedScore(build),
-                    effectiveness: build.effectiveness,
-                    metaAnalysis: build.metaAnalysis
-                  })),
-                  winner: winner?.name,
-                  analysis: generateAnalysis(),
-                  timestamp: new Date().toISOString()
-                };
-                
-                const blob = new Blob([JSON.stringify(comparisonData, null, 2)], {
-                  type: 'application/json'
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'build-comparison.json';
-                a.click();
-                URL.revokeObjectURL(url);
-              }}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-            >
-              📥 导出结果
-            </button>
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
-            >
-              关闭
-            </button>
-          </div>
+          {/* Analysis insights */}
+          {renderInsights()}
         </div>
       </div>
     </div>

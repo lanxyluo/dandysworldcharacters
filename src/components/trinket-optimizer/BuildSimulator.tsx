@@ -19,297 +19,243 @@ const BuildSimulator: React.FC<BuildSimulatorProps> = ({ build, onClose }) => {
     difficulty: 'normal' as 'easy' | 'normal' | 'hard' | 'nightmare'
   });
 
-  // 模拟构建效果
+  // Simulate build effectiveness
   const simulateBuild = async () => {
     setIsSimulating(true);
     
-    // 模拟计算延迟
+    // Simulate calculation delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // 基于构建属性计算模拟结果
+    // Calculate simulation results based on build properties
     const result = calculateSimulationResult();
     setSimulationResult(result);
     setIsSimulating(false);
   };
 
-  // 计算模拟结果
+  // Calculate simulation results
   const calculateSimulationResult = (): BuildSimulationResult => {
     const { floorLevel, enemyCount, teamSize, difficulty } = simulationSettings;
     
-    // 基础成功率计算
+    // Base success rate calculation
     let baseSuccessRate = 50;
     
-    // 基于效果评分调整
+    // Adjust based on effectiveness ratings
     baseSuccessRate += build.effectiveness.overall * 8;
     baseSuccessRate += build.effectiveness.survival * 6;
     baseSuccessRate += build.effectiveness.utility * 4;
     
-    // 基于楼层调整
+    // Adjust based on floor level
     if (floorLevel > 15) baseSuccessRate -= 20;
     else if (floorLevel > 10) baseSuccessRate -= 10;
     
-    // 基于敌人数量调整
-    baseSuccessRate -= (enemyCount - 2) * 5;
+    // Adjust based on enemy count
+    if (enemyCount > 4) baseSuccessRate -= 15;
+    else if (enemyCount > 2) baseSuccessRate -= 5;
     
-    // 基于团队大小调整
-    if (teamSize > 1) {
+    // Adjust based on team size
+    if (teamSize === 1) {
+      baseSuccessRate += build.effectiveness.soloPlay * 5;
+      baseSuccessRate -= 10; // Solo penalty
+    } else {
       baseSuccessRate += build.effectiveness.teamSupport * 3;
     }
     
-    // 基于难度调整
-    const difficultyMultiplier = {
-      'easy': 1.2,
-      'normal': 1.0,
-      'hard': 0.8,
-      'nightmare': 0.6
+    // Adjust based on difficulty
+    const difficultyMultipliers = {
+      easy: 1.2,
+      normal: 1.0,
+      hard: 0.8,
+      nightmare: 0.6
     };
-    baseSuccessRate *= difficultyMultiplier[difficulty];
+    baseSuccessRate *= difficultyMultipliers[difficulty];
     
-    // 确保成功率在合理范围内
-    baseSuccessRate = Math.max(5, Math.min(95, baseSuccessRate));
+    // Clamp success rate
+    const successRate = Math.max(5, Math.min(95, baseSuccessRate));
     
-    // 计算威胁等级
-    let threatLevel = 'Low';
-    if (baseSuccessRate < 30) threatLevel = 'Extreme';
-    else if (baseSuccessRate < 50) threatLevel = 'High';
-    else if (baseSuccessRate < 70) threatLevel = 'Medium';
+    // Calculate threat level
+    let threatLevel = 'low' as 'low' | 'medium' | 'high' | 'extreme';
+    if (successRate < 30) threatLevel = 'extreme';
+    else if (successRate < 50) threatLevel = 'high';
+    else if (successRate < 70) threatLevel = 'medium';
     
-    // 计算平均时间
-    let averageTime = 300; // 5分钟基础时间
-    if (build.effectiveness.utility > 3) averageTime -= 60;
-    if (build.effectiveness.speed > 3) averageTime -= 45;
-    if (enemyCount > 3) averageTime += 120;
-    if (floorLevel > 15) averageTime += 180;
+    // Calculate estimated completion time
+    let baseTime = 15; // minutes
+    baseTime += floorLevel * 0.8;
+    baseTime += enemyCount * 2;
+    baseTime /= (teamSize * 0.25 + 0.75);
+    baseTime *= (2 - successRate / 100); // Lower success rate = longer time
     
-    // 生成策略建议
-    const strategies = generateStrategies();
+    const estimatedTime = Math.round(baseTime);
     
-    // 识别弱点
-    const weaknesses = identifyWeaknesses();
-    
-    // 生成改进建议
-    const recommendations = generateRecommendations();
-    
-    return {
-      buildId: build.id,
-      threatLevel,
-      successRate: Math.round(baseSuccessRate),
-      averageTime: Math.round(averageTime),
-      strategies,
-      weaknesses,
-      recommendations
-    };
-  };
-
-  // 生成策略建议
-  const generateStrategies = (): string[] => {
+    // Generate strategy recommendations
     const strategies: string[] = [];
     
-    if (build.effectiveness.stealth > 3) {
-      strategies.push('利用隐身能力进行潜行，避免直接冲突');
+    if (build.effectiveness.damage >= 4) {
+      strategies.push('Aggressive playstyle - focus on quick eliminations');
+    }
+    if (build.effectiveness.survival >= 4) {
+      strategies.push('Defensive approach - prioritize survival over speed');
+    }
+    if (build.effectiveness.utility >= 4) {
+      strategies.push('Support role - assist teammates and manage resources');
+    }
+    if (build.effectiveness.teamSupport >= 4 && teamSize > 1) {
+      strategies.push('Team coordination - communicate and support allies');
+    }
+    if (build.effectiveness.soloPlay >= 4 && teamSize === 1) {
+      strategies.push('Solo tactics - be self-sufficient and cautious');
+    }
+    if (floorLevel > 15) {
+      strategies.push('High floor strategy - expect tougher enemies');
+    }
+    if (enemyCount > 3) {
+      strategies.push('Multi-enemy handling - use area effects and positioning');
     }
     
-    if (build.effectiveness.speed > 3) {
-      strategies.push('利用高移动速度快速完成任务并逃脱');
-    }
-    
-    if (build.effectiveness.teamSupport > 3) {
-      strategies.push('与队友保持紧密配合，发挥团队优势');
-    }
-    
-    if (build.effectiveness.extractionSpeed > 3) {
-      strategies.push('专注于快速完成提取目标');
-    }
-    
-    if (build.effectiveness.damage > 3) {
-      strategies.push('在必要时主动出击，清除威胁');
-    }
-    
+    // Add default strategies if none specific
     if (strategies.length === 0) {
-      strategies.push('采用平衡策略，根据情况灵活调整');
+      strategies.push('Balanced approach - adapt to situation');
+      strategies.push('Monitor resources carefully');
     }
     
-    return strategies.slice(0, 4);
-  };
-
-  // 识别弱点
-  const identifyWeaknesses = (): string[] => {
+    // Identify potential weaknesses
     const weaknesses: string[] = [];
     
-    if (build.effectiveness.survival < 2.5) {
-      weaknesses.push('生存能力较弱，需要避免长时间战斗');
+    if (build.effectiveness.damage < 3) {
+      weaknesses.push('Low damage output - may struggle with tough enemies');
     }
-    
-    if (build.effectiveness.utility < 2.5) {
-      weaknesses.push('实用价值有限，在某些情况下可能表现不佳');
-    }
-    
-    if (build.effectiveness.teamSupport < 2.5) {
-      weaknesses.push('团队支援能力不足，不适合团队作战');
-    }
-    
-    if (build.effectiveness.soloPlay < 2.5) {
-      weaknesses.push('单人游戏能力有限，建议组队游戏');
-    }
-    
-    if (weaknesses.length === 0) {
-      weaknesses.push('无明显弱点，构建较为平衡');
-    }
-    
-    return weaknesses.slice(0, 3);
-  };
-
-  // 生成改进建议
-  const generateRecommendations = (): string[] => {
-    const recommendations: string[] = [];
-    
     if (build.effectiveness.survival < 3) {
-      recommendations.push('考虑添加更多生存型饰品，提升生存能力');
+      weaknesses.push('Poor survivability - avoid risky situations');
     }
-    
     if (build.effectiveness.utility < 3) {
-      recommendations.push('可以增加一些实用型饰品，提升适应性');
+      weaknesses.push('Limited utility - fewer tactical options available');
+    }
+    if (floorLevel > 15 && build.effectiveness.highFloor < 3) {
+      weaknesses.push('Not optimized for high floors - consider alternative builds');
+    }
+    if (teamSize === 1 && build.effectiveness.soloPlay < 3) {
+      weaknesses.push('Not ideal for solo play - team support recommended');
     }
     
-    if (build.effectiveness.teamSupport < 3 && simulationSettings.teamSize > 1) {
-      recommendations.push('团队游戏中建议使用更多支援型饰品');
-    }
-    
-    if (build.effectiveness.soloPlay < 3 && simulationSettings.teamSize === 1) {
-      recommendations.push('单人游戏时建议使用更多自给自足的饰品');
-    }
-    
-    if (recommendations.length === 0) {
-      recommendations.push('当前构建已经很优秀，可以尝试更高难度的挑战');
-    }
-    
-    return recommendations.slice(0, 3);
+    return {
+      successRate: Math.round(successRate),
+      threatLevel,
+      estimatedTime,
+      strategies,
+      weaknesses,
+      scenarioAnalysis: {
+        bestCase: Math.min(95, successRate + 15),
+        worstCase: Math.max(5, successRate - 15),
+        averageCase: successRate
+      }
+    };
   };
 
-  // 渲染威胁等级指示器
-  const renderThreatLevel = (level: string) => {
-    const colors = {
-      'Low': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      'Medium': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-      'High': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-      'Extreme': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-    };
-    
-    const icons = {
-      'Low': '🟢',
-      'Medium': '🟡',
-      'High': '🟠',
-      'Extreme': '🔴'
-    };
-    
-    return (
-      <span className={`px-3 py-1 rounded-full text-sm font-medium ${colors[level as keyof typeof colors]}`}>
-        {icons[level as keyof typeof icons]} {level} 威胁
-      </span>
-    );
+  // Get threat level color
+  const getThreatColor = (level: string) => {
+    switch (level) {
+      case 'low': return 'text-green-600 dark:text-green-400';
+      case 'medium': return 'text-yellow-600 dark:text-yellow-400';
+      case 'high': return 'text-orange-600 dark:text-orange-400';
+      case 'extreme': return 'text-red-600 dark:text-red-400';
+      default: return 'text-gray-600 dark:text-gray-400';
+    }
   };
 
-  // 渲染成功率条
-  const renderSuccessRateBar = (rate: number) => {
-    const getColor = (rate: number) => {
-      if (rate >= 80) return 'bg-green-500';
-      if (rate >= 60) return 'bg-yellow-500';
-      if (rate >= 40) return 'bg-orange-500';
-      return 'bg-red-500';
-    };
-    
-    return (
-      <div className="w-full">
-        <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
-          <span>成功率</span>
-          <span>{rate}%</span>
-        </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-          <div 
-            className={`h-3 rounded-full transition-all duration-1000 ${getColor(rate)}`}
-            style={{ width: `${rate}%` }}
-          />
-        </div>
-      </div>
-    );
+  // Get threat level background
+  const getThreatBg = (level: string) => {
+    switch (level) {
+      case 'low': return 'bg-green-100 dark:bg-green-900';
+      case 'medium': return 'bg-yellow-100 dark:bg-yellow-900';
+      case 'high': return 'bg-orange-100 dark:bg-orange-900';
+      case 'extreme': return 'bg-red-100 dark:bg-red-900';
+      default: return 'bg-gray-100 dark:bg-gray-900';
+    }
   };
 
-  // 渲染模拟设置
-  const renderSimulationSettings = () => {
+  // Render simulation settings
+  const renderSettings = () => {
     return (
-      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          ⚙️ 模拟设置
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Simulation Parameters
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* 楼层等级 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Floor level */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              楼层等级
+              Floor Level: {simulationSettings.floorLevel}
             </label>
-            <select
+            <input
+              type="range"
+              min="1"
+              max="20"
               value={simulationSettings.floorLevel}
               onChange={(e) => setSimulationSettings({
                 ...simulationSettings,
                 floorLevel: parseInt(e.target.value)
               })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {[5, 10, 15, 20, 25, 30].map(level => (
-                <option key={level} value={level}>
-                  {level} 层
-                </option>
-              ))}
-            </select>
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <span>Easy (1-5)</span>
+              <span>Normal (6-10)</span>
+              <span>Hard (11-15)</span>
+              <span>Extreme (16-20)</span>
+            </div>
           </div>
-          
-          {/* 敌人数量 */}
+
+          {/* Enemy count */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              敌人数量
+              Enemy Count: {simulationSettings.enemyCount}
             </label>
-            <select
+            <input
+              type="range"
+              min="1"
+              max="6"
               value={simulationSettings.enemyCount}
               onChange={(e) => setSimulationSettings({
                 ...simulationSettings,
                 enemyCount: parseInt(e.target.value)
               })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {[1, 2, 3, 4, 5, 6].map(count => (
-                <option key={count} value={count}>
-                  {count} 个
-                </option>
-              ))}
-            </select>
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <span>1</span>
+              <span>3</span>
+              <span>6</span>
+            </div>
           </div>
-          
-          {/* 团队大小 */}
+
+          {/* Team size */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              团队大小
+              Team Size: {simulationSettings.teamSize}
             </label>
-            <select
+            <input
+              type="range"
+              min="1"
+              max="8"
               value={simulationSettings.teamSize}
               onChange={(e) => setSimulationSettings({
                 ...simulationSettings,
                 teamSize: parseInt(e.target.value)
               })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {[1, 2, 3, 4].map(size => (
-                <option key={size} value={size}>
-                  {size} 人
-                </option>
-              ))}
-            </select>
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <span>Solo</span>
+              <span>Small (2-4)</span>
+              <span>Large (5-8)</span>
+            </div>
           </div>
-          
-          {/* 难度等级 */}
+
+          {/* Difficulty */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              难度等级
+              Difficulty
             </label>
             <select
               value={simulationSettings.difficulty}
@@ -319,119 +265,124 @@ const BuildSimulator: React.FC<BuildSimulatorProps> = ({ build, onClose }) => {
               })}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="easy">简单</option>
-              <option value="normal">普通</option>
-              <option value="hard">困难</option>
-              <option value="nightmare">噩梦</option>
+              <option value="easy">Easy</option>
+              <option value="normal">Normal</option>
+              <option value="hard">Hard</option>
+              <option value="nightmare">Nightmare</option>
             </select>
           </div>
-        </div>
-        
-        <div className="mt-4 text-center">
-          <button
-            onClick={simulateBuild}
-            disabled={isSimulating}
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
-          >
-            {isSimulating ? '🔄 模拟中...' : '🚀 开始模拟'}
-          </button>
         </div>
       </div>
     );
   };
 
-  // 渲染模拟结果
-  const renderSimulationResult = () => {
+  // Render simulation results
+  const renderResults = () => {
     if (!simulationResult) return null;
-    
+
     return (
       <div className="space-y-6">
-        {/* 主要指标 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">
-              {renderThreatLevel(simulationResult.threatLevel)}
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              威胁等级评估
-            </div>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-            <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Simulation Results
+        </h3>
+
+        {/* Overall metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+            <div className="text-sm text-blue-600 dark:text-blue-400">Success Rate</div>
+            <div className="text-2xl font-bold text-blue-800 dark:text-blue-200">
               {simulationResult.successRate}%
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-              预计成功率
-            </div>
-            {renderSuccessRateBar(simulationResult.successRate)}
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg text-center">
-            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-              {Math.round(simulationResult.averageTime / 60)} 分钟
+          <div className={`p-4 rounded-lg ${getThreatBg(simulationResult.threatLevel)}`}>
+            <div className="text-sm text-gray-600 dark:text-gray-400">Threat Level</div>
+            <div className={`text-2xl font-bold capitalize ${getThreatColor(simulationResult.threatLevel)}`}>
+              {simulationResult.threatLevel}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              预计完成时间
+          </div>
+          
+          <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+            <div className="text-sm text-purple-600 dark:text-purple-400">Est. Completion Time</div>
+            <div className="text-2xl font-bold text-purple-800 dark:text-purple-200">
+              {simulationResult.estimatedTime}m
             </div>
           </div>
         </div>
-        
-        {/* 策略建议 */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            🎯 推荐策略
+
+        {/* Scenario analysis */}
+        <div>
+          <h4 className="text-md font-semibold text-gray-900 dark:text-white mb-3">
+            Scenario Analysis
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              <div className="text-sm text-green-600 dark:text-green-400">Best Case</div>
+              <div className="text-lg font-bold text-green-800 dark:text-green-200">
+                {simulationResult.scenarioAnalysis.bestCase}%
+              </div>
+            </div>
+            <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div className="text-sm text-gray-600 dark:text-gray-400">Average</div>
+              <div className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                {simulationResult.scenarioAnalysis.averageCase}%
+              </div>
+            </div>
+            <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+              <div className="text-sm text-red-600 dark:text-red-400">Worst Case</div>
+              <div className="text-lg font-bold text-red-800 dark:text-red-200">
+                {simulationResult.scenarioAnalysis.worstCase}%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Strategy recommendations */}
+        <div>
+          <h4 className="text-md font-semibold text-gray-900 dark:text-white mb-3">
+            📋 Strategy Recommendations
+          </h4>
+          <div className="space-y-2">
             {simulationResult.strategies.map((strategy, index) => (
-              <div key={index} className="flex items-start space-x-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <span className="text-green-500 text-lg">💡</span>
-                <span className="text-green-800 dark:text-green-200">{strategy}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        {/* 弱点分析 */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            ⚠️ 潜在弱点
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {simulationResult.weaknesses.map((weakness, index) => (
-              <div key={index} className="flex items-start space-x-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                <span className="text-red-500 text-lg">⚠</span>
-                <span className="text-red-800 dark:text-red-200">{weakness}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        {/* 改进建议 */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            🔧 改进建议
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {simulationResult.recommendations.map((recommendation, index) => (
               <div key={index} className="flex items-start space-x-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <span className="text-blue-500 text-lg">🔧</span>
-                <span className="text-blue-800 dark:text-blue-200">{recommendation}</span>
+                <span className="text-blue-500">✓</span>
+                <span className="text-blue-800 dark:text-blue-200 text-sm">
+                  {strategy}
+                </span>
               </div>
             ))}
           </div>
         </div>
+
+        {/* Potential weaknesses */}
+        {simulationResult.weaknesses.length > 0 && (
+          <div>
+            <h4 className="text-md font-semibold text-gray-900 dark:text-white mb-3">
+              ⚠️ Potential Weaknesses
+            </h4>
+            <div className="space-y-2">
+              {simulationResult.weaknesses.map((weakness, index) => (
+                <div key={index} className="flex items-start space-x-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                  <span className="text-yellow-500">⚠</span>
+                  <span className="text-yellow-800 dark:text-yellow-200 text-sm">
+                    {weakness}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
-        {/* 头部 */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            🎮 构建模拟器 - {build.name}
+            🎮 Build Simulator
           </h2>
           <button
             onClick={onClose}
@@ -443,76 +394,67 @@ const BuildSimulator: React.FC<BuildSimulatorProps> = ({ build, onClose }) => {
           </button>
         </div>
 
-        {/* 内容 */}
-        <div className="p-6">
-          {/* 构建信息 */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-200 mb-3">
-              📋 构建信息
+        {/* Content */}
+        <div className="p-6 space-y-6">
+          {/* Build info */}
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              Testing Build: {build.name}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <div className="text-sm text-blue-700 dark:text-blue-300">总体效果</div>
-                <div className="text-lg font-bold text-blue-800 dark:text-blue-200">
+                <div className="text-sm text-gray-600 dark:text-gray-400">Overall</div>
+                <div className="text-lg font-bold text-gray-900 dark:text-white">
                   {build.effectiveness.overall}/5
                 </div>
               </div>
               <div>
-                <div className="text-sm text-blue-700 dark:text-blue-300">置信度</div>
-                <div className="text-lg font-bold text-blue-800 dark:text-blue-200">
-                  {build.confidence}/5
+                <div className="text-sm text-gray-600 dark:text-gray-400">Damage</div>
+                <div className="text-lg font-bold text-gray-900 dark:text-white">
+                  {build.effectiveness.damage}/5
                 </div>
               </div>
               <div>
-                <div className="text-sm text-blue-700 dark:text-blue-300">难度等级</div>
-                <div className="text-lg font-bold text-blue-800 dark:text-blue-200 capitalize">
-                  {build.difficulty}
+                <div className="text-sm text-gray-600 dark:text-gray-400">Survival</div>
+                <div className="text-lg font-bold text-gray-900 dark:text-white">
+                  {build.effectiveness.survival}/5
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Utility</div>
+                <div className="text-lg font-bold text-gray-900 dark:text-white">
+                  {build.effectiveness.utility}/5
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 模拟设置 */}
-          {renderSimulationSettings()}
+          {/* Simulation settings */}
+          {renderSettings()}
 
-          {/* 模拟结果 */}
-          {simulationResult && renderSimulationResult()}
-
-          {/* 操作按钮 */}
-          <div className="flex justify-end space-x-3 mt-6">
-            {simulationResult && (
-              <button
-                onClick={() => {
-                  // 导出模拟结果
-                  const exportData = {
-                    build: build.name,
-                    settings: simulationSettings,
-                    result: simulationResult,
-                    timestamp: new Date().toISOString()
-                  };
-                  
-                  const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-                    type: 'application/json'
-                  });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'build-simulation.json';
-                  a.click();
-                  URL.revokeObjectURL(url);
-                }}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-              >
-                📥 导出结果
-              </button>
-            )}
+          {/* Simulation button */}
+          <div className="text-center">
             <button
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+              onClick={simulateBuild}
+              disabled={isSimulating}
+              className="px-8 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-lg font-medium"
             >
-              关闭
+              {isSimulating ? '🔄 Running Simulation...' : '🚀 Start Simulation'}
             </button>
           </div>
+
+          {/* Loading indicator */}
+          {isSimulating && (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+              <p className="mt-4 text-gray-600 dark:text-gray-400">
+                Analyzing build performance...
+              </p>
+            </div>
+          )}
+
+          {/* Results */}
+          {simulationResult && !isSimulating && renderResults()}
         </div>
       </div>
     </div>

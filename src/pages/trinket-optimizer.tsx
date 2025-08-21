@@ -15,8 +15,10 @@ import {
 } from '../types/trinketOptimizer';
 import BuildComparison from '../components/trinket-optimizer/BuildComparison';
 import BuildSimulator from '../components/trinket-optimizer/BuildSimulator';
+import BuildHistory from '../components/trinket-optimizer/BuildHistory';
+import BuildSaveForm from '../components/trinket-optimizer/BuildSaveForm';
 
-// 游戏风格类型
+// Game style types
 type GameStyle = 'extractor' | 'distractor' | 'support' | 'balanced';
 
 const TrinketOptimizer: React.FC = () => {
@@ -28,7 +30,10 @@ const TrinketOptimizer: React.FC = () => {
   const [showAlternatives, setShowAlternatives] = useState(false);
   const [showBuildComparison, setShowBuildComparison] = useState(false);
   const [showBuildSimulator, setShowBuildSimulator] = useState(false);
+  const [showBuildHistory, setShowBuildHistory] = useState(false);
+  const [showBuildSaveForm, setShowBuildSaveForm] = useState(false);
   const [selectedBuildForSimulation, setSelectedBuildForSimulation] = useState<IntelligentRecommendation | null>(null);
+  const [selectedBuildForSaving, setSelectedBuildForSaving] = useState<IntelligentRecommendation | null>(null);
   const [userPreferences, setUserPreferences] = useState<UserPreferences>({
     playstyle: 'balanced',
     difficulty: 'intermediate',
@@ -40,12 +45,12 @@ const TrinketOptimizer: React.FC = () => {
   });
   const [engineConfig, setEngineConfig] = useState<RecommendationEngineConfig>(defaultEngineConfig);
 
-  // 当角色或游戏风格改变时生成推荐
+  // Generate recommendations when character or game style changes
   useEffect(() => {
     if (selectedCharacter && selectedGameStyle) {
       const character = characters.find(c => c.id === selectedCharacter);
       if (character) {
-        // 更新用户偏好
+        // Update user preferences
         const updatedPreferences = {
           ...userPreferences,
           playstyle: selectedGameStyle as any,
@@ -53,14 +58,14 @@ const TrinketOptimizer: React.FC = () => {
         };
         setUserPreferences(updatedPreferences);
         
-        // 更新引擎配置
+        // Update engine configuration
         const updatedConfig = {
           ...engineConfig,
           preferences: updatedPreferences
         };
         setEngineConfig(updatedConfig);
         
-        // 生成智能推荐
+        // Generate intelligent recommendations
         const newRecommendations = getIntelligentRecommendations(character, selectedGameStyle, 4);
         setRecommendations(newRecommendations);
         setSelectedRecommendation(null);
@@ -68,7 +73,7 @@ const TrinketOptimizer: React.FC = () => {
     }
   }, [selectedCharacter, selectedGameStyle]);
 
-  // 生成推荐
+  // Generate recommendations
   const generateRecommendations = () => {
     if (selectedCharacter && selectedGameStyle) {
       const character = characters.find(c => c.id === selectedCharacter);
@@ -80,20 +85,67 @@ const TrinketOptimizer: React.FC = () => {
     }
   };
 
-  // 打开构建比较
+  // Open build comparison
   const openBuildComparison = () => {
     if (recommendations.length >= 2) {
       setShowBuildComparison(true);
     }
   };
 
-  // 打开构建模拟器
+  // Open build simulator
   const openBuildSimulator = (build: IntelligentRecommendation) => {
     setSelectedBuildForSimulation(build);
     setShowBuildSimulator(true);
   };
 
-  // 获取稀有度颜色
+  // Open build save form
+  const openBuildSaveForm = (build: IntelligentRecommendation) => {
+    setSelectedBuildForSaving(build);
+    setShowBuildSaveForm(true);
+  };
+
+  // Open build history
+  const openBuildHistory = () => {
+    setShowBuildHistory(true);
+  };
+
+  // Save build
+  const saveBuild = (build: IntelligentRecommendation, character: string, gameStyle: string, tags: string[], notes: string, isPublic: boolean) => {
+    // Can call BuildHistory component's save method
+    // or save directly to localStorage
+    const savedBuild = {
+      id: Date.now().toString(),
+      name: build.name,
+      character,
+      gameStyle,
+      build,
+      createdAt: new Date().toISOString(),
+      lastModified: new Date().toISOString(),
+      tags,
+      notes,
+      isPublic
+    };
+
+    const existingBuilds = JSON.parse(localStorage.getItem('trinket-builds') || '[]');
+    const updatedBuilds = [...existingBuilds, savedBuild];
+    localStorage.setItem('trinket-builds', JSON.stringify(updatedBuilds));
+
+    setShowBuildSaveForm(false);
+    setSelectedBuildForSaving(null);
+    
+    // Show success message
+    alert('Build saved successfully!');
+  };
+
+  // Load build
+  const loadBuild = (build: IntelligentRecommendation) => {
+    setSelectedBuildForSaving(build);
+    setShowBuildHistory(false);
+    // Can set selected build as current recommendation
+    // or directly display build details
+  };
+
+  // Get rarity color
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'text-gray-400';
@@ -105,7 +157,7 @@ const TrinketOptimizer: React.FC = () => {
     }
   };
 
-  // 获取稀有度背景色
+  // Get rarity background color
   const getRarityBgColor = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'bg-gray-100 dark:bg-gray-800';
@@ -117,7 +169,7 @@ const TrinketOptimizer: React.FC = () => {
     }
   };
 
-  // 渲染星级评分
+  // Render star rating
   const renderStars = (rating: number) => {
     return (
       <div className="flex items-center space-x-1">
@@ -138,40 +190,40 @@ const TrinketOptimizer: React.FC = () => {
     );
   };
 
-  // 渲染获取路径
+  // Render acquisition path
   const renderAcquisitionPath = (recommendation: IntelligentRecommendation) => {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
         <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
-          🎯 获取路径
+          🎯 Acquisition Path
         </h3>
         
-        {/* 总体信息 */}
+        {/* Overall information */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-            <div className="text-sm text-blue-600 dark:text-blue-400">总成本</div>
+            <div className="text-sm text-blue-600 dark:text-blue-400">Total Cost</div>
             <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">
               {recommendation.acquisition.estimatedCost}
             </div>
           </div>
           <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-            <div className="text-sm text-green-600 dark:text-green-400">优先级</div>
+            <div className="text-sm text-green-600 dark:text-green-400">Priority</div>
             <div className="text-lg font-semibold text-green-800 dark:text-green-200 capitalize">
               {recommendation.acquisition.priority}
             </div>
           </div>
           <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
-            <div className="text-sm text-purple-600 dark:text-purple-400">总时间</div>
+            <div className="text-sm text-purple-600 dark:text-purple-400">Total Time</div>
             <div className="text-lg font-semibold text-purple-800 dark:text-purple-200">
               {recommendation.progressionPath.estimatedTime}
             </div>
           </div>
         </div>
 
-        {/* 解锁步骤 */}
+        {/* Unlock steps */}
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-            解锁步骤
+            Unlock Steps
           </h4>
           {recommendation.progressionPath.steps.map((step, index) => (
             <div key={index} className="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -183,18 +235,18 @@ const TrinketOptimizer: React.FC = () => {
                   {step.description}
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  要求: {step.requirement}
+                  Requirement: {step.requirement}
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    预计时间: {step.estimatedTime}
+                    Estimated Time: {step.estimatedTime}
                   </span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     step.priority === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
                     step.priority === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
                     'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                   }`}>
-                    {step.priority} 优先级
+                    {step.priority} Priority
                   </span>
                 </div>
               </div>
@@ -202,10 +254,10 @@ const TrinketOptimizer: React.FC = () => {
           ))}
         </div>
 
-        {/* 资源需求 */}
+        {/* Resource requirements */}
         <div className="mt-6">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-            资源需求
+            Resource Requirements
           </h4>
           <div className="flex flex-wrap gap-2">
             {recommendation.progressionPath.resourceRequirements.map((resource, index) => (
@@ -219,12 +271,12 @@ const TrinketOptimizer: React.FC = () => {
     );
   };
 
-  // 渲染替代构建
+  // Render alternative builds
   const renderAlternatives = (recommendation: IntelligentRecommendation) => {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
         <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
-          🔄 替代构建
+          🔄 Alternative Builds
         </h3>
         
         <div className="space-y-4">
@@ -258,17 +310,17 @@ const TrinketOptimizer: React.FC = () => {
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">效果:</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Effectiveness:</span>
                   {renderStars(alternative.effectiveness)}
                 </div>
                 <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
-                  查看详情
+                  View Details
                 </button>
               </div>
               
               {alternative.tradeoffs.length > 0 && (
                 <div className="mt-3">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">权衡:</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Tradeoffs:</div>
                   <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                     {alternative.tradeoffs.map((tradeoff, idx) => (
                       <li key={idx} className="flex items-center space-x-2">
@@ -286,7 +338,7 @@ const TrinketOptimizer: React.FC = () => {
     );
   };
 
-  // 渲染推荐详情
+  // Render recommendation details
   const renderRecommendationDetail = (recommendation: IntelligentRecommendation) => {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
@@ -308,44 +360,44 @@ const TrinketOptimizer: React.FC = () => {
           </div>
         </div>
 
-        {/* 置信度 */}
+        {/* Confidence */}
         <div className="mb-4">
-          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">置信度:</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Confidence:</div>
           {renderStars(recommendation.confidence)}
         </div>
 
-        {/* 效果评分 */}
+        {/* Effectiveness ratings */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               {recommendation.effectiveness.overall}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">总体</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">Overall</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-red-600 dark:text-red-400">
               {recommendation.effectiveness.damage}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">伤害</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">Damage</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600 dark:text-green-400">
               {recommendation.effectiveness.survival}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">生存</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">Survival</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
               {recommendation.effectiveness.utility}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">实用</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">Utility</div>
           </div>
         </div>
 
-        {/* 推荐推理 */}
+        {/* Recommendation reasoning */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-            💡 推荐推理
+            💡 Recommendation Reasoning
           </h4>
           <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
             <p className="text-blue-800 dark:text-blue-200">
@@ -354,10 +406,10 @@ const TrinketOptimizer: React.FC = () => {
           </div>
         </div>
 
-        {/* 统计协同 */}
+        {/* Stat synergy */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-            📊 统计协同
+            📊 Stat Synergy
           </h4>
           <div className="space-y-3">
             {recommendation.reasoning.statSynergy.map((synergy, index) => (
@@ -383,10 +435,10 @@ const TrinketOptimizer: React.FC = () => {
           </div>
         </div>
 
-        {/* 场景适用性 */}
+        {/* Scenario applicability */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-            🎯 适用场景
+            🎯 Applicable Scenarios
           </h4>
           <div className="flex flex-wrap gap-2">
             {recommendation.scenarios.map((scenario, index) => (
@@ -397,68 +449,71 @@ const TrinketOptimizer: React.FC = () => {
           </div>
         </div>
 
-        {/* 元数据分析 */}
+        {/* Meta analysis */}
         <div className="mb-6">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-            📈 元数据分析
+            📈 Meta Analysis
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
                 {recommendation.metaAnalysis.popularity}%
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">使用率</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Usage Rate</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-green-600 dark:text-green-400">
                 {recommendation.metaAnalysis.winRate}%
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">胜率</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Win Rate</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
                 {recommendation.metaAnalysis.tier}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">等级</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Tier</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-yellow-600 dark:text-yellow-400">
                 {recommendation.metaAnalysis.counterStrategies.length}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">克制策略</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Counter Strategies</div>
             </div>
           </div>
         </div>
 
-        {/* 操作按钮 */}
+        {/* Action buttons */}
         <div className="flex flex-wrap gap-3">
           <button
             onClick={() => setShowAcquisitionPath(!showAcquisitionPath)}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
           >
-            {showAcquisitionPath ? '隐藏' : '显示'} 获取路径
+            {showAcquisitionPath ? 'Hide' : 'Show'} Acquisition Path
           </button>
           <button
             onClick={() => setShowAlternatives(!showAlternatives)}
             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
           >
-            {showAlternatives ? '隐藏' : '显示'} 替代构建
+            {showAlternatives ? 'Hide' : 'Show'} Alternative Builds
           </button>
           <button
             onClick={() => openBuildSimulator(recommendation)}
             className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors"
           >
-            🎮 构建模拟器
+            🎮 Build Simulator
           </button>
-          <button className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors">
-            生成代码
+          <button
+            onClick={() => openBuildSaveForm(recommendation)}
+            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
+          >
+            💾 Save Build
           </button>
         </div>
 
-        {/* 获取路径 */}
+        {/* Acquisition path */}
         {showAcquisitionPath && renderAcquisitionPath(recommendation)}
 
-        {/* 替代构建 */}
+        {/* Alternative builds */}
         {showAlternatives && renderAlternatives(recommendation)}
       </div>
     );
@@ -468,46 +523,54 @@ const TrinketOptimizer: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navigation />
       <SEO 
-        title="Trinket Optimizer - 智能饰品推荐系统"
-        description="Dandy's World智能饰品推荐系统，基于AI算法为每个角色提供个性化饰品组合建议，包含获取路径、构建比较和元数据分析。"
-        keywords="trinket optimizer, 饰品优化, 智能推荐, 构建分析, 获取路径, 元数据分析"
+        title="Trinket Optimizer - Intelligent Trinket Recommendation System"
+        description="Dandy's World intelligent trinket recommendation system, providing personalized trinket combinations based on AI algorithms, including acquisition paths, build comparison, and meta analysis."
+        keywords="trinket optimizer, trinket optimization, intelligent recommendations, build analysis, acquisition path, meta analysis"
       />
       
       <div className="container mx-auto px-4 py-8">
-        {/* 页面标题 */}
+        {/* Page title */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             🎯 Trinket Optimizer
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
-            智能饰品推荐系统 - 为每个角色提供最佳的饰品组合
+            Intelligent Trinket Recommendation System - Optimal trinket combinations for every character
           </p>
-          <Link 
-            to="/calculator" 
-            className="inline-block mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            ← 返回 Calculator
-          </Link>
+          <div className="flex justify-center space-x-4 mt-4">
+            <Link 
+              to="/calculator" 
+              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              ← Back to Calculator
+            </Link>
+            <button
+              onClick={openBuildHistory}
+              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            >
+              📚 Build History
+            </button>
+          </div>
         </div>
 
-        {/* 配置区域 */}
+        {/* Configuration area */}
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg mb-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            ⚙️ 配置设置
+            ⚙️ Configuration Settings
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* 角色选择 */}
+            {/* Character selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                选择角色
+                Select Character
               </label>
               <select
                 value={selectedCharacter}
                 onChange={(e) => setSelectedCharacter(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">请选择角色</option>
+                <option value="">Please select a character</option>
                 {characters.map((character) => (
                   <option key={character.id} value={character.id}>
                     {character.name} - {character.type}
@@ -516,10 +579,10 @@ const TrinketOptimizer: React.FC = () => {
               </select>
             </div>
 
-            {/* 游戏风格选择 */}
+            {/* Game style selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                游戏风格
+                Game Style
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {(['extractor', 'distractor', 'support', 'balanced'] as GameStyle[]).map((style) => (
@@ -532,48 +595,48 @@ const TrinketOptimizer: React.FC = () => {
                         : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
                     }`}
                   >
-                    {style === 'extractor' && '🎯 提取者'}
-                    {style === 'distractor' && '🎭 干扰者'}
-                    {style === 'support' && '💫 支援者'}
-                    {style === 'balanced' && '⚖️ 平衡者'}
+                    {style === 'extractor' && '🎯 Extractor'}
+                    {style === 'distractor' && '🎭 Distractor'}
+                    {style === 'support' && '💫 Support'}
+                    {style === 'balanced' && '⚖️ Balanced'}
                   </button>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* 生成按钮 */}
+          {/* Generate button */}
           <div className="mt-6 text-center">
             <button
               onClick={generateRecommendations}
               disabled={!selectedCharacter || !selectedGameStyle}
               className="px-8 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-lg font-medium"
             >
-              🚀 生成智能推荐
+              🚀 Generate Intelligent Recommendations
             </button>
           </div>
         </div>
 
-        {/* 推荐结果 */}
+        {/* Recommendation results */}
         {recommendations.length > 0 && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                🎉 智能推荐结果
+                🎉 Intelligent Recommendation Results
               </h2>
               
-              {/* 构建比较按钮 */}
+              {/* Build comparison button */}
               {recommendations.length >= 2 && (
                 <button
                   onClick={openBuildComparison}
                   className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
                 >
-                  🔍 构建比较
+                  🔍 Build Comparison
                 </button>
               )}
             </div>
             
-            {/* 推荐列表 */}
+            {/* Recommendation list */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {recommendations.map((recommendation, index) => (
                 <div key={recommendation.id} className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
@@ -595,10 +658,10 @@ const TrinketOptimizer: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* 饰品组合 */}
+                  {/* Trinket combination */}
                   <div className="mb-4">
                     <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      饰品组合:
+                      Trinket Combination:
                     </h4>
                     <div className="space-y-2">
                       {recommendation.trinkets.map((trinket, idx) => (
@@ -620,11 +683,11 @@ const TrinketOptimizer: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* 效果评分 */}
+                  {/* Effectiveness rating */}
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        总体效果:
+                        Overall Effectiveness:
                       </span>
                       <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
                         {recommendation.effectiveness.overall}/5
@@ -633,11 +696,11 @@ const TrinketOptimizer: React.FC = () => {
                     {renderStars(recommendation.effectiveness.overall)}
                   </div>
 
-                  {/* 置信度 */}
+                  {/* Confidence */}
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        置信度:
+                        Confidence:
                       </span>
                       <span className="text-lg font-bold text-green-600 dark:text-green-400">
                         {recommendation.confidence}/5
@@ -646,29 +709,35 @@ const TrinketOptimizer: React.FC = () => {
                     {renderStars(recommendation.confidence)}
                   </div>
 
-                  {/* 推荐推理 */}
+                  {/* Recommendation reasoning */}
                   <div className="mb-4">
                     <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      推荐理由:
+                      Recommendation Reason:
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
                       {recommendation.reasoning.primary}
                     </p>
                   </div>
 
-                  {/* 操作按钮 */}
+                  {/* Action buttons */}
                   <div className="flex space-x-2">
                     <button
                       onClick={() => setSelectedRecommendation(recommendation)}
                       className="flex-1 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors text-sm"
                     >
-                      查看详情
+                      View Details
                     </button>
                     <button
                       onClick={() => openBuildSimulator(recommendation)}
                       className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors text-sm"
                     >
-                      🎮 模拟
+                      🎮 Simulate
+                    </button>
+                    <button
+                      onClick={() => openBuildSaveForm(recommendation)}
+                      className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors text-sm"
+                    >
+                      💾 Save
                     </button>
                   </div>
                 </div>
@@ -677,39 +746,39 @@ const TrinketOptimizer: React.FC = () => {
           </div>
         )}
 
-        {/* 推荐详情 */}
+        {/* Recommendation details */}
         {selectedRecommendation && (
           <div className="mt-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                📋 推荐详情
+                📋 Recommendation Details
               </h2>
               <button
                 onClick={() => setSelectedRecommendation(null)}
                 className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
               >
-                关闭
+                Close
               </button>
             </div>
             {renderRecommendationDetail(selectedRecommendation)}
           </div>
         )}
 
-        {/* 空状态 */}
+        {/* Empty state */}
         {!selectedCharacter && !selectedGameStyle && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🎯</div>
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              开始使用 Trinket Optimizer
+              Start Using Trinket Optimizer
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              选择角色和游戏风格，获取个性化的饰品推荐
+              Select a character and game style to get personalized trinket recommendations
             </p>
           </div>
         )}
       </div>
       
-      {/* 构建比较模态框 */}
+      {/* Build comparison modal */}
       {showBuildComparison && (
         <BuildComparison
           builds={recommendations}
@@ -717,13 +786,35 @@ const TrinketOptimizer: React.FC = () => {
         />
       )}
 
-      {/* 构建模拟器模态框 */}
+      {/* Build simulator modal */}
       {showBuildSimulator && selectedBuildForSimulation && (
         <BuildSimulator
           build={selectedBuildForSimulation}
           onClose={() => {
             setShowBuildSimulator(false);
             setSelectedBuildForSimulation(null);
+          }}
+        />
+      )}
+
+      {/* Build history modal */}
+      {showBuildHistory && (
+        <BuildHistory
+          onClose={() => setShowBuildHistory(false)}
+          onLoadBuild={loadBuild}
+        />
+      )}
+
+      {/* Build save form modal */}
+      {showBuildSaveForm && selectedBuildForSaving && (
+        <BuildSaveForm
+          build={selectedBuildForSaving}
+          character={selectedCharacter}
+          gameStyle={selectedGameStyle}
+          onSave={saveBuild}
+          onCancel={() => {
+            setShowBuildSaveForm(false);
+            setSelectedBuildForSaving(null);
           }}
         />
       )}

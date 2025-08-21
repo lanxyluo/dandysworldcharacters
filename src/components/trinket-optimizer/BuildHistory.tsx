@@ -29,7 +29,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
   const [showSaveForm, setShowSaveForm] = useState(false);
   const [editingBuild, setEditingBuild] = useState<SavedBuild | null>(null);
 
-  // 从localStorage加载保存的构建
+  // Load saved builds from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('trinket-builds');
     if (saved) {
@@ -41,12 +41,12 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
     }
   }, []);
 
-  // 保存构建到localStorage
+  // Save builds to localStorage
   const saveToLocalStorage = (builds: SavedBuild[]) => {
     localStorage.setItem('trinket-builds', JSON.stringify(builds));
   };
 
-  // 保存新构建
+  // Save new build
   const saveBuild = (build: IntelligentRecommendation, character: string, gameStyle: string) => {
     const newBuild: SavedBuild = {
       id: Date.now().toString(),
@@ -67,7 +67,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
     setShowSaveForm(false);
   };
 
-  // 更新构建
+  // Update build
   const updateBuild = (buildId: string, updates: Partial<SavedBuild>) => {
     const updatedBuilds = savedBuilds.map(build => 
       build.id === buildId 
@@ -79,9 +79,9 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
     setEditingBuild(null);
   };
 
-  // 删除构建
+  // Delete build
   const deleteBuild = (buildId: string) => {
-    if (window.confirm('确定要删除这个构建吗？此操作无法撤销。')) {
+    if (window.confirm('Are you sure you want to delete this build? This action cannot be undone.')) {
       const updatedBuilds = savedBuilds.filter(build => build.id !== buildId);
       setSavedBuilds(updatedBuilds);
       saveToLocalStorage(updatedBuilds);
@@ -91,11 +91,11 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
     }
   };
 
-  // 分享构建
+  // Share build
   const shareBuild = (build: SavedBuild) => {
     const shareData = {
-      title: `${build.name} - ${build.character} ${build.gameStyle} 构建`,
-      text: `查看我在Dandy's World中为${build.character}创建的${build.gameStyle}构建！`,
+      title: `${build.name} - ${build.character} ${build.gameStyle} Build`,
+      text: `Check out my ${build.gameStyle} build for ${build.character} in Dandy's World!`,
       url: window.location.href,
       buildData: build.build
     };
@@ -103,15 +103,15 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
     if (navigator.share) {
       navigator.share(shareData);
     } else {
-      // 复制到剪贴板
+      // Copy to clipboard
       const buildJson = JSON.stringify(build.build, null, 2);
       navigator.clipboard.writeText(buildJson).then(() => {
-        alert('构建数据已复制到剪贴板！');
+        alert('Build data copied to clipboard!');
       });
     }
   };
 
-  // 导出构建
+  // Export build
   const exportBuild = (build: SavedBuild) => {
     const exportData = {
       ...build,
@@ -130,7 +130,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
     URL.revokeObjectURL(url);
   };
 
-  // 导入构建
+  // Import build
   const importBuild = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -148,19 +148,19 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
             const updatedBuilds = [...savedBuilds, newBuild];
             setSavedBuilds(updatedBuilds);
             saveToLocalStorage(updatedBuilds);
-            alert('构建导入成功！');
+            alert('Build imported successfully!');
           } else {
-            alert('无效的构建文件格式');
+            alert('Invalid build file format');
           }
         } catch (error) {
-          alert('导入失败：文件格式错误');
+          alert('Import failed: Invalid file format');
         }
       };
       reader.readAsText(file);
     }
   };
 
-  // 过滤和排序构建
+  // Filter and sort builds
   const filteredAndSortedBuilds = savedBuilds
     .filter(build => {
       const matchesSearch = build.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -191,10 +191,10 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
       return sortOrder === 'asc' ? comparison : -comparison;
     });
 
-  // 获取所有标签
+  // Get all tags
   const allTags = Array.from(new Set(savedBuilds.flatMap(build => build.tags)));
 
-  // 渲染构建卡片
+  // Render build card
   const renderBuildCard = (build: SavedBuild) => {
     return (
       <div 
@@ -214,7 +214,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
                 ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                 : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
             }`}>
-              {build.isPublic ? '公开' : '私有'}
+              {build.isPublic ? 'Public' : 'Private'}
             </span>
           </div>
         </div>
@@ -225,8 +225,8 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
             <span>🎯 {build.gameStyle}</span>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-            <span>⭐ 效果: {build.build.effectiveness.overall}/5</span>
-            <span>🎯 置信度: {build.build.confidence}/5</span>
+            <span>⭐ Effectiveness: {build.build.effectiveness.overall}/5</span>
+            <span>🎯 Confidence: {build.build.confidence}/5</span>
           </div>
         </div>
 
@@ -241,13 +241,13 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
         )}
 
         <div className="text-xs text-gray-500 dark:text-gray-400">
-          创建于: {new Date(build.createdAt).toLocaleDateString()}
+          Created: {new Date(build.createdAt).toLocaleDateString()}
         </div>
       </div>
     );
   };
 
-  // 渲染构建详情
+  // Render build detail
   const renderBuildDetail = (build: SavedBuild) => {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
@@ -260,31 +260,31 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
               onClick={() => setEditingBuild(build)}
               className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
             >
-              编辑
+              Edit
             </button>
             <button
               onClick={() => onLoadBuild(build.build)}
               className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
             >
-              加载
+              Load
             </button>
             <button
               onClick={() => shareBuild(build)}
               className="px-3 py-1 bg-purple-500 text-white rounded hover:bg-purple-600 text-sm"
             >
-              分享
+              Share
             </button>
             <button
               onClick={() => exportBuild(build)}
               className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm"
             >
-              导出
+              Export
             </button>
             <button
               onClick={() => deleteBuild(build.id)}
               className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
             >
-              删除
+              Delete
             </button>
           </div>
         </div>
@@ -292,27 +292,27 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              构建信息
+              Build Information
             </h4>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">角色:</span>
+                <span className="text-gray-600 dark:text-gray-400">Character:</span>
                 <span className="text-gray-900 dark:text-white">{build.character}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">游戏风格:</span>
+                <span className="text-gray-600 dark:text-gray-400">Game Style:</span>
                 <span className="text-gray-900 dark:text-white">{build.gameStyle}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">总体效果:</span>
+                <span className="text-gray-600 dark:text-gray-400">Overall Effectiveness:</span>
                 <span className="text-gray-900 dark:text-white">{build.build.effectiveness.overall}/5</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">置信度:</span>
+                <span className="text-gray-600 dark:text-gray-400">Confidence:</span>
                 <span className="text-gray-900 dark:text-white">{build.build.confidence}/5</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">难度:</span>
+                <span className="text-gray-600 dark:text-gray-400">Difficulty:</span>
                 <span className="text-gray-900 dark:text-white capitalize">{build.build.difficulty}</span>
               </div>
             </div>
@@ -320,29 +320,29 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
 
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              元数据
+              Metadata
             </h4>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">创建时间:</span>
+                <span className="text-gray-600 dark:text-gray-400">Created:</span>
                 <span className="text-gray-900 dark:text-white">
                   {new Date(build.createdAt).toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">最后修改:</span>
+                <span className="text-gray-600 dark:text-gray-400">Last Modified:</span>
                 <span className="text-gray-900 dark:text-white">
                   {new Date(build.lastModified).toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">状态:</span>
+                <span className="text-gray-600 dark:text-gray-400">Status:</span>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                   build.isPublic 
                     ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                     : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
                 }`}>
-                  {build.isPublic ? '公开' : '私有'}
+                  {build.isPublic ? 'Public' : 'Private'}
                 </span>
               </div>
             </div>
@@ -352,7 +352,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
         {build.tags.length > 0 && (
           <div className="mt-6">
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              标签
+              Tags
             </h4>
             <div className="flex flex-wrap gap-2">
               {build.tags.map(tag => (
@@ -367,7 +367,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
         {build.notes && (
           <div className="mt-6">
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              备注
+              Notes
             </h4>
             <p className="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
               {build.notes}
@@ -378,7 +378,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
     );
   };
 
-  // 渲染编辑表单
+  // Render edit form
   const renderEditForm = (build: SavedBuild) => {
     const [formData, setFormData] = useState({
       name: build.name,
@@ -404,7 +404,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
           <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              编辑构建
+              Edit Build
             </h3>
             <button
               onClick={() => setEditingBuild(null)}
@@ -419,7 +419,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                构建名称
+                Build Name
               </label>
               <input
                 type="text"
@@ -432,27 +432,27 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                标签 (用逗号分隔)
+                Tags (comma separated)
               </label>
               <input
                 type="text"
                 value={formData.tags}
                 onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="例如: 新手友好, 高伤害, 团队支援"
+                placeholder="e.g., beginner-friendly, high-damage, team-support"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                备注
+                Notes
               </label>
               <textarea
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="添加一些关于这个构建的说明..."
+                placeholder="Add some notes about this build..."
               />
             </div>
 
@@ -465,7 +465,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
                 className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
               <label htmlFor="isPublic" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                设为公开构建
+                Make this build public
               </label>
             </div>
 
@@ -475,13 +475,13 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
                 onClick={() => setEditingBuild(null)}
                 className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
               >
-                取消
+                Cancel
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
               >
-                保存
+                Save
               </button>
             </div>
           </form>
@@ -493,10 +493,10 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-7xl w-full max-h-[90vh] overflow-y-auto">
-        {/* 头部 */}
+        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            📚 构建历史记录
+            📚 Build History
           </h2>
           <div className="flex items-center space-x-3">
             <label className="flex items-center space-x-2 cursor-pointer">
@@ -508,27 +508,27 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
                 id="import-build"
               />
               <span className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-sm">
-                📥 导入
+                📥 Import
               </span>
             </label>
             <button
               onClick={onClose}
               className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
             >
-              关闭
+              Close
             </button>
           </div>
         </div>
 
-        {/* 内容 */}
+        {/* Content */}
         <div className="p-6">
-          {/* 搜索和过滤 */}
+          {/* Search and filter */}
           <div className="mb-6 space-y-4">
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex-1 min-w-64">
                 <input
                   type="text"
-                  placeholder="搜索构建..."
+                  placeholder="Search builds..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -541,9 +541,9 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
                   onChange={(e) => setSortBy(e.target.value as any)}
                   className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="date">按日期</option>
-                  <option value="name">按名称</option>
-                  <option value="effectiveness">按效果</option>
+                  <option value="date">By Date</option>
+                  <option value="name">By Name</option>
+                  <option value="effectiveness">By Effectiveness</option>
                 </select>
               </div>
 
@@ -556,7 +556,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
                       : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
                   }`}
                 >
-                  降序
+                  Descending
                 </button>
                 <button
                   onClick={() => setSortOrder('asc')}
@@ -566,7 +566,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
                       : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
                   }`}
                 >
-                  升序
+                  Ascending
                 </button>
               </div>
             </div>
@@ -574,7 +574,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
             {allTags.length > 0 && (
               <div>
                 <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  按标签过滤:
+                  Filter by tags:
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {allTags.map(tag => (
@@ -601,19 +601,19 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
             )}
           </div>
 
-          {/* 构建列表和详情 */}
+          {/* Build list and details */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* 构建列表 */}
+            {/* Build list */}
             <div className="lg:col-span-1">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                保存的构建 ({filteredAndSortedBuilds.length})
+                Saved Builds ({filteredAndSortedBuilds.length})
               </h3>
               
               {filteredAndSortedBuilds.length === 0 ? (
                 <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                   <div className="text-4xl mb-2">📚</div>
-                  <p>还没有保存的构建</p>
-                  <p className="text-sm">在Trinket Optimizer中生成推荐后可以保存构建</p>
+                  <p>No saved builds yet</p>
+                  <p className="text-sm">Save builds from the Trinket Optimizer to see them here</p>
                 </div>
               ) : (
                 <div className="space-y-3 max-h-96 overflow-y-auto">
@@ -622,14 +622,14 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
               )}
             </div>
 
-            {/* 构建详情 */}
+            {/* Build details */}
             <div className="lg:col-span-2">
               {selectedBuild ? (
                 renderBuildDetail(selectedBuild)
               ) : (
                 <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                   <div className="text-4xl mb-2">🔍</div>
-                  <p>选择一个构建查看详情</p>
+                  <p>Select a build to view details</p>
                 </div>
               )}
             </div>
@@ -637,7 +637,7 @@ const BuildHistory: React.FC<BuildHistoryProps> = ({ onClose, onLoadBuild }) => 
         </div>
       </div>
 
-      {/* 编辑表单 */}
+      {/* Edit form */}
       {editingBuild && renderEditForm(editingBuild)}
     </div>
   );
