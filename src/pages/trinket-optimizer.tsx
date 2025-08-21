@@ -520,21 +520,22 @@ const TrinketOptimizer: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
-      <Navigation />
+    <>
       <SEO 
         title="Trinket Optimizer - Intelligent Trinket Recommendation System"
         description="Dandy's World intelligent trinket recommendation system, providing personalized trinket combinations based on AI algorithms, including acquisition paths, build comparison, and meta analysis."
         keywords="trinket optimizer, trinket optimization, intelligent recommendations, build analysis, acquisition path, meta analysis"
       />
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+        <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-20">
         {/* Page title */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-4">
+        <div className="text-center mb-8 relative z-10">
+          <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
             🎯 Trinket Optimizer
           </h1>
-          <p className="text-xl text-blue-100 mb-4">
+          <p className="text-xl text-blue-100 mb-4 drop-shadow-lg">
             Intelligent Trinket Recommendation System - Optimal trinket combinations for every character
           </p>
           <div className="flex justify-center space-x-4 mt-4">
@@ -820,7 +821,8 @@ const TrinketOptimizer: React.FC = () => {
       )}
       
       <Footer />
-    </div>
+      </div>
+    </>
   );
 };
 
