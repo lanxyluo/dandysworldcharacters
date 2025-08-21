@@ -70,17 +70,7 @@ const CalculatorPage: React.FC = () => {
             </div>
           </div>
 
-          {/* 额外工具链接 */}
-          <div className="text-center mb-8">
-            <Link 
-              to="/trinket-optimizer" 
-              className="inline-flex items-center space-x-2 bg-bg-card hover:bg-bg-secondary text-text-primary px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg"
-            >
-              <span>🎯</span>
-              <span>Trinket Optimizer</span>
-              <span>→</span>
-            </Link>
-          </div>
+
           
           {/* 计算器内容区域 */}
           <div className="calculator-content">

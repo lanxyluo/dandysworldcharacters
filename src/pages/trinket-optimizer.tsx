@@ -177,13 +177,13 @@ const TrinketOptimizer: React.FC = () => {
           <span
             key={star}
             className={`text-lg ${
-              star <= rating ? 'text-yellow-400' : 'text-gray-300'
+              star <= rating ? 'text-yellow-400' : 'text-gray-400'
             }`}
           >
             ★
           </span>
         ))}
-        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+        <span className="ml-2 text-sm text-blue-200">
           {rating}/5
         </span>
       </div>
@@ -193,28 +193,28 @@ const TrinketOptimizer: React.FC = () => {
   // Render acquisition path
   const renderAcquisitionPath = (recommendation: IntelligentRecommendation) => {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-        <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6 shadow-lg">
+        <h3 className="text-xl font-bold mb-4 text-white">
           🎯 Acquisition Path
         </h3>
         
         {/* Overall information */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-            <div className="text-sm text-blue-600 dark:text-blue-400">Total Cost</div>
-            <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">
+          <div className="bg-blue-900/30 border border-blue-400/30 p-4 rounded-lg">
+            <div className="text-sm text-blue-200">Total Cost</div>
+            <div className="text-lg font-semibold text-blue-100">
               {recommendation.acquisition.estimatedCost}
             </div>
           </div>
-          <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-            <div className="text-sm text-green-600 dark:text-green-400">Priority</div>
-            <div className="text-lg font-semibold text-green-800 dark:text-green-200 capitalize">
+          <div className="bg-green-900/30 border border-green-400/30 p-4 rounded-lg">
+            <div className="text-sm text-green-200">Priority</div>
+            <div className="text-lg font-semibold text-green-100 capitalize">
               {recommendation.acquisition.priority}
             </div>
           </div>
-          <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
-            <div className="text-sm text-purple-600 dark:text-purple-400">Total Time</div>
-            <div className="text-lg font-semibold text-purple-800 dark:text-purple-200">
+          <div className="bg-purple-900/30 border border-purple-400/30 p-4 rounded-lg">
+            <div className="text-sm text-purple-200">Total Time</div>
+            <div className="text-lg font-semibold text-purple-100">
               {recommendation.progressionPath.estimatedTime}
             </div>
           </div>
@@ -222,29 +222,29 @@ const TrinketOptimizer: React.FC = () => {
 
         {/* Unlock steps */}
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h4 className="text-lg font-semibold text-white">
             Unlock Steps
           </h4>
           {recommendation.progressionPath.steps.map((step, index) => (
-            <div key={index} className="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div key={index} className="flex items-start space-x-4 p-4 bg-white/10 rounded-lg border border-white/20">
               <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
                 {step.step}
               </div>
               <div className="flex-1">
-                <div className="font-medium text-gray-900 dark:text-white">
+                <div className="font-medium text-white">
                   {step.description}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-sm text-blue-200 mt-1">
                   Requirement: {step.requirement}
                 </div>
                 <div className="flex items-center justify-between mt-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-sm text-blue-300">
                     Estimated Time: {step.estimatedTime}
                   </span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    step.priority === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                    step.priority === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                    'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                    step.priority === 'high' ? 'bg-red-900/50 text-red-200 border border-red-400/50' :
+                    step.priority === 'medium' ? 'bg-yellow-900/50 text-yellow-200 border border-yellow-400/50' :
+                    'bg-green-900/50 text-green-200 border border-green-400/50'
                   }`}>
                     {step.priority} Priority
                   </span>
@@ -256,12 +256,12 @@ const TrinketOptimizer: React.FC = () => {
 
         {/* Resource requirements */}
         <div className="mt-6">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h4 className="text-lg font-semibold text-white mb-3">
             Resource Requirements
           </h4>
           <div className="flex flex-wrap gap-2">
             {recommendation.progressionPath.resourceRequirements.map((resource, index) => (
-              <span key={index} className="px-3 py-1 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full text-sm">
+              <span key={index} className="px-3 py-1 bg-white/20 text-blue-100 rounded-full text-sm border border-white/30">
                 {resource}
               </span>
             ))}
@@ -274,43 +274,43 @@ const TrinketOptimizer: React.FC = () => {
   // Render alternative builds
   const renderAlternatives = (recommendation: IntelligentRecommendation) => {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-        <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6 shadow-lg">
+        <h3 className="text-xl font-bold mb-4 text-white">
           🔄 Alternative Builds
         </h3>
         
         <div className="space-y-4">
           {recommendation.alternatives.map((alternative, index) => (
-            <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div key={index} className="border border-white/20 rounded-lg p-4 bg-white/5">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h4 className="text-lg font-semibold text-white">
                   {alternative.name}
                 </h4>
                 <div className="flex items-center space-x-2">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    alternative.difficulty === 'advanced' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                    alternative.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                    'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                    alternative.difficulty === 'advanced' ? 'bg-red-900/50 text-red-200 border border-red-400/50' :
+                    alternative.difficulty === 'intermediate' ? 'bg-yellow-900/50 text-yellow-200 border border-yellow-400/50' :
+                    'bg-green-900/50 text-green-200 border border-green-400/50'
                   }`}>
                     {alternative.difficulty}
                   </span>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    alternative.cost === 'expensive' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                    alternative.cost === 'moderate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                    'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                    alternative.cost === 'expensive' ? 'bg-red-900/50 text-red-200 border border-red-400/50' :
+                    alternative.cost === 'moderate' ? 'bg-yellow-900/50 text-yellow-200 border border-yellow-400/50' :
+                    'bg-green-900/50 text-green-200 border border-green-400/50'
                   }`}>
                     {alternative.cost}
                   </span>
                 </div>
               </div>
               
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+              <div className="text-sm text-blue-200 mb-3">
                 {alternative.reasoning}
               </div>
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Effectiveness:</span>
+                  <span className="text-sm text-blue-300">Effectiveness:</span>
                   {renderStars(alternative.effectiveness)}
                 </div>
                 <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
@@ -320,11 +320,11 @@ const TrinketOptimizer: React.FC = () => {
               
               {alternative.tradeoffs.length > 0 && (
                 <div className="mt-3">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Tradeoffs:</div>
-                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <div className="text-sm text-blue-300 mb-1">Tradeoffs:</div>
+                  <ul className="text-sm text-blue-200 space-y-1">
                     {alternative.tradeoffs.map((tradeoff, idx) => (
                       <li key={idx} className="flex items-center space-x-2">
-                        <span className="text-red-500">⚠</span>
+                        <span className="text-red-400">⚠</span>
                         <span>{tradeoff}</span>
                       </li>
                     ))}
@@ -341,20 +341,20 @@ const TrinketOptimizer: React.FC = () => {
   // Render recommendation details
   const renderRecommendationDetail = (recommendation: IntelligentRecommendation) => {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h3 className="text-xl font-bold text-white">
             {recommendation.name}
           </h3>
           <div className="flex items-center space-x-2">
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-              recommendation.difficulty === 'advanced' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-              recommendation.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-              'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+              recommendation.difficulty === 'advanced' ? 'bg-red-900/50 text-red-200 border border-red-400/50' :
+              recommendation.difficulty === 'intermediate' ? 'bg-yellow-900/50 text-yellow-200 border border-yellow-400/50' :
+              'bg-green-900/50 text-green-200 border border-green-400/50'
             }`}>
               {recommendation.difficulty}
             </span>
-            <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+            <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-900/50 text-blue-200 border border-blue-400/50">
               {recommendation.metaAnalysis.tier} Tier
             </span>
           </div>
@@ -362,45 +362,45 @@ const TrinketOptimizer: React.FC = () => {
 
         {/* Confidence */}
         <div className="mb-4">
-          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Confidence:</div>
+          <div className="text-sm text-blue-200 mb-1">Confidence:</div>
           {renderStars(recommendation.confidence)}
         </div>
 
         {/* Effectiveness ratings */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            <div className="text-2xl font-bold text-blue-300">
               {recommendation.effectiveness.overall}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Overall</div>
+            <div className="text-sm text-blue-200">Overall</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+            <div className="text-2xl font-bold text-red-300">
               {recommendation.effectiveness.damage}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Damage</div>
+            <div className="text-sm text-blue-200">Damage</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+            <div className="text-2xl font-bold text-green-300">
               {recommendation.effectiveness.survival}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Survival</div>
+            <div className="text-sm text-blue-200">Survival</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+            <div className="text-2xl font-bold text-purple-300">
               {recommendation.effectiveness.utility}
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">Utility</div>
+            <div className="text-sm text-blue-200">Utility</div>
           </div>
         </div>
 
         {/* Recommendation reasoning */}
         <div className="mb-6">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h4 className="text-lg font-semibold text-white mb-3">
             💡 Recommendation Reasoning
           </h4>
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-            <p className="text-blue-800 dark:text-blue-200">
+          <div className="bg-blue-900/30 border border-blue-400/30 p-4 rounded-lg">
+            <p className="text-blue-100">
               {recommendation.reasoning.primary}
             </p>
           </div>
@@ -408,25 +408,25 @@ const TrinketOptimizer: React.FC = () => {
 
         {/* Stat synergy */}
         <div className="mb-6">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h4 className="text-lg font-semibold text-white mb-3">
             📊 Stat Synergy
           </h4>
           <div className="space-y-3">
             {recommendation.reasoning.statSynergy.map((synergy, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div key={index} className="flex items-center justify-between p-3 bg-white/10 rounded-lg border border-white/20">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+                  <div className="font-medium text-white">
                     {synergy.description}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-blue-200">
                     {synergy.stats.join(', ')}
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-blue-300">
                     {synergy.beforeValue} → {synergy.afterValue}
                   </div>
-                  <div className="text-sm font-medium text-green-600 dark:text-green-400">
+                  <div className="text-sm font-medium text-green-300">
                     +{synergy.improvement}
                   </div>
                 </div>
@@ -437,12 +437,12 @@ const TrinketOptimizer: React.FC = () => {
 
         {/* Scenario applicability */}
         <div className="mb-6">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h4 className="text-lg font-semibold text-white mb-3">
             🎯 Applicable Scenarios
           </h4>
           <div className="flex flex-wrap gap-2">
             {recommendation.scenarios.map((scenario, index) => (
-              <span key={index} className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm">
+              <span key={index} className="px-3 py-1 bg-green-900/50 text-green-200 rounded-full text-sm border border-green-400/50">
                 {scenario}
               </span>
             ))}
@@ -451,33 +451,33 @@ const TrinketOptimizer: React.FC = () => {
 
         {/* Meta analysis */}
         <div className="mb-6">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+          <h4 className="text-lg font-semibold text-white mb-3">
             📈 Meta Analysis
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
+              <div className="text-lg font-bold text-blue-300">
                 {recommendation.metaAnalysis.popularity}%
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Usage Rate</div>
+              <div className="text-sm text-blue-200">Usage Rate</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-green-600 dark:text-green-400">
+              <div className="text-lg font-bold text-green-300">
                 {recommendation.metaAnalysis.winRate}%
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Win Rate</div>
+              <div className="text-sm text-blue-200">Win Rate</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
+              <div className="text-lg font-bold text-purple-300">
                 {recommendation.metaAnalysis.tier}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Tier</div>
+              <div className="text-sm text-blue-200">Tier</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-yellow-600 dark:text-yellow-400">
+              <div className="text-lg font-bold text-yellow-300">
                 {recommendation.metaAnalysis.counterStrategies.length}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Counter Strategies</div>
+              <div className="text-sm text-blue-200">Counter Strategies</div>
             </div>
           </div>
         </div>
@@ -520,7 +520,7 @@ const TrinketOptimizer: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
       <Navigation />
       <SEO 
         title="Trinket Optimizer - Intelligent Trinket Recommendation System"
@@ -531,10 +531,10 @@ const TrinketOptimizer: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Page title */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-4xl font-bold text-white mb-4">
             🎯 Trinket Optimizer
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
+          <p className="text-xl text-blue-100 mb-4">
             Intelligent Trinket Recommendation System - Optimal trinket combinations for every character
           </p>
           <div className="flex justify-center space-x-4 mt-4">
@@ -554,25 +554,25 @@ const TrinketOptimizer: React.FC = () => {
         </div>
 
         {/* Configuration area */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6 shadow-lg mb-8">
+          <h2 className="text-2xl font-bold text-white mb-6">
             ⚙️ Configuration Settings
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Character selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-blue-100 mb-2">
                 Select Character
               </label>
               <select
                 value={selectedCharacter}
                 onChange={(e) => setSelectedCharacter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-white/30 rounded-md bg-white/20 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="">Please select a character</option>
                 {characters.map((character) => (
-                  <option key={character.id} value={character.id}>
+                  <option key={character.id} value={character.id} className="bg-gray-800 text-white">
                     {character.name} - {character.type}
                   </option>
                 ))}
@@ -581,7 +581,7 @@ const TrinketOptimizer: React.FC = () => {
 
             {/* Game style selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-blue-100 mb-2">
                 Game Style
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -592,7 +592,7 @@ const TrinketOptimizer: React.FC = () => {
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                       selectedGameStyle === style
                         ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
+                        : 'bg-white/20 text-blue-100 hover:bg-white/30 border border-white/30'
                     }`}
                   >
                     {style === 'extractor' && '🎯 Extractor'}
@@ -621,7 +621,7 @@ const TrinketOptimizer: React.FC = () => {
         {recommendations.length > 0 && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-2xl font-bold text-white">
                 🎉 Intelligent Recommendation Results
               </h2>
               
@@ -639,20 +639,20 @@ const TrinketOptimizer: React.FC = () => {
             {/* Recommendation list */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {recommendations.map((recommendation, index) => (
-                <div key={recommendation.id} className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+                <div key={recommendation.id} className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6 shadow-lg">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-bold text-white">
                       #{index + 1} {recommendation.name}
                     </h3>
                     <div className="flex items-center space-x-2">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        recommendation.difficulty === 'advanced' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                        recommendation.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                        'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        recommendation.difficulty === 'advanced' ? 'bg-red-900/50 text-red-200 border border-red-400/50' :
+                        recommendation.difficulty === 'intermediate' ? 'bg-yellow-900/50 text-yellow-200 border border-yellow-400/50' :
+                        'bg-green-900/50 text-green-200 border border-green-400/50'
                       }`}>
                         {recommendation.difficulty}
                       </span>
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-900/50 text-blue-200 border border-blue-400/50">
                         {recommendation.metaAnalysis.tier} Tier
                       </span>
                     </div>
@@ -660,18 +660,18 @@ const TrinketOptimizer: React.FC = () => {
 
                   {/* Trinket combination */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <h4 className="text-sm font-medium text-blue-100 mb-2">
                       Trinket Combination:
                     </h4>
                     <div className="space-y-2">
                       {recommendation.trinkets.map((trinket, idx) => (
-                        <div key={idx} className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div key={idx} className="flex items-center space-x-3 p-3 bg-white/10 rounded-lg border border-white/20">
                           <span className="text-2xl">{trinket.image}</span>
                           <div className="flex-1">
-                            <div className="font-medium text-gray-900 dark:text-white">
+                            <div className="font-medium text-white">
                               {trinket.name}
                             </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                            <div className="text-sm text-blue-200">
                               {trinket.slot} • {trinket.type}
                             </div>
                           </div>
@@ -686,10 +686,10 @@ const TrinketOptimizer: React.FC = () => {
                   {/* Effectiveness rating */}
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <span className="text-sm font-medium text-blue-100">
                         Overall Effectiveness:
                       </span>
-                      <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                      <span className="text-lg font-bold text-blue-300">
                         {recommendation.effectiveness.overall}/5
                       </span>
                     </div>
@@ -699,10 +699,10 @@ const TrinketOptimizer: React.FC = () => {
                   {/* Confidence */}
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <span className="text-sm font-medium text-blue-100">
                         Confidence:
                       </span>
-                      <span className="text-lg font-bold text-green-600 dark:text-green-400">
+                      <span className="text-lg font-bold text-green-300">
                         {recommendation.confidence}/5
                       </span>
                     </div>
@@ -711,10 +711,10 @@ const TrinketOptimizer: React.FC = () => {
 
                   {/* Recommendation reasoning */}
                   <div className="mb-4">
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <h4 className="text-sm font-medium text-blue-100 mb-2">
                       Recommendation Reason:
                     </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                    <p className="text-sm text-blue-200 bg-blue-900/30 p-3 rounded-lg border border-blue-400/30">
                       {recommendation.reasoning.primary}
                     </p>
                   </div>
@@ -750,7 +750,7 @@ const TrinketOptimizer: React.FC = () => {
         {selectedRecommendation && (
           <div className="mt-8">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-2xl font-bold text-white">
                 📋 Recommendation Details
               </h2>
               <button
@@ -768,10 +768,10 @@ const TrinketOptimizer: React.FC = () => {
         {!selectedCharacter && !selectedGameStyle && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🎯</div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-xl font-semibold text-white mb-2">
               Start Using Trinket Optimizer
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-blue-100">
               Select a character and game style to get personalized trinket recommendations
             </p>
           </div>
