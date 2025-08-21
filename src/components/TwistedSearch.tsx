@@ -10,7 +10,7 @@ const TwistedSearch: React.FC<TwistedSearchProps> = ({ onSelectTwisted }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
-  const [selectedType, setSelectedDifficulty] = useState<string>('all');
+  const [selectedType, setSelectedType] = useState<string>('all');
 
   const categories = ['all', 'positioning', 'timing', 'teamwork', 'resource', 'escape'];
   const difficulties = ['all', 'easy', 'medium', 'hard', 'expert'];
