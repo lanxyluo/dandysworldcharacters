@@ -17,8 +17,7 @@ const Navigation: React.FC = () => {
   const mainMenuItems = [
     { name: 'Characters', href: '/', icon: '👥' },
     { name: 'Compare', href: '/compare', icon: '⚖️' },
-    { name: 'Calculator', href: '/calculator', icon: '🧮' },
-    { name: 'Community', href: '/community', icon: '💬' }
+    { name: 'Calculator', href: '/calculator', icon: '🧮' }
   ];
 
   const toolsMenuItems = [

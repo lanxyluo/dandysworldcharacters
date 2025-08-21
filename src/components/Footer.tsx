@@ -30,15 +30,7 @@ const Footer: React.FC = () => {
             </ul>
           </div>
           
-          <div>
-            <h3 className="font-semibold mb-4">Community</h3>
-            <ul className="space-y-2 text-text-secondary">
-              <li><a href="#" className="hover:text-accent-main transition-colors">Discord</a></li>
-              <li><a href="#" className="hover:text-accent-main transition-colors">Reddit</a></li>
-              <li><a href="#" className="hover:text-accent-main transition-colors">Updates</a></li>
-              <li><a href="#" className="hover:text-accent-main transition-colors">Feedback</a></li>
-            </ul>
-          </div>
+
         </div>
       </div>
     </footer>
