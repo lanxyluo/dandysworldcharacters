@@ -6,6 +6,7 @@ import CalculatorPage from './pages/calculator';
 import CommunityPage from './pages/community';
 import TrinketOptimizer from './pages/trinket-optimizer';
 import TwistedGuidePage from './pages/twisted-guide';
+import FloorPredictor from './pages/floor-predictor';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/trinket-optimizer" element={<TrinketOptimizer />} />
           <Route path="/twisted-guide" element={<TwistedGuidePage />} />
+          <Route path="/floor-predictor" element={<FloorPredictor />} />
         </Routes>
       </div>
     </HelmetProvider>

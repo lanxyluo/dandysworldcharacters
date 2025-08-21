@@ -1,0 +1,390 @@
+import React, { useState, useMemo } from 'react';
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
+import SEO from '../components/SEO';
+
+interface FloorPrediction {
+  floor: number;
+  machines: number;
+  twistedCount: number;
+  mainTwistedChance: number;
+  blackoutChance: number;
+  dangerLevel: 'Low' | 'Medium' | 'High' | 'Extreme';
+  estimatedTime: number;
+  teamSize: number;
+  roomTypes: string[];
+  warnings: string[];
+}
+
+const FloorPredictor: React.FC = () => {
+  const [currentFloor, setCurrentFloor] = useState<number>(1);
+  const [targetFloor, setTargetFloor] = useState<number | null>(null);
+  const [difficultyMode, setDifficultyMode] = useState<'Normal' | 'Hard'>('Normal');
+
+  // Floor prediction calculation logic
+  const calculateMachines = (floor: number): number => {
+    if (floor <= 8) return Math.min(6, 3 + floor);
+    return Math.min(20, 6 + Math.floor((floor - 8) / 2));
+  };
+
+  const calculateTwisted = (floor: number): number => {
+    const machines = calculateMachines(floor);
+    if (machines < 6) return 3;
+    if (machines <= 8) return 4;
+    return Math.min(10, 3 + Math.floor(machines / 2));
+  };
+
+  const calculateMainTwistedChance = (floor: number): number => {
+    if (floor < 5) return 0;
+    return Math.min(90, 15 + (floor - 5) * 5);
+  };
+
+  const calculateBlackoutChance = (floor: number): number => {
+    return Math.min(40, floor * 2);
+  };
+
+  const calculateDangerLevel = (floor: number): 'Low' | 'Medium' | 'High' | 'Extreme' => {
+    if (floor <= 5) return 'Low';
+    if (floor <= 10) return 'Medium';
+    if (floor <= 20) return 'High';
+    return 'Extreme';
+  };
+
+  const calculateEstimatedTime = (machines: number, difficulty: 'Normal' | 'Hard'): number => {
+    const baseTime = machines * 3; // 3 minutes per machine base
+    return difficulty === 'Hard' ? Math.floor(baseTime * 1.5) : baseTime;
+  };
+
+  const calculateTeamSize = (machines: number, dangerLevel: string): number => {
+    if (dangerLevel === 'Extreme') return Math.max(4, Math.ceil(machines / 3));
+    if (dangerLevel === 'High') return Math.max(3, Math.ceil(machines / 4));
+    if (dangerLevel === 'Medium') return Math.max(2, Math.ceil(machines / 5));
+    return Math.max(1, Math.ceil(machines / 6));
+  };
+
+  const getRoomTypes = (floor: number): string[] => {
+    const types = [];
+    if (floor >= 5) types.push('Forest Room');
+    if (floor >= 10) types.push('Warehouse');
+    if (floor >= 15) types.push('Main Room');
+    if (floor >= 20) types.push('Advanced Room');
+    if (floor >= 30) types.push('Elite Room');
+    return types;
+  };
+
+  const getWarnings = (floor: number, dangerLevel: string): string[] => {
+    const warnings = [];
+    if (floor >= 25) warnings.push('Extreme difficulty - experienced team recommended');
+    if (floor >= 20) warnings.push('High twisted character density');
+    if (floor >= 15) warnings.push('Multiple room types possible');
+    if (floor >= 10) warnings.push('Blackout events more frequent');
+    if (dangerLevel === 'Extreme') warnings.push('Consider bringing backup equipment');
+    return warnings;
+  };
+
+  // Generate predictions
+  const predictions = useMemo(() => {
+    const floors = targetFloor ? 
+      Array.from({length: targetFloor - currentFloor + 1}, (_, i) => currentFloor + i) :
+      [currentFloor];
+
+    return floors.map(floor => {
+      const machines = calculateMachines(floor);
+      const twistedCount = calculateTwisted(floor);
+      const mainTwistedChance = calculateMainTwistedChance(floor);
+      const blackoutChance = calculateBlackoutChance(floor);
+      const dangerLevel = calculateDangerLevel(floor);
+      const estimatedTime = calculateEstimatedTime(machines, difficultyMode);
+      const teamSize = calculateTeamSize(machines, dangerLevel);
+      const roomTypes = getRoomTypes(floor);
+      const warnings = getWarnings(floor, dangerLevel);
+
+      return {
+        floor,
+        machines,
+        twistedCount,
+        mainTwistedChance,
+        blackoutChance,
+        dangerLevel,
+        estimatedTime,
+        teamSize,
+        roomTypes,
+        warnings
+      };
+    });
+  }, [currentFloor, targetFloor, difficultyMode]);
+
+  const getDangerLevelColor = (level: string) => {
+    switch (level) {
+      case 'Low': return 'text-green-400';
+      case 'Medium': return 'text-yellow-400';
+      case 'High': return 'text-orange-400';
+      case 'Extreme': return 'text-red-400';
+      default: return 'text-white';
+    }
+  };
+
+  const getDangerLevelBg = (level: string) => {
+    switch (level) {
+      case 'Low': return 'bg-green-900/30';
+      case 'Medium': return 'bg-yellow-900/30';
+      case 'High': return 'bg-orange-900/30';
+      case 'Extreme': return 'bg-red-900/30';
+      default: return 'bg-gray-900/30';
+    }
+  };
+
+  const quickFloorButtons = [5, 10, 15, 20, 25, 30];
+
+  return (
+    <>
+      <SEO 
+        title="Floor Predictor - Strategic Floor Planning Tool"
+        description="Dandy's World floor prediction tool for strategic planning. Predict machine counts, twisted characters, special events, and get survival strategies for each floor."
+        keywords="floor predictor, machine prediction, twisted character prediction, survival strategy, game planning"
+      />
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+        <Navigation />
+        
+        <div className="container mx-auto px-4 py-8 pt-20">
+          {/* Header */}
+          <div className="text-center mb-8 relative z-10">
+            <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+              🏢 Floor Predictor
+            </h1>
+            <p className="text-xl text-blue-100 mb-4 drop-shadow-lg">
+              Strategic Floor Planning Tool - Plan Your Survival Strategy
+            </p>
+          </div>
+
+          {/* Input Section */}
+          <div className="bg-white/10 backdrop-blur-md rounded-lg p-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Current Floor */}
+              <div>
+                <label className="block text-white font-semibold mb-2">
+                  Current Floor
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="50"
+                  value={currentFloor}
+                  onChange={(e) => setCurrentFloor(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  placeholder="Enter floor (1-50)"
+                />
+              </div>
+
+              {/* Target Floor */}
+              <div>
+                <label className="block text-white font-semibold mb-2">
+                  Target Floor (Optional)
+                </label>
+                <input
+                  type="number"
+                  min={currentFloor}
+                  max="50"
+                  value={targetFloor || ''}
+                  onChange={(e) => setTargetFloor(e.target.value ? parseInt(e.target.value) : null)}
+                  className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  placeholder="Enter target floor"
+                />
+              </div>
+
+              {/* Difficulty Mode */}
+              <div>
+                <label className="block text-white font-semibold mb-2">
+                  Difficulty Mode
+                </label>
+                <select
+                  value={difficultyMode}
+                  onChange={(e) => setDifficultyMode(e.target.value as 'Normal' | 'Hard')}
+                  className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="Normal">Normal</option>
+                  <option value="Hard">Hard</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Quick Floor Buttons */}
+            <div className="mt-6">
+              <label className="block text-white font-semibold mb-3">
+                Quick Floor Selection
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {quickFloorButtons.map(floor => (
+                  <button
+                    key={floor}
+                    onClick={() => setCurrentFloor(floor)}
+                    className={`px-4 py-2 rounded-lg transition-all ${
+                      currentFloor === floor 
+                        ? 'bg-blue-500 text-white' 
+                        : 'bg-white/20 text-white hover:bg-white/30'
+                    }`}
+                  >
+                    Floor {floor}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Results Section */}
+          <div className="space-y-6">
+            {predictions.map((prediction) => (
+              <div key={prediction.floor} className="bg-white/10 backdrop-blur-md rounded-lg p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-bold text-white">
+                    🏢 Floor {prediction.floor}
+                  </h2>
+                  <div className={`px-4 py-2 rounded-lg ${getDangerLevelBg(prediction.dangerLevel)}`}>
+                    <span className={`font-bold ${getDangerLevelColor(prediction.dangerLevel)}`}>
+                      {prediction.dangerLevel} Risk
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Machine Information */}
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-white mb-3">🤖 Machine Information</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-blue-200">Machine Count:</span>
+                        <span className="text-white font-semibold">{prediction.machines} machines</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-200">Estimated Time:</span>
+                        <span className="text-white font-semibold">{prediction.estimatedTime} minutes</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-200">Recommended Team:</span>
+                        <span className="text-white font-semibold">{prediction.teamSize} players</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Twisted Character Information */}
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-white mb-3">👻 Twisted Characters</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-purple-200">Total Count:</span>
+                        <span className="text-white font-semibold">{prediction.twistedCount} twisted</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-purple-200">Main Character Chance:</span>
+                        <span className="text-white font-semibold">{prediction.mainTwistedChance}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-purple-200">Danger Level:</span>
+                        <span className={`font-semibold ${getDangerLevelColor(prediction.dangerLevel)}`}>
+                          {prediction.dangerLevel}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Special Events */}
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-white mb-3">🎭 Special Events</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-orange-200">Blackout Chance:</span>
+                        <span className="text-white font-semibold">{prediction.blackoutChance}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-orange-200">Room Types:</span>
+                        <span className="text-white font-semibold">{prediction.roomTypes.length}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Room Types */}
+                {prediction.roomTypes.length > 0 && (
+                  <div className="mt-4 bg-white/5 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-white mb-2">🏠 Possible Room Types</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {prediction.roomTypes.map((roomType, index) => (
+                        <span key={index} className="px-3 py-1 bg-blue-500/30 text-blue-200 rounded-full text-sm">
+                          {roomType}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Warnings */}
+                {prediction.warnings.length > 0 && (
+                  <div className="mt-4 bg-red-500/20 border border-red-500/30 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-red-300 mb-2">⚠️ Important Warnings</h4>
+                    <ul className="space-y-1">
+                      {prediction.warnings.map((warning, index) => (
+                        <li key={index} className="text-red-200 text-sm">• {warning}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Strategy Recommendations */}
+                <div className="mt-4 bg-green-500/20 border border-green-500/30 rounded-lg p-4">
+                  <h4 className="text-md font-semibold text-green-300 mb-2">💡 Strategy Recommendations</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h5 className="font-semibold text-green-200 mb-2">Team Composition</h5>
+                      <ul className="text-green-100 text-sm space-y-1">
+                        <li>• Minimum {prediction.teamSize} players recommended</li>
+                        <li>• Include support characters for higher floors</li>
+                        <li>• Balance between damage and utility</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-green-200 mb-2">Survival Tips</h5>
+                      <ul className="text-green-100 text-sm space-y-1">
+                        <li>• Bring backup equipment for floor {prediction.floor}</li>
+                        <li>• Coordinate machine completion timing</li>
+                        <li>• Watch for blackout events ({prediction.blackoutChance}% chance)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Information Panel */}
+          <div className="mt-8 bg-white/10 backdrop-blur-md rounded-lg p-6">
+            <h3 className="text-xl font-bold text-white mb-4">📚 How It Works</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-blue-100">
+              <div>
+                <h4 className="font-semibold text-white mb-2">Machine Calculation</h4>
+                <ul className="space-y-1">
+                  <li>• Floors 1-8: 3-6 machines, 3 twisted characters</li>
+                  <li>• 6 machines: 3 twisted characters</li>
+                  <li>• 8 machines: 4 twisted characters</li>
+                  <li>• Maximum 20 machines: 10 twisted characters</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-white mb-2">Special Events</h4>
+                <ul className="space-y-1">
+                  <li>• Main twisted characters appear from floor 5+</li>
+                  <li>• Blackout chance increases by 2% per floor</li>
+                  <li>• Forest rooms unlock at floor 5</li>
+                  <li>• Warehouse rooms unlock at floor 10</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <Footer />
+      </div>
+    </>
+  );
+};
+
+export default FloorPredictor;
