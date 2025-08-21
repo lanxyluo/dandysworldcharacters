@@ -1,19 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
+  const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
-  const menuItems = [
+  const isToolsActive = () => {
+    return location.pathname === '/trinket-optimizer' || location.pathname === '/twisted-guide';
+  };
+
+  const mainMenuItems = [
     { name: 'Characters', href: '/', icon: '👥' },
     { name: 'Compare', href: '/compare', icon: '⚖️' },
     { name: 'Calculator', href: '/calculator', icon: '🧮' },
     { name: 'Community', href: '/community', icon: '💬' }
   ];
+
+  const toolsMenuItems = [
+    { name: 'Trinket Optimizer', href: '/trinket-optimizer', icon: '⚡' },
+    { name: 'Twisted Guide', href: '/twisted-guide', icon: '🚨' }
+  ];
+
+  const toggleTools = () => {
+    setIsToolsOpen(!isToolsOpen);
+  };
+
+  const closeTools = () => {
+    setIsToolsOpen(false);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <nav className="fixed top-0 w-full z-50 glass-effect">
@@ -31,8 +54,9 @@ const Navigation: React.FC = () => {
             </Link>
           </div>
           
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            {menuItems.map((item) => (
+            {mainMenuItems.map((item) => (
               <Link 
                 key={item.name}
                 to={item.href} 
@@ -50,14 +74,106 @@ const Navigation: React.FC = () => {
                 <span>{item.name}</span>
               </Link>
             ))}
+            
+            {/* Tools Dropdown */}
+            <div className="relative">
+              <button
+                onClick={toggleTools}
+                onBlur={() => setTimeout(closeTools, 150)}
+                className={`flex items-center space-x-2 hover:text-accent-main transition-colors ${
+                  isToolsActive() ? 'text-accent-main' : ''
+                }`}
+              >
+                <span className="text-lg">🔧</span>
+                <span>Tools</span>
+                <svg 
+                  className={`w-4 h-4 transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              
+              {/* Dropdown Menu */}
+              {isToolsOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-bg-card border border-gray-600 rounded-lg shadow-xl z-50">
+                  <div className="py-2">
+                    {toolsMenuItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        onClick={closeTools}
+                        className={`flex items-center space-x-3 px-4 py-2 text-sm hover:bg-bg-secondary transition-colors ${
+                          isActive(item.href) ? 'text-accent-main bg-accent-main/10' : 'text-text-secondary'
+                        }`}
+                      >
+                        <span className="text-lg">{item.icon}</span>
+                        <span>{item.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           
-          <button className="md:hidden p-2 rounded-lg hover:bg-bg-card transition-colors">
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={toggleMobileMenu}
+            className="md:hidden p-2 rounded-lg hover:bg-bg-card transition-colors"
+          >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </button>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-600 bg-bg-card">
+            <div className="px-4 py-2 space-y-1">
+              {mainMenuItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    isActive(item.href) 
+                      ? 'text-accent-main bg-accent-main/10' 
+                      : 'text-text-secondary hover:bg-bg-secondary'
+                  }`}
+                >
+                  <span className="text-lg">{item.icon}</span>
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+              
+              {/* Mobile Tools Section */}
+              <div className="border-t border-gray-600 pt-2 mt-2">
+                <div className="px-3 py-2 text-xs font-medium text-text-secondary uppercase tracking-wider">
+                  Tools
+                </div>
+                {toolsMenuItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center space-x-3 px-6 py-2 rounded-lg text-sm transition-colors ${
+                      isActive(item.href) 
+                        ? 'text-accent-main bg-accent-main/10' 
+                        : 'text-text-secondary hover:bg-bg-secondary'
+                    }`}
+                  >
+                    <span className="text-lg">{item.icon}</span>
+                    <span>{item.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
