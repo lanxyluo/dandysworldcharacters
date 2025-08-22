@@ -1105,5 +1105,67 @@ export const characters: Character[] = [
       ichor: 1450,
       research: "100% Research on Twisted Yatta"
     }
+  },
+  {
+    id: "dandy",
+    name: "Dandy",
+    fullName: "Dandy",
+    type: "lethal",
+    rarity: "legendary",
+    image: "🎭",
+    description: "The main antagonist of Dandy's World, a deadly and powerful character",
+    stats: {
+      hearts: 5,
+      skillCheck: 5,
+      movementSpeed: 5,
+      stamina: 5,
+      stealth: 5,
+      extractionSpeed: 5
+    },
+    abilities: {
+      active: {
+        name: "Hunt",
+        description: "Tracks down and eliminates Toons with increased efficiency",
+        cooldown: 30
+      },
+      passive: {
+        name: "Fear Aura",
+        description: "Creates an aura of fear that affects nearby Toons"
+      }
+    },
+    requirements: {
+      note: "Unlocked through special game events or achievements"
+    }
+  },
+  {
+    id: "dyle",
+    name: "Dyle",
+    fullName: "Dyle",
+    type: "lethal",
+    rarity: "legendary",
+    image: "👹",
+    description: "A powerful and dangerous character in Dandy's World",
+    stats: {
+      hearts: 4,
+      skillCheck: 4,
+      movementSpeed: 4,
+      stamina: 4,
+      stealth: 4,
+      extractionSpeed: 4
+    },
+    abilities: {
+      active: {
+        name: "Terrorize",
+        description: "Instills fear in nearby Toons, reducing their effectiveness",
+        cooldown: 45
+      },
+      passive: {
+        name: "Dark Presence",
+        description: "Makes the environment more dangerous for Toons"
+      }
+    },
+    requirements: {
+      note: "Unlocked through special game events or achievements"
+    }
   }
 ];

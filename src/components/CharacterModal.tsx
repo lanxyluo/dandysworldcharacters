@@ -14,28 +14,33 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, isOpen, onCl
     return stat.replace(/([A-Z])/g, ' $1').trim();
   };
 
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'main':
+        return 'text-rainbow-3';
+      case 'lethal':
+        return 'text-red-400';
+      default:
+        return 'text-text-secondary';
+    }
+  };
+
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75"
-      onClick={onClose}
-    >
-      <div 
-        className="glass-effect rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="p-8">
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+      <div className="bg-bg-card border border-gray-600 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="text-3xl font-bold mb-2">{character.fullName}</h2>
-              <p className="text-text-secondary capitalize">{character.type} Character • {character.rarity}</p>
+              <h2 className="text-3xl font-bold mb-2">{character.name}</h2>
+              <p className={`text-lg ${getTypeColor(character.type)} capitalize`}>
+                {character.type} • {character.rarity}
+              </p>
             </div>
-            <button 
+            <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-white text-2xl font-bold"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
+              ×
             </button>
           </div>
           
@@ -65,64 +70,48 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, isOpen, onCl
             </div>
             
             <div className="space-y-6">
-              {character.abilities.active && (
-                <div className="bg-bg-secondary rounded-lg p-6">
-                  <h3 className="text-xl font-bold mb-3 text-rainbow-3">Active Ability</h3>
-                  <h4 className="font-semibold mb-2">{character.abilities.active.name}</h4>
-                  <p className="text-text-secondary mb-3">{character.abilities.active.description}</p>
-                  <div className="flex items-center space-x-2 text-sm">
-                    <span className="text-accent-main">⏱️ Cooldown:</span>
-                    <span>{character.abilities.active.cooldown}s</span>
+              <div className="bg-bg-secondary rounded-lg p-6">
+                <h3 className="text-xl font-bold mb-4">Abilities</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-accent-main mb-2">
+                      {character.abilities.active.name} (Active)
+                    </h4>
+                    <p className="text-text-secondary mb-2">{character.abilities.active.description}</p>
+                    <p className="text-sm text-gray-400">Cooldown: {character.abilities.active.cooldown}s</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-accent-main mb-2">
+                      {character.abilities.passive.name} (Passive)
+                    </h4>
+                    <p className="text-text-secondary">{character.abilities.passive.description}</p>
                   </div>
                 </div>
-              )}
-              
-              {character.abilities.passive && (
-                <div className="bg-bg-secondary rounded-lg p-6">
-                  <h3 className="text-xl font-bold mb-3 text-rainbow-4">Passive Ability</h3>
-                  <h4 className="font-semibold mb-2">{character.abilities.passive.name}</h4>
-                  <p className="text-text-secondary">{character.abilities.passive.description}</p>
-                </div>
-              )}
+              </div>
               
               <div className="bg-bg-secondary rounded-lg p-6">
-                <h3 className="text-xl font-bold mb-4 text-rainbow-2">Unlock Requirements</h3>
+                <h3 className="text-xl font-bold mb-4">Requirements</h3>
                 <div className="space-y-2">
                   {character.requirements.ichor && (
-                    <div className="flex items-center space-x-2">
-                      <span className="text-accent-main">💰</span>
-                      <span>{character.requirements.ichor.toLocaleString()} Ichor</span>
-                    </div>
+                    <p><span className="font-semibold">Ichor:</span> {character.requirements.ichor}</p>
                   )}
                   {character.requirements.ornaments && (
-                    <div className="flex items-center space-x-2">
-                      <span className="text-rainbow-2">🎄</span>
-                      <span>{character.requirements.ornaments.toLocaleString()} Ornaments</span>
-                    </div>
+                    <p><span className="font-semibold">Ornaments:</span> {character.requirements.ornaments}</p>
+                  )}
+                  {character.requirements.baskets && (
+                    <p><span className="font-semibold">Baskets:</span> {character.requirements.baskets}</p>
                   )}
                   {character.requirements.research && (
-                    <div className="flex items-center space-x-2">
-                      <span className="text-rainbow-3">🔬</span>
-                      <span>{character.requirements.research}</span>
-                    </div>
+                    <p><span className="font-semibold">Research:</span> {character.requirements.research}</p>
                   )}
                   {character.requirements.mastery && (
-                    <div className="flex items-center space-x-2">
-                      <span className="text-rainbow-4">⭐</span>
-                      <span>{character.requirements.mastery}</span>
-                    </div>
+                    <p><span className="font-semibold">Mastery:</span> {character.requirements.mastery}</p>
                   )}
-                  {character.requirements.other && character.requirements.other.map((req: string, index: number) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <span className="text-rainbow-5">❗</span>
-                      <span>{req}</span>
-                    </div>
+                  {character.requirements.other && character.requirements.other.map((req, index) => (
+                    <p key={index}><span className="font-semibold">Other:</span> {req}</p>
                   ))}
                   {character.requirements.note && (
-                    <div className="flex items-center space-x-2">
-                      <span className="text-rainbow-1">ℹ️</span>
-                      <span>{character.requirements.note}</span>
-                    </div>
+                    <p className="text-yellow-400 italic">{character.requirements.note}</p>
                   )}
                 </div>
               </div>

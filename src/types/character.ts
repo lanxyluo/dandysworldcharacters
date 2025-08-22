@@ -2,7 +2,7 @@ export interface Character {
   id: string;
   name: string;
   fullName: string;
-  type: 'main' | 'regular' | 'event';
+  type: 'main' | 'regular' | 'event' | 'lethal';
   rarity: 'common' | 'legendary';
   image: string;
   description: string;

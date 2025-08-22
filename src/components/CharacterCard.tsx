@@ -8,7 +8,14 @@ interface CharacterCardProps {
 
 const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => {
   const isMain = character.type === 'main';
-  const cardClass = isMain ? 'rainbow-border' : 'bg-bg-card border border-gray-600';
+  const isLethal = character.type === 'lethal';
+  
+  let cardClass = 'bg-bg-card border border-gray-600';
+  if (isMain) {
+    cardClass = 'rainbow-border';
+  } else if (isLethal) {
+    cardClass = 'bg-red-900 border-red-600';
+  }
   
   const formatStatName = (stat: string) => {
     return stat.replace(/([A-Z])/g, ' $1').trim();
@@ -48,7 +55,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
       ) : (
         <div className="p-6">
           <div className="text-center">
-            <div className="text-6xl mb-4 animate-float">{character.image}</div>
+            <div className="text-6xl mb-4">{character.image}</div>
             <h3 className="text-xl font-bold mb-2">{character.name}</h3>
             <p className="text-sm text-text-secondary mb-4 capitalize">{character.type} • {character.rarity}</p>
             
@@ -66,7 +73,11 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
               ))}
             </div>
             
-            <button className="w-full bg-accent-main hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors">
+            <button className={`w-full py-2 px-4 rounded-lg transition-colors ${
+              isLethal 
+                ? 'bg-red-600 hover:bg-red-700 text-white' 
+                : 'bg-accent-main hover:bg-blue-600 text-white'
+            }`}>
               View Details
             </button>
           </div>

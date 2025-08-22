@@ -20,7 +20,7 @@ const HeroSection: React.FC = () => {
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
           <div className="glass-effect px-8 py-4 rounded-xl min-w-[160px]">
-            <div className="text-3xl font-bold text-accent-main mb-1">34+</div>
+            <div className="text-3xl font-bold text-accent-main mb-1">36+</div>
             <div className="text-text-secondary text-sm">Total Characters</div>
           </div>
           <div className="glass-effect px-8 py-4 rounded-xl min-w-[160px]">
