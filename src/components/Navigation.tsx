@@ -125,7 +125,6 @@ const Navigation: React.FC = () => {
               );
                         })}
           </div>
-          </div>
           
           {/* Mobile Menu Button */}
           <button 
