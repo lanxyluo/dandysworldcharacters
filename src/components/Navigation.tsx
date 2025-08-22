@@ -18,6 +18,7 @@ const Navigation: React.FC = () => {
     { name: 'Characters', href: '/', icon: '👥' },
     { name: 'Compare', href: '/compare', icon: '⚖️' },
     { name: 'Calculator', href: '/calculator', icon: '🧮' },
+    { name: 'Tools', href: '#', icon: '🔧' },
     { name: 'Guides', href: '/guides/game-mechanics', icon: '📚' }
   ];
 
@@ -57,67 +58,73 @@ const Navigation: React.FC = () => {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            {mainMenuItems.map((item) => (
-              <Link 
-                key={item.name}
-                to={item.href} 
-                className={`flex items-center space-x-2 hover:text-accent-main transition-colors ${
-                  isActive(item.href) ? 'text-accent-main' : ''
-                } ${
-                  item.name === 'Calculator' 
-                    ? 'hover:text-purple-300 hover:scale-105 transform transition-all duration-200' 
-                    : ''
-                }`}
-              >
-                <span className={`text-lg ${item.name === 'Calculator' ? 'animate-pulse' : ''}`}>
-                  {item.icon}
-                </span>
-                <span>{item.name}</span>
-              </Link>
-            ))}
-            
-            {/* Tools Dropdown */}
-            <div className="relative">
-              <button
-                onClick={toggleTools}
-                onBlur={() => setTimeout(closeTools, 150)}
-                className={`flex items-center space-x-2 hover:text-accent-main transition-colors ${
-                  isToolsActive() ? 'text-accent-main' : ''
-                }`}
-              >
-                <span className="text-lg">🔧</span>
-                <span>Tools</span>
-                <svg 
-                  className={`w-4 h-4 transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </button>
-              
-              {/* Dropdown Menu */}
-              {isToolsOpen && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-bg-card border border-gray-600 rounded-lg shadow-xl z-50">
-                  <div className="py-2">
-                    {toolsMenuItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        onClick={closeTools}
-                        className={`flex items-center space-x-3 px-4 py-2 text-sm hover:bg-bg-secondary transition-colors ${
-                          isActive(item.href) ? 'text-accent-main bg-accent-main/10' : 'text-text-secondary'
-                        }`}
+            {mainMenuItems.map((item) => {
+              if (item.name === 'Tools') {
+                return (
+                  <div key={item.name} className="relative">
+                    <button
+                      onClick={toggleTools}
+                      onBlur={() => setTimeout(closeTools, 150)}
+                      className={`flex items-center space-x-2 hover:text-accent-main transition-colors ${
+                        isToolsActive() ? 'text-accent-main' : ''
+                      }`}
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span>{item.name}</span>
+                      <svg 
+                        className={`w-4 h-4 transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
                       >
-                        <span className="text-lg">{item.icon}</span>
-                        <span>{item.name}</span>
-                      </Link>
-                    ))}
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </button>
+                    
+                    {/* Dropdown Menu */}
+                    {isToolsOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-48 bg-bg-card border border-gray-600 rounded-lg shadow-xl z-50">
+                        <div className="py-2">
+                          {toolsMenuItems.map((toolItem) => (
+                            <Link
+                              key={toolItem.name}
+                              to={toolItem.href}
+                              onClick={closeTools}
+                              className={`flex items-center space-x-3 px-4 py-2 text-sm hover:bg-bg-secondary transition-colors ${
+                                isActive(toolItem.href) ? 'text-accent-main bg-accent-main/10' : 'text-text-secondary'
+                              }`}
+                            >
+                              <span className="text-lg">{toolItem.icon}</span>
+                              <span>{toolItem.name}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              )}
-            </div>
+                );
+              }
+              
+              return (
+                <Link 
+                  key={item.name}
+                  to={item.href} 
+                  className={`flex items-center space-x-2 hover:text-accent-main transition-colors ${
+                    isActive(item.href) ? 'text-accent-main' : ''
+                  } ${
+                    item.name === 'Calculator' 
+                      ? 'hover:text-purple-300 hover:scale-105 transform transition-all duration-200' 
+                      : ''
+                  }`}
+                >
+                  <span className={`text-lg ${item.name === 'Calculator' ? 'animate-pulse' : ''}`}>
+                    {item.icon}
+                  </span>
+                  <span>{item.name}</span>
+                </Link>
+              );
+                        })}
+          </div>
           </div>
           
           {/* Mobile Menu Button */}
@@ -135,33 +142,38 @@ const Navigation: React.FC = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-gray-600 bg-bg-card">
             <div className="px-4 py-2 space-y-1">
-              {mainMenuItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    isActive(item.href) 
-                      ? 'text-accent-main bg-accent-main/10' 
-                      : 'text-text-secondary hover:bg-bg-secondary'
-                  }`}
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-              
-              {/* Mobile Tools Section */}
-              <div className="border-t border-gray-600 pt-2 mt-2">
-                <div className="px-3 py-2 text-xs font-medium text-text-secondary uppercase tracking-wider">
-                  Tools
-                </div>
-                {toolsMenuItems.map((item) => (
+              {mainMenuItems.map((item) => {
+                if (item.name === 'Tools') {
+                  return (
+                    <div key={item.name}>
+                      <div className="px-3 py-2 text-xs font-medium text-text-secondary uppercase tracking-wider">
+                        Tools
+                      </div>
+                      {toolsMenuItems.map((toolItem) => (
+                        <Link
+                          key={toolItem.name}
+                          to={toolItem.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={`flex items-center space-x-3 px-6 py-2 rounded-lg text-sm transition-colors ${
+                            isActive(toolItem.href) 
+                              ? 'text-accent-main bg-accent-main/10' 
+                              : 'text-text-secondary hover:bg-bg-secondary'
+                          }`}
+                        >
+                          <span className="text-lg">{toolItem.icon}</span>
+                          <span>{toolItem.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  );
+                }
+                
+                return (
                   <Link
                     key={item.name}
                     to={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center space-x-3 px-6 py-2 rounded-lg text-sm transition-colors ${
+                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                       isActive(item.href) 
                         ? 'text-accent-main bg-accent-main/10' 
                         : 'text-text-secondary hover:bg-bg-secondary'
@@ -170,8 +182,8 @@ const Navigation: React.FC = () => {
                     <span className="text-lg">{item.icon}</span>
                     <span>{item.name}</span>
                   </Link>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </div>
         )}

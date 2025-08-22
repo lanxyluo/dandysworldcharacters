@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { UserProgress, loadUserProgress, updateUserProgress } from '../../utils/storage';
 
 interface Character {
@@ -13,7 +13,7 @@ interface Character {
   priority: number; // 1-5, 5为最高优先级
 }
 
-// 角色优先级数据 - 基于真实数据文件
+// 角色优先级数据 - 基于真实数据文件，移除重复项
 const characterPriorities = [
   // 最高优先级 - 免费角色和核心角色
   { name: 'Boxten', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: 'Free character, increases extraction speed' },
@@ -57,7 +57,6 @@ const characterPriorities = [
   { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 2, reason: 'Shell shield, spiral defense, protection ability' },
   
   // 最低优先级 - 收藏和挑战角色
-  { name: 'Shrimpo', ichorCost: 50, type: 'regular', rarity: 'uncommon', priority: 1, reason: 'Weakest character, collection purpose, challenge gameplay' },
   { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: 'Christmas limited, collection value' },
   { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: 'Easter limited, collection value' }
 ];
@@ -74,7 +73,6 @@ const UnlockOptimizer: React.FC = () => {
   const [currentIchor, setCurrentIchor] = useState(500);
   const [ownedCharacters, setOwnedCharacters] = useState<string[]>([]);
   const [recommendation, setRecommendation] = useState<UnlockRecommendation | null>(null);
-  const [lastSaved, setLastSaved] = useState<string>('');
   const [filterType, setFilterType] = useState<string | null>(null);
 
   // 加载保存的用户进度
@@ -83,28 +81,19 @@ const UnlockOptimizer: React.FC = () => {
     if (savedProgress) {
       setCurrentIchor(savedProgress.currentIchor);
       setOwnedCharacters(savedProgress.ownedCharacters);
-      setLastSaved(savedProgress.lastUpdated);
     }
   }, []);
 
-  // 自动保存用户进度
-  const saveProgress = () => {
+  // 手动保存进度
+  const saveProgress = useCallback(() => {
     const progress: UserProgress = {
       ownedCharacters,
       currentIchor,
-      researchProgress: {}, // 这个组件不需要研究进度
+      researchProgress: {},
       lastUpdated: new Date().toISOString()
     };
     updateUserProgress(progress, progress);
-    setLastSaved(progress.lastUpdated);
-  };
-
-  // 当数据变化时自动保存
-  useEffect(() => {
-    if (lastSaved) { // 避免初始加载时保存
-      saveProgress();
-    }
-  }, [currentIchor, ownedCharacters]);
+  }, [ownedCharacters, currentIchor]);
 
   // 推荐算法逻辑
   const getUnlockRecommendation = (currentIchor: number, ownedCharacters: string[]): UnlockRecommendation => {
@@ -141,11 +130,14 @@ const UnlockOptimizer: React.FC = () => {
   };
 
   const toggleCharacterOwnership = (characterName: string) => {
-    setOwnedCharacters(prev => 
-      prev.includes(characterName) 
+    console.log('Toggling character:', characterName, 'Current owned:', ownedCharacters); // 调试日志
+    setOwnedCharacters(prev => {
+      const newOwned = prev.includes(characterName) 
         ? prev.filter(name => name !== characterName)
-        : [...prev, characterName]
-    );
+        : [...prev, characterName];
+      console.log('New owned characters:', newOwned); // 调试日志
+      return newOwned;
+    });
   };
 
   const getPriorityColor = (priority: number) => {
@@ -166,20 +158,34 @@ const UnlockOptimizer: React.FC = () => {
 
   // 获取筛选后的角色列表
   const getFilteredCharacters = () => {
+    console.log('Filter type:', filterType); // 调试日志
     if (!filterType || filterType === 'all') {
       return characterPriorities;
     }
-    return characterPriorities.filter(char => char.type === filterType);
+    const filtered = characterPriorities.filter(char => char.type === filterType);
+    console.log('Filtered characters:', filtered.length); // 调试日志
+    return filtered;
   };
 
   // 处理筛选类型变化
   const handleFilterChange = (type: string) => {
+    console.log('Changing filter to:', type); // 调试日志
     if (type === 'all') {
       setFilterType(null);
     } else {
       setFilterType(type);
     }
+    console.log('New filter type:', type === 'all' ? null : type); // 调试日志
   };
+
+  // 调试：显示当前状态
+  useEffect(() => {
+    console.log('Current state:', {
+      filterType,
+      ownedCharacters: ownedCharacters.length,
+      currentIchor
+    });
+  }, [filterType, ownedCharacters, currentIchor]);
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -220,14 +226,19 @@ const UnlockOptimizer: React.FC = () => {
         </div>
         
         {/* 保存状态指示器 */}
-        {lastSaved && (
-          <div className="text-center mb-4">
-            <span className="text-xs text-text-secondary">
-              Last saved: {new Date(lastSaved).toLocaleString()}
-            </span>
-          </div>
-        )}
+        {/* Removed lastSaved state, so this section is removed */}
         
+        {/* 调试面板 */}
+        <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-4 mb-4">
+          <h4 className="font-medium text-yellow-800 mb-2">Debug Info:</h4>
+          <div className="text-xs text-yellow-700 space-y-1">
+            <div>Filter Type: {filterType || 'all'}</div>
+            <div>Owned Characters: {ownedCharacters.length}</div>
+            <div>Filtered Characters: {getFilteredCharacters().length}</div>
+            <div>Current Ichor: {currentIchor}</div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* 左侧：输入配置 */}
           <div className="space-y-6">
@@ -296,6 +307,12 @@ const UnlockOptimizer: React.FC = () => {
                     className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors"
                   >
                     Clear All
+                  </button>
+                  <button
+                    onClick={saveProgress}
+                    className="px-3 py-1 bg-blue-600 text-white rounded text-xs font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    Save Progress
                   </button>
                 </div>
               </div>
