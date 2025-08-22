@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserProgress, loadUserProgress, updateUserProgress } from '../../utils/storage';
+import { twistedCharacters } from '../../data/twisted-characters';
 
 // 组件数据结构
 interface ResearchData {
@@ -39,14 +40,8 @@ const ResearchCalculator: React.FC = () => {
   const [result, setResult] = useState<any>(null);
   const [lastSaved, setLastSaved] = useState<string>('');
 
-  // 模拟角色数据 - 实际应该从数据库获取
-  const twistedCharacters = [
-    'Twisted Alice',
-    'Twisted Bob',
-    'Twisted Charlie',
-    'Twisted Diana',
-    'Twisted Edward'
-  ];
+  // 从真实数据获取Twisted角色列表
+  const twistedCharacterNames = twistedCharacters.map(char => char.name);
 
   // 加载保存的用户进度
   useEffect(() => {
@@ -132,7 +127,7 @@ const ResearchCalculator: React.FC = () => {
                 className="w-full px-4 py-3 bg-bg-secondary border border-gray-600 rounded-lg text-text-primary focus:ring-2 focus:ring-accent-main focus:border-transparent"
               >
                 <option value="">Select a character...</option>
-                {twistedCharacters.map((char) => (
+                {twistedCharacterNames.map((char) => (
                   <option key={char} value={char}>{char}</option>
                 ))}
               </select>

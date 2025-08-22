@@ -5,36 +5,63 @@ interface Character {
   id: string;
   name: string;
   ichorCost: number;
-  type: 'common' | 'uncommon' | 'rare' | 'main';
+  type: 'main' | 'toon' | 'regular' | 'event' | 'lethal';
+  rarity: 'common' | 'uncommon' | 'rare' | 'legendary';
   abilities: string[];
   researchBonus?: number; // Rodger特有
   unlockRequirements?: string[];
   priority: number; // 1-5, 5为最高优先级
 }
 
-// 角色优先级数据
+// 角色优先级数据 - 基于真实数据文件
 const characterPriorities = [
-  // 最高优先级 - 必须早期解锁
-  { name: 'Rodger', ichorCost: 1000, priority: 5, reason: '2x research speed, essential for unlocking others' },
-  { name: 'Poppy', ichorCost: 100, priority: 5, reason: 'Cheap starter with speed boost' },
+  // 最高优先级 - 免费角色和核心角色
+  { name: 'Boxten', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: '免费角色，提升提取速度' },
+  { name: 'Poppy', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: '免费角色，移动速度提升' },
   
-  // 高优先级 - 主角色
-  { name: 'Astro', ichorCost: 3000, priority: 4, reason: 'Main character with unique abilities' },
-  { name: 'Vee', ichorCost: 4000, priority: 4, reason: 'Main character, requires Dandy run' },
-  { name: 'Pebble', ichorCost: 4000, priority: 4, reason: 'Main character, high difficulty' },
-  { name: 'Shelly', ichorCost: 3500, priority: 4, reason: 'Fast main character' },
+  // 高优先级 - 主角色 (Legendary)
+  { name: 'Astro', ichorCost: 5000, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，最大潜行能力，恢复队友体力' },
+  { name: 'Vee', ichorCost: 4500, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，高亮Twisted，标记未完成机器' },
+  { name: 'Pebble', ichorCost: 3750, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，最大移动速度，嗅探物品' },
+  { name: 'Shelly', ichorCost: 4250, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，快速移动，团队激励' },
+  { name: 'Sprout', ichorCost: 4500, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，烘焙能力，专注细节' },
+  { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 4, reason: '主角色，圣诞限定，隐身能力' },
+  { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 4, reason: '主角色，复活节限定，团队分享' },
   
-  // 中等优先级 - 实用角色
-  { name: 'Goob', ichorCost: 1200, priority: 3, reason: 'Pull ability, good for team play' },
-  { name: 'Boxten', ichorCost: 200, priority: 3, reason: 'Fast machine completion' },
-  { name: 'Tisha', ichorCost: 350, priority: 3, reason: 'Movement speed and cleaning' },
+  // 高优先级 - 实用角色
+  { name: 'Rodger', ichorCost: 1200, type: 'regular', rarity: 'rare', priority: 5, reason: '2倍研究速度，解锁其他角色的关键' },
+  { name: 'Cosmo', ichorCost: 750, type: 'regular', rarity: 'uncommon', priority: 4, reason: '糖分冲刺，甜香气息，性价比高' },
+  { name: 'Tisha', ichorCost: 500, type: 'regular', rarity: 'uncommon', priority: 4, reason: '清理负面状态，自动拾取物品' },
+  { name: 'Brightney', ichorCost: 1000, type: 'regular', rarity: 'uncommon', priority: 4, reason: '光源，揭示Twisted，黑暗区域视野' },
   
-  // 较低优先级 - 特殊用途
-  { name: 'Brightney', ichorCost: 800, priority: 2, reason: 'Light source, specific maps' },
-  { name: 'Scraps', ichorCost: 1500, priority: 2, reason: 'Ranged attack, advanced players' },
+  // 中等优先级 - 战斗和实用角色
+  { name: 'Shrimpo', ichorCost: 50, type: 'regular', rarity: 'uncommon', priority: 3, reason: '最便宜角色，愤怒模式，单独时提取速度提升' },
+  { name: 'Goob', ichorCost: 800, type: 'regular', rarity: 'uncommon', priority: 3, reason: '熊抱保护，团队支持，体力恢复' },
+  { name: 'Finn', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: '章鱼角色，多任务处理，拉拽能力' },
+  { name: 'Toodles', ichorCost: 1250, type: 'regular', rarity: 'common', priority: 3, reason: '8球角色，隐身加速，团队速度提升' },
+  { name: 'Gigi', ichorCost: 1350, type: 'regular', rarity: 'rare', priority: 3, reason: '扭蛋角色，随机奖励，幸运抽奖' },
+  { name: 'Glisten', ichorCost: 2300, type: 'regular', rarity: 'rare', priority: 3, reason: '反光能力，虚荣心，特殊机制' },
   
-  // 最低优先级 - 收藏用途
-  { name: 'Shrimpo', ichorCost: 50, priority: 1, reason: 'Meme character, very weak' }
+  // 中等优先级 - 特殊用途角色
+  { name: 'Scraps', ichorCost: 1750, type: 'regular', rarity: 'rare', priority: 3, reason: '远程攻击，资源利用，高级玩家' },
+  { name: 'Teagan', ichorCost: 1100, type: 'regular', rarity: 'uncommon', priority: 3, reason: '茶时间，安抚存在，团队支持' },
+  { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 3, reason: '双角色，位置交换，双重性质' },
+  { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 3, reason: '贝壳护盾，螺旋防御，保护能力' },
+  { name: 'Flutter', ichorCost: 600, type: 'regular', rarity: 'common', priority: 3, reason: '蝴蝶角色，优雅飞行，移动能力' },
+  { name: 'Looey', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: '气球角色，爆炸能力，放气机制' },
+  
+  // 较低优先级 - 特殊角色
+  { name: 'Gigi', ichorCost: 1350, type: 'regular', rarity: 'rare', priority: 2, reason: '扭蛋角色，随机奖励，幸运抽奖' },
+  { name: 'Glisten', ichorCost: 2300, type: 'regular', rarity: 'rare', priority: 2, reason: '反光能力，虚荣心，特殊机制' },
+  { name: 'Scraps', ichorCost: 1750, type: 'regular', rarity: 'rare', priority: 2, reason: '远程攻击，资源利用，高级玩家' },
+  { name: 'Teagan', ichorCost: 1100, type: 'regular', rarity: 'uncommon', priority: 2, reason: '茶时间，安抚存在，团队支持' },
+  { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 2, reason: '双角色，位置交换，双重性质' },
+  { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 2, reason: '贝壳护盾，螺旋防御，保护能力' },
+  
+  // 最低优先级 - 收藏和挑战角色
+  { name: 'Shrimpo', ichorCost: 50, type: 'regular', rarity: 'uncommon', priority: 1, reason: '最弱角色，收藏用途，挑战玩法' },
+  { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: '圣诞限定，收藏价值' },
+  { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: '复活节限定，收藏价值' }
 ];
 
 interface UnlockRecommendation {
@@ -50,6 +77,7 @@ const UnlockOptimizer: React.FC = () => {
   const [ownedCharacters, setOwnedCharacters] = useState<string[]>([]);
   const [recommendation, setRecommendation] = useState<UnlockRecommendation | null>(null);
   const [lastSaved, setLastSaved] = useState<string>('');
+  const [filterType, setFilterType] = useState<string | null>(null);
 
   // 加载保存的用户进度
   useEffect(() => {
@@ -145,6 +173,37 @@ const UnlockOptimizer: React.FC = () => {
           Unlock Optimizer
         </h2>
         
+        {/* 统计信息 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-bg-secondary rounded-lg p-4 text-center">
+            <div className="text-2xl font-bold text-accent-main">
+              {characterPriorities.length}
+            </div>
+            <div className="text-sm text-text-secondary">Total Characters</div>
+          </div>
+          <div className="bg-bg-secondary rounded-lg p-4 text-center">
+            <div className="text-2xl font-bold text-green-500">
+              {ownedCharacters.length}
+            </div>
+            <div className="text-sm text-text-secondary">Owned</div>
+          </div>
+          <div className="bg-bg-secondary rounded-lg p-4 text-center">
+            <div className="text-2xl font-bold text-blue-500">
+              {characterPriorities.length - ownedCharacters.length}
+            </div>
+            <div className="text-sm text-text-secondary">Remaining</div>
+          </div>
+          <div className="bg-bg-secondary rounded-lg p-4 text-center">
+            <div className="text-2xl font-bold text-yellow-500">
+              {characterPriorities
+                .filter(char => !ownedCharacters.includes(char.name))
+                .reduce((sum, char) => sum + char.ichorCost, 0)
+                .toLocaleString()}
+            </div>
+            <div className="text-sm text-text-secondary">Total Cost</div>
+          </div>
+        </div>
+        
         {/* 保存状态指示器 */}
         {lastSaved && (
           <div className="text-center mb-4">
@@ -181,18 +240,70 @@ const UnlockOptimizer: React.FC = () => {
             {/* 已拥有角色 */}
             <div>
               <h3 className="text-lg font-semibold text-text-primary mb-3">Owned Characters</h3>
+              
+              {/* 角色类型过滤器 */}
+              <div className="mb-3">
+                <div className="text-sm text-text-secondary mb-2">Filter by type:</div>
+                <div className="flex flex-wrap gap-2">
+                  {['all', 'main', 'toon', 'regular', 'event', 'lethal'].map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setFilterType(type === 'all' ? null : type)}
+                      className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                        filterType === (type === 'all' ? null : type)
+                          ? 'bg-accent-main text-white'
+                          : 'bg-bg-secondary text-text-secondary hover:bg-bg-card'
+                      }`}
+                    >
+                      {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* 快速操作按钮 */}
+              <div className="mb-3">
+                <div className="text-sm text-text-secondary mb-2">Quick actions:</div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => {
+                      const freeCharacters = characterPriorities
+                        .filter(char => char.ichorCost === 0)
+                        .map(char => char.name);
+                      setOwnedCharacters(prev => [...new Set([...prev, ...freeCharacters])]);
+                    }}
+                    className="px-3 py-1 bg-green-600 text-white rounded text-xs font-medium hover:bg-green-700 transition-colors"
+                  >
+                    Select All Free
+                  </button>
+                  <button
+                    onClick={() => setOwnedCharacters([])}
+                    className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors"
+                  >
+                    Clear All
+                  </button>
+                </div>
+              </div>
+              
               <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-                {characterPriorities.map((char) => (
-                  <label key={char.name} className="flex items-center space-x-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={ownedCharacters.includes(char.name)}
-                      onChange={() => toggleCharacterOwnership(char.name)}
-                      className="w-4 h-4 text-accent-main bg-bg-card border-gray-600 rounded"
-                    />
-                    <span className="text-sm text-text-primary">{char.name}</span>
-                  </label>
-                ))}
+                {characterPriorities
+                  .filter(char => !filterType || char.type === filterType)
+                  .map((char) => (
+                    <label key={char.name} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={ownedCharacters.includes(char.name)}
+                        onChange={() => toggleCharacterOwnership(char.name)}
+                        className="w-4 h-4 text-accent-main bg-bg-card border-gray-600 rounded"
+                      />
+                      <div className="flex flex-col">
+                        <span className="text-sm text-text-primary">{char.name}</span>
+                        <span className="text-xs text-text-secondary">
+                          {char.ichorCost === 0 ? 'Free' : `${char.ichorCost.toLocaleString()} Ichor`}
+                        </span>
+                      </div>
+                    </label>
+                  ))}
               </div>
             </div>
 
@@ -222,12 +333,29 @@ const UnlockOptimizer: React.FC = () => {
                       {recommendation.reason}
                     </div>
                   )}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-3">
                     <span className="text-lg font-semibold text-accent-main">
-                      {recommendation.target.ichorCost.toLocaleString()} Ichor
+                      {recommendation.target.ichorCost === 0 ? 'Free' : `${recommendation.target.ichorCost.toLocaleString()} Ichor`}
                     </span>
                     <span className={`px-3 py-1 rounded text-sm font-medium text-white ${getPriorityColor(recommendation.target.priority)}`}>
                       {getPriorityText(recommendation.target.priority)}
+                    </span>
+                  </div>
+                  <div className="flex space-x-2 text-sm">
+                    <span className={`px-2 py-1 rounded text-white ${
+                      recommendation.target.type === 'main' ? 'bg-purple-600' :
+                      recommendation.target.type === 'toon' ? 'bg-blue-600' :
+                      recommendation.target.type === 'event' ? 'bg-green-600' :
+                      recommendation.target.type === 'lethal' ? 'bg-red-600' : 'bg-gray-600'
+                    }`}>
+                      {recommendation.target.type}
+                    </span>
+                    <span className={`px-2 py-1 rounded text-white ${
+                      recommendation.target.rarity === 'legendary' ? 'bg-yellow-600' :
+                      recommendation.target.rarity === 'rare' ? 'bg-purple-600' :
+                      recommendation.target.rarity === 'uncommon' ? 'bg-blue-600' : 'bg-gray-600'
+                    }`}>
+                      {recommendation.target.rarity}
                     </span>
                   </div>
                 </div>
@@ -240,12 +368,35 @@ const UnlockOptimizer: React.FC = () => {
                       {recommendation.alternatives.map((char, index) => (
                         <div key={index} className="flex justify-between items-center bg-bg-card rounded-lg p-3">
                           <div className="flex items-center space-x-3">
-                            <span className="text-text-primary">{char.name}</span>
+                            <div className="flex flex-col">
+                              <span className="text-text-primary font-medium">{char.name}</span>
+                              <div className="flex space-x-2 text-xs">
+                                <span className={`px-2 py-1 rounded text-white ${
+                                  char.type === 'main' ? 'bg-purple-600' :
+                                  char.type === 'toon' ? 'bg-blue-600' :
+                                  char.type === 'event' ? 'bg-green-600' :
+                                  char.type === 'lethal' ? 'bg-red-600' : 'bg-gray-600'
+                                }`}>
+                                  {char.type}
+                                </span>
+                                <span className={`px-2 py-1 rounded text-white ${
+                                  char.rarity === 'legendary' ? 'bg-yellow-600' :
+                                  char.rarity === 'rare' ? 'bg-purple-600' :
+                                  char.rarity === 'uncommon' ? 'bg-blue-600' : 'bg-gray-600'
+                                }`}>
+                                  {char.rarity}
+                                </span>
+                              </div>
+                            </div>
                             <span className={`px-2 py-1 rounded text-xs font-medium text-white ${getPriorityColor(char.priority)}`}>
                               {getPriorityText(char.priority)}
                             </span>
                           </div>
-                          <span className="text-text-secondary">{char.ichorCost.toLocaleString()}</span>
+                          <div className="text-right">
+                            <div className="text-text-secondary font-medium">
+                              {char.ichorCost === 0 ? 'Free' : `${char.ichorCost.toLocaleString()} Ichor`}
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -264,14 +415,35 @@ const UnlockOptimizer: React.FC = () => {
                             <span className="w-6 h-6 bg-accent-main text-white rounded-full flex items-center justify-center text-sm font-bold">
                               {index + 1}
                             </span>
-                            <span className="text-text-primary">{char.name}</span>
+                            <div className="flex flex-col">
+                              <span className="text-text-primary font-medium">{char.name}</span>
+                              <div className="flex space-x-2 text-xs">
+                                <span className={`px-2 py-1 rounded text-white ${
+                                  char.type === 'main' ? 'bg-purple-600' :
+                                  char.type === 'toon' ? 'bg-blue-600' :
+                                  char.type === 'event' ? 'bg-green-600' :
+                                  char.type === 'lethal' ? 'bg-red-600' : 'bg-gray-600'
+                                }`}>
+                                  {char.type}
+                                </span>
+                                <span className={`px-2 py-1 rounded text-white ${
+                                  char.rarity === 'legendary' ? 'bg-yellow-600' :
+                                  char.rarity === 'rare' ? 'bg-purple-600' :
+                                  char.rarity === 'uncommon' ? 'bg-blue-600' : 'bg-gray-600'
+                                }`}>
+                                  {char.rarity}
+                                </span>
+                              </div>
+                            </div>
                             <span className={`px-2 py-1 rounded text-xs font-medium text-white ${getPriorityColor(char.priority)}`}>
                               {getPriorityText(char.priority)}
                             </span>
                           </div>
                           <div className="text-right">
-                            <div className="text-text-secondary">{char.ichorCost.toLocaleString()}</div>
-                            <div className="text-xs text-text-secondary">{char.reason}</div>
+                            <div className="text-text-secondary font-medium">
+                              {char.ichorCost === 0 ? 'Free' : `${char.ichorCost.toLocaleString()} Ichor`}
+                            </div>
+                            <div className="text-xs text-text-secondary max-w-32">{char.reason}</div>
                           </div>
                         </div>
                       ))}
