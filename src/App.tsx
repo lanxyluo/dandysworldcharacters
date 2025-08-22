@@ -33,7 +33,7 @@ function App() {
           <Route path="/guides/floor-progression" element={<FloorProgressionGuide />} />
           <Route path="/guides/team-strategies" element={<TeamStrategiesGuide />} />
           <Route path="/guides/beginner-tips" element={<BeginnerTipsGuide />} />
-          <Route path="/trinket-guide" element={<TrinketOptimizer />} />
+          <Route path="/trinket-optimizer" element={<TrinketOptimizer />} />
           <Route path="/twisted-guide" element={<TwistedGuidePage />} />
           <Route path="/floor-predictor" element={<FloorPredictor />} />
         </Routes>
