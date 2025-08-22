@@ -16,52 +16,50 @@ interface Character {
 // 角色优先级数据 - 基于真实数据文件
 const characterPriorities = [
   // 最高优先级 - 免费角色和核心角色
-  { name: 'Boxten', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: '免费角色，提升提取速度' },
-  { name: 'Poppy', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: '免费角色，移动速度提升' },
+  { name: 'Boxten', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: 'Free character, increases extraction speed' },
+  { name: 'Poppy', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: 'Free character, movement speed boost' },
   
   // 高优先级 - 主角色 (Legendary)
-  { name: 'Astro', ichorCost: 5000, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，最大潜行能力，恢复队友体力' },
-  { name: 'Vee', ichorCost: 4500, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，高亮Twisted，标记未完成机器' },
-  { name: 'Pebble', ichorCost: 3750, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，最大移动速度，嗅探物品' },
-  { name: 'Shelly', ichorCost: 4250, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，快速移动，团队激励' },
-  { name: 'Sprout', ichorCost: 4500, type: 'main', rarity: 'legendary', priority: 5, reason: '主角色，烘焙能力，专注细节' },
-  { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 4, reason: '主角色，圣诞限定，隐身能力' },
-  { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 4, reason: '主角色，复活节限定，团队分享' },
+  { name: 'Astro', ichorCost: 5000, type: 'main', rarity: 'legendary', priority: 5, reason: 'Main character, maximum stealth ability, restores teammate stamina' },
+  { name: 'Vee', ichorCost: 4500, type: 'main', rarity: 'legendary', priority: 5, reason: 'Main character, highlights Twisted, marks incomplete machines' },
+  { name: 'Pebble', ichorCost: 3750, type: 'main', rarity: 'legendary', priority: 5, reason: 'Main character, maximum movement speed, sniffs items' },
+  { name: 'Shelly', ichorCost: 4250, type: 'main', rarity: 'legendary', priority: 5, reason: 'Main character, fast movement, team motivation' },
+  { name: 'Sprout', ichorCost: 4500, type: 'main', rarity: 'legendary', priority: 5, reason: 'Main character, baking ability, attention to detail' },
+  { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 4, reason: 'Main character, Christmas limited, invisibility ability' },
+  { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 4, reason: 'Main character, Easter limited, team sharing' },
   
   // 高优先级 - 实用角色
-  { name: 'Rodger', ichorCost: 1200, type: 'regular', rarity: 'rare', priority: 5, reason: '2倍研究速度，解锁其他角色的关键' },
-  { name: 'Cosmo', ichorCost: 750, type: 'regular', rarity: 'uncommon', priority: 4, reason: '糖分冲刺，甜香气息，性价比高' },
-  { name: 'Tisha', ichorCost: 500, type: 'regular', rarity: 'uncommon', priority: 4, reason: '清理负面状态，自动拾取物品' },
-  { name: 'Brightney', ichorCost: 1000, type: 'regular', rarity: 'uncommon', priority: 4, reason: '光源，揭示Twisted，黑暗区域视野' },
+  { name: 'Rodger', ichorCost: 1200, type: 'regular', rarity: 'rare', priority: 5, reason: '2x research speed, key to unlocking other characters' },
+  { name: 'Cosmo', ichorCost: 750, type: 'regular', rarity: 'uncommon', priority: 4, reason: 'Sugar rush, sweet scent, high cost-effectiveness' },
+  { name: 'Tisha', ichorCost: 500, type: 'regular', rarity: 'uncommon', priority: 4, reason: 'Clears negative status, auto-collects items' },
+  { name: 'Brightney', ichorCost: 1000, type: 'regular', rarity: 'uncommon', priority: 4, reason: 'Light source, reveals Twisted, dark area vision' },
   
   // 中等优先级 - 战斗和实用角色
-  { name: 'Shrimpo', ichorCost: 50, type: 'regular', rarity: 'uncommon', priority: 3, reason: '最便宜角色，愤怒模式，单独时提取速度提升' },
-  { name: 'Goob', ichorCost: 800, type: 'regular', rarity: 'uncommon', priority: 3, reason: '熊抱保护，团队支持，体力恢复' },
-  { name: 'Finn', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: '章鱼角色，多任务处理，拉拽能力' },
-  { name: 'Toodles', ichorCost: 1250, type: 'regular', rarity: 'common', priority: 3, reason: '8球角色，隐身加速，团队速度提升' },
-  { name: 'Gigi', ichorCost: 1350, type: 'regular', rarity: 'rare', priority: 3, reason: '扭蛋角色，随机奖励，幸运抽奖' },
-  { name: 'Glisten', ichorCost: 2300, type: 'regular', rarity: 'rare', priority: 3, reason: '反光能力，虚荣心，特殊机制' },
+  { name: 'Shrimpo', ichorCost: 50, type: 'regular', rarity: 'uncommon', priority: 3, reason: 'Cheapest character, rage mode, extraction speed boost when alone' },
+  { name: 'Goob', ichorCost: 800, type: 'regular', rarity: 'uncommon', priority: 3, reason: 'Bear hug protection, team support, stamina recovery' },
+  { name: 'Finn', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: 'Octopus character, multi-tasking, pulling ability' },
+  { name: 'Toodles', ichorCost: 1250, type: 'regular', rarity: 'common', priority: 3, reason: '8-ball character, invisibility acceleration, team speed boost' },
+  { name: 'Gigi', ichorCost: 1350, type: 'regular', rarity: 'rare', priority: 3, reason: 'Gachapon character, random rewards, lucky draws' },
+  { name: 'Glisten', ichorCost: 2300, type: 'regular', rarity: 'rare', priority: 3, reason: 'Reflective ability, vanity, special mechanics' },
   
   // 中等优先级 - 特殊用途角色
-  { name: 'Scraps', ichorCost: 1750, type: 'regular', rarity: 'rare', priority: 3, reason: '远程攻击，资源利用，高级玩家' },
-  { name: 'Teagan', ichorCost: 1100, type: 'regular', rarity: 'uncommon', priority: 3, reason: '茶时间，安抚存在，团队支持' },
-  { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 3, reason: '双角色，位置交换，双重性质' },
-  { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 3, reason: '贝壳护盾，螺旋防御，保护能力' },
-  { name: 'Flutter', ichorCost: 600, type: 'regular', rarity: 'common', priority: 3, reason: '蝴蝶角色，优雅飞行，移动能力' },
-  { name: 'Looey', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: '气球角色，爆炸能力，放气机制' },
+  { name: 'Scraps', ichorCost: 1750, type: 'regular', rarity: 'rare', priority: 3, reason: 'Ranged attacks, resource utilization, advanced players' },
+  { name: 'Teagan', ichorCost: 1100, type: 'regular', rarity: 'uncommon', priority: 3, reason: 'Tea time, soothes existence, team support' },
+  { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 3, reason: 'Dual character, position swap, dual nature' },
+  { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 3, reason: 'Shell shield, spiral defense, protection ability' },
+  { name: 'Flutter', ichorCost: 600, type: 'regular', rarity: 'common', priority: 3, reason: 'Butterfly character, elegant flight, movement ability' },
+  { name: 'Looey', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: 'Balloon character, explosion ability, deflation mechanics' },
   
   // 较低优先级 - 特殊角色
-  { name: 'Gigi', ichorCost: 1350, type: 'regular', rarity: 'rare', priority: 2, reason: '扭蛋角色，随机奖励，幸运抽奖' },
-  { name: 'Glisten', ichorCost: 2300, type: 'regular', rarity: 'rare', priority: 2, reason: '反光能力，虚荣心，特殊机制' },
-  { name: 'Scraps', ichorCost: 1750, type: 'regular', rarity: 'rare', priority: 2, reason: '远程攻击，资源利用，高级玩家' },
-  { name: 'Teagan', ichorCost: 1100, type: 'regular', rarity: 'uncommon', priority: 2, reason: '茶时间，安抚存在，团队支持' },
-  { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 2, reason: '双角色，位置交换，双重性质' },
-  { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 2, reason: '贝壳护盾，螺旋防御，保护能力' },
+  { name: 'Scraps', ichorCost: 1750, type: 'regular', rarity: 'rare', priority: 2, reason: 'Ranged attacks, resource utilization, advanced players' },
+  { name: 'Teagan', ichorCost: 1100, type: 'regular', rarity: 'uncommon', priority: 2, reason: 'Tea time, soothes existence, team support' },
+  { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 2, reason: 'Dual character, position swap, dual nature' },
+  { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 2, reason: 'Shell shield, spiral defense, protection ability' },
   
   // 最低优先级 - 收藏和挑战角色
-  { name: 'Shrimpo', ichorCost: 50, type: 'regular', rarity: 'uncommon', priority: 1, reason: '最弱角色，收藏用途，挑战玩法' },
-  { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: '圣诞限定，收藏价值' },
-  { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: '复活节限定，收藏价值' }
+  { name: 'Shrimpo', ichorCost: 50, type: 'regular', rarity: 'uncommon', priority: 1, reason: 'Weakest character, collection purpose, challenge gameplay' },
+  { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: 'Christmas limited, collection value' },
+  { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: 'Easter limited, collection value' }
 ];
 
 interface UnlockRecommendation {
@@ -168,18 +166,14 @@ const UnlockOptimizer: React.FC = () => {
 
   // 获取筛选后的角色列表
   const getFilteredCharacters = () => {
-    console.log('Filter type:', filterType); // 调试日志
     if (!filterType || filterType === 'all') {
       return characterPriorities;
     }
-    const filtered = characterPriorities.filter(char => char.type === filterType);
-    console.log('Filtered characters:', filtered.length); // 调试日志
-    return filtered;
+    return characterPriorities.filter(char => char.type === filterType);
   };
 
   // 处理筛选类型变化
   const handleFilterChange = (type: string) => {
-    console.log('Changing filter to:', type); // 调试日志
     if (type === 'all') {
       setFilterType(null);
     } else {
