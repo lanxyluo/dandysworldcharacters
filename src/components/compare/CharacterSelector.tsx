@@ -33,17 +33,23 @@ export default function CharacterSelector({
 
   const getTypeColor = (type: string) => {
     switch (type) {
+      case 'toon': return 'bg-gradient-to-r from-indigo-500 to-purple-500';
       case 'main': return 'bg-gradient-to-r from-purple-500 to-pink-500';
       case 'regular': return 'bg-gradient-to-r from-blue-500 to-cyan-500';
       case 'event': return 'bg-gradient-to-r from-orange-500 to-red-500';
+      case 'lethal': return 'bg-gradient-to-r from-red-600 to-black';
+      case 'twisted': return 'bg-gradient-to-r from-purple-800 to-black';
       default: return 'bg-gray-600';
     }
   };
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'text-green-400';
+      case 'common': return 'text-gray-400';
+      case 'uncommon': return 'text-green-400';
+      case 'rare': return 'text-blue-400';
       case 'legendary': return 'text-yellow-400';
+      case 'twisted': return 'text-purple-400';
       default: return 'text-gray-400';
     }
   };
@@ -107,9 +113,12 @@ export default function CharacterSelector({
             className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500"
           >
             <option value="all">All Types</option>
+            <option value="toon">Toons</option>
             <option value="main">Main Characters</option>
             <option value="regular">Regular Characters</option>
             <option value="event">Event Characters</option>
+            <option value="lethal">Lethal Characters</option>
+            <option value="twisted">Twisted Characters</option>
           </select>
         </div>
         
@@ -122,7 +131,10 @@ export default function CharacterSelector({
           >
             <option value="all">All Rarities</option>
             <option value="common">Common</option>
+            <option value="uncommon">Uncommon</option>
+            <option value="rare">Rare</option>
             <option value="legendary">Legendary</option>
+            <option value="twisted">Twisted</option>
           </select>
         </div>
       </div>
