@@ -139,9 +139,13 @@ const FloorPredictor: React.FC = () => {
 
   // Generate predictions
   const predictions = useMemo(() => {
+    console.log('Recalculating predictions:', { currentFloor, targetFloor, difficultyMode });
+    
     const floors = targetFloor ? 
       Array.from({length: targetFloor - currentFloor + 1}, (_, i) => currentFloor + i) :
       [currentFloor];
+
+    console.log('Calculating for floors:', floors);
 
     return floors.map(floor => {
       const machines = calculateMachines(floor);
@@ -252,7 +256,11 @@ const FloorPredictor: React.FC = () => {
                     min="1"
                     max="50"
                     value={currentFloor}
-                    onChange={(e) => setCurrentFloor(Math.max(1, parseInt(e.target.value) || 1))}
+                    onChange={(e) => {
+                      const newFloor = Math.max(1, parseInt(e.target.value) || 1);
+                      console.log('Setting currentFloor to:', newFloor);
+                      setCurrentFloor(newFloor);
+                    }}
                     className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Enter floor (1-50)"
                   />
@@ -268,7 +276,11 @@ const FloorPredictor: React.FC = () => {
                     min={currentFloor}
                     max="50"
                     value={targetFloor || ''}
-                    onChange={(e) => setTargetFloor(e.target.value ? parseInt(e.target.value) : null)}
+                    onChange={(e) => {
+                      const newTargetFloor = e.target.value ? parseInt(e.target.value) : null;
+                      console.log('Setting targetFloor to:', newTargetFloor);
+                      setTargetFloor(newTargetFloor);
+                    }}
                     className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Enter target floor"
                   />
@@ -281,7 +293,11 @@ const FloorPredictor: React.FC = () => {
                   </label>
                   <select
                     value={difficultyMode}
-                    onChange={(e) => setDifficultyMode(e.target.value as 'Normal' | 'Hard')}
+                    onChange={(e) => {
+                      const newDifficulty = e.target.value as 'Normal' | 'Hard';
+                      console.log('Setting difficultyMode to:', newDifficulty);
+                      setDifficultyMode(newDifficulty);
+                    }}
                     className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     <option value="Normal">Normal</option>
@@ -299,7 +315,10 @@ const FloorPredictor: React.FC = () => {
                   {quickFloorButtons.map(floor => (
                     <button
                       key={floor}
-                      onClick={() => setCurrentFloor(floor)}
+                      onClick={() => {
+                        console.log('Quick floor button clicked:', floor);
+                        setCurrentFloor(floor);
+                      }}
                       className={`px-4 py-2 rounded-lg transition-all ${
                         currentFloor === floor 
                           ? 'bg-blue-500 text-white' 
