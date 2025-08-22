@@ -1,5 +1,5 @@
 export type CharacterType = 'toon' | 'main' | 'regular' | 'event' | 'lethal' | 'twisted';
-export type Rarity = 'common' | 'uncommon' | 'rare' | 'legendary' | 'main' | 'lethal' | 'twisted';
+export type Rarity = 'common' | 'uncommon' | 'rare' | 'legendary' | 'twisted';
 
 export interface Character {
   id: string;
