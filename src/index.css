@@ -68,3 +68,74 @@ body {
 .filter-btn.active {
   @apply bg-accent-main text-white border-accent-main;
 }
+
+/* 复选框样式 */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #4B5563;
+  border-radius: 4px;
+  background-color: #1F2937;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:hover {
+  border-color: #3B82F6;
+  background-color: #374151;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #3B82F6;
+  border-color: #3B82F6;
+}
+
+input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* 滑块样式 */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: #374151;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3B82F6;
+  cursor: pointer;
+  border: 2px solid #1F2937;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3B82F6;
+  cursor: pointer;
+  border: 2px solid #1F2937;
+}

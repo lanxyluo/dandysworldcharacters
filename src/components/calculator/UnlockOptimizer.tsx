@@ -166,6 +166,14 @@ const UnlockOptimizer: React.FC = () => {
     return 'Very Low';
   };
 
+  // 获取筛选后的角色列表
+  const getFilteredCharacters = () => {
+    if (!filterType) {
+      return characterPriorities;
+    }
+    return characterPriorities.filter(char => char.type === filterType);
+  };
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="bg-bg-card rounded-lg p-8 shadow-lg">
@@ -286,24 +294,23 @@ const UnlockOptimizer: React.FC = () => {
               </div>
               
               <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-                {characterPriorities
-                  .filter(char => !filterType || char.type === filterType)
-                  .map((char) => (
-                    <label key={char.name} className="flex items-center space-x-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={ownedCharacters.includes(char.name)}
-                        onChange={() => toggleCharacterOwnership(char.name)}
-                        className="w-4 h-4 text-accent-main bg-bg-card border-gray-600 rounded"
-                      />
-                      <div className="flex flex-col">
-                        <span className="text-sm text-text-primary">{char.name}</span>
-                        <span className="text-xs text-text-secondary">
-                          {char.ichorCost === 0 ? 'Free' : `${char.ichorCost.toLocaleString()} Ichor`}
-                        </span>
-                      </div>
-                    </label>
-                  ))}
+                {getFilteredCharacters().map((char) => (
+                  <label key={char.name} className="flex items-center space-x-2 cursor-pointer hover:bg-bg-secondary p-2 rounded transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={ownedCharacters.includes(char.name)}
+                      onChange={() => toggleCharacterOwnership(char.name)}
+                      className="w-4 h-4 text-accent-main bg-bg-card border-gray-600 rounded focus:ring-2 focus:ring-accent-main focus:ring-opacity-50 cursor-pointer"
+                      style={{ accentColor: '#3B82F6' }}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-sm text-text-primary">{char.name}</span>
+                      <span className="text-xs text-text-secondary">
+                        {char.ichorCost === 0 ? 'Free' : `${char.ichorCost.toLocaleString()} Ichor`}
+                      </span>
+                    </div>
+                  </label>
+                ))}
               </div>
             </div>
 
