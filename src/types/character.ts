@@ -1,18 +1,20 @@
+export type CharacterType = 'toon' | 'main' | 'regular' | 'event' | 'lethal' | 'twisted';
+export type Rarity = 'common' | 'uncommon' | 'rare' | 'legendary' | 'main' | 'lethal' | 'twisted';
+
 export interface Character {
   id: string;
   name: string;
-  fullName: string;
-  type: 'main' | 'regular' | 'event' | 'lethal';
-  rarity: 'common' | 'legendary';
+  fullName?: string;
   image: string;
+  type: CharacterType;
+  rarity: Rarity;
   description: string;
   stats: {
-    hearts: number;
     skillCheck: number;
-    movementSpeed: number;
-    stamina: number;
     stealth: number;
-    extractionSpeed: number;
+    speed: number;
+    health: number;
+    damage: number;
   };
   abilities: {
     active: {
@@ -26,14 +28,16 @@ export interface Character {
     };
   };
   requirements: {
+    ichor?: number;
     ornaments?: number;
     baskets?: number;
-    ichor?: number;
     research?: string;
-    note?: string;
-    other?: string[];
     mastery?: string;
+    other?: string[];
+    note?: string;
   };
+  twistedVersion?: string; // 对应的扭曲版本ID
+  originalVersion?: string; // 原始版本ID (用于扭曲角色)
 }
 
 export interface CharacterSelectorProps {
