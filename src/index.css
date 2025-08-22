@@ -69,45 +69,47 @@ body {
   @apply bg-accent-main text-white border-accent-main;
 }
 
-/* 复选框样式 */
-input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #4B5563;
-  border-radius: 4px;
-  background-color: #1F2937;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease;
+/* 自定义复选框样式 - 使用简单类名避免冲突 */
+.custom-checkbox {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  border: 2px solid #4B5563 !important;
+  border-radius: 4px !important;
+  background-color: #1F2937 !important;
+  cursor: pointer !important;
+  position: relative !important;
+  transition: all 0.2s ease !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-input[type="checkbox"]:hover {
-  border-color: #3B82F6;
-  background-color: #374151;
+.custom-checkbox:hover {
+  border-color: #3B82F6 !important;
+  background-color: #374151 !important;
 }
 
-input[type="checkbox"]:checked {
-  background-color: #3B82F6;
-  border-color: #3B82F6;
+.custom-checkbox:checked {
+  background-color: #3B82F6 !important;
+  border-color: #3B82F6 !important;
 }
 
-input[type="checkbox"]:checked::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
+.custom-checkbox:checked::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
 }
 
-input[type="checkbox"]:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+.custom-checkbox:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
 }
 
 /* 滑块样式 */

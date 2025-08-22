@@ -168,10 +168,23 @@ const UnlockOptimizer: React.FC = () => {
 
   // 获取筛选后的角色列表
   const getFilteredCharacters = () => {
-    if (!filterType) {
+    console.log('Filter type:', filterType); // 调试日志
+    if (!filterType || filterType === 'all') {
       return characterPriorities;
     }
-    return characterPriorities.filter(char => char.type === filterType);
+    const filtered = characterPriorities.filter(char => char.type === filterType);
+    console.log('Filtered characters:', filtered.length); // 调试日志
+    return filtered;
+  };
+
+  // 处理筛选类型变化
+  const handleFilterChange = (type: string) => {
+    console.log('Changing filter to:', type); // 调试日志
+    if (type === 'all') {
+      setFilterType(null);
+    } else {
+      setFilterType(type);
+    }
   };
 
   return (
@@ -256,9 +269,9 @@ const UnlockOptimizer: React.FC = () => {
                   {['all', 'main', 'toon', 'regular', 'event', 'lethal'].map((type) => (
                     <button
                       key={type}
-                      onClick={() => setFilterType(type === 'all' ? null : type)}
+                      onClick={() => handleFilterChange(type)}
                       className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
-                        filterType === (type === 'all' ? null : type)
+                        (type === 'all' && !filterType) || filterType === type
                           ? 'bg-accent-main text-white'
                           : 'bg-bg-secondary text-text-secondary hover:bg-bg-card'
                       }`}
@@ -300,8 +313,7 @@ const UnlockOptimizer: React.FC = () => {
                       type="checkbox"
                       checked={ownedCharacters.includes(char.name)}
                       onChange={() => toggleCharacterOwnership(char.name)}
-                      className="w-4 h-4 text-accent-main bg-bg-card border-gray-600 rounded focus:ring-2 focus:ring-accent-main focus:ring-opacity-50 cursor-pointer"
-                      style={{ accentColor: '#3B82F6' }}
+                      className="custom-checkbox"
                     />
                     <div className="flex flex-col">
                       <span className="text-sm text-text-primary">{char.name}</span>
