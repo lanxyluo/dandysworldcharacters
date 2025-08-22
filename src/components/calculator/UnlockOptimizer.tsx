@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { UserProgress, loadUserProgress, updateUserProgress } from '../../utils/storage';
+import { UserProgress, loadUserProgress, saveUserProgress } from '../../utils/storage';
 
 interface Character {
   id: string;
@@ -48,17 +48,7 @@ const characterPriorities = [
   { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 3, reason: 'Dual character, position swap, dual nature' },
   { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 3, reason: 'Shell shield, spiral defense, protection ability' },
   { name: 'Flutter', ichorCost: 600, type: 'regular', rarity: 'common', priority: 3, reason: 'Butterfly character, elegant flight, movement ability' },
-  { name: 'Looey', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: 'Balloon character, explosion ability, deflation mechanics' },
-  
-  // 较低优先级 - 特殊角色
-  { name: 'Scraps', ichorCost: 1750, type: 'regular', rarity: 'rare', priority: 2, reason: 'Ranged attacks, resource utilization, advanced players' },
-  { name: 'Teagan', ichorCost: 1100, type: 'regular', rarity: 'uncommon', priority: 2, reason: 'Tea time, soothes existence, team support' },
-  { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 2, reason: 'Dual character, position swap, dual nature' },
-  { name: 'Connie', ichorCost: 1400, type: 'regular', rarity: 'rare', priority: 2, reason: 'Shell shield, spiral defense, protection ability' },
-  
-  // 最低优先级 - 收藏和挑战角色
-  { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: 'Christmas limited, collection value' },
-  { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 1, reason: 'Easter limited, collection value' }
+  { name: 'Looey', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: 'Balloon character, explosion ability, deflation mechanics' }
 ];
 
 interface UnlockRecommendation {
@@ -74,6 +64,7 @@ const UnlockOptimizer: React.FC = () => {
   const [ownedCharacters, setOwnedCharacters] = useState<string[]>([]);
   const [recommendation, setRecommendation] = useState<UnlockRecommendation | null>(null);
   const [filterType, setFilterType] = useState<string | null>(null);
+  const [lastSaved, setLastSaved] = useState<string | null>(null);
 
   // 加载保存的用户进度
   useEffect(() => {
@@ -81,6 +72,7 @@ const UnlockOptimizer: React.FC = () => {
     if (savedProgress) {
       setCurrentIchor(savedProgress.currentIchor);
       setOwnedCharacters(savedProgress.ownedCharacters);
+      setLastSaved(savedProgress.lastUpdated);
     }
   }, []);
 
@@ -92,7 +84,8 @@ const UnlockOptimizer: React.FC = () => {
       researchProgress: {},
       lastUpdated: new Date().toISOString()
     };
-    updateUserProgress(progress, progress);
+    saveUserProgress(progress);
+    setLastSaved(progress.lastUpdated);
   }, [ownedCharacters, currentIchor]);
 
   // 推荐算法逻辑
@@ -130,12 +123,10 @@ const UnlockOptimizer: React.FC = () => {
   };
 
   const toggleCharacterOwnership = (characterName: string) => {
-    console.log('Toggling character:', characterName, 'Current owned:', ownedCharacters); // 调试日志
     setOwnedCharacters(prev => {
       const newOwned = prev.includes(characterName) 
         ? prev.filter(name => name !== characterName)
         : [...prev, characterName];
-      console.log('New owned characters:', newOwned); // 调试日志
       return newOwned;
     });
   };
@@ -158,34 +149,33 @@ const UnlockOptimizer: React.FC = () => {
 
   // 获取筛选后的角色列表
   const getFilteredCharacters = () => {
-    console.log('Filter type:', filterType); // 调试日志
     if (!filterType || filterType === 'all') {
       return characterPriorities;
     }
-    const filtered = characterPriorities.filter(char => char.type === filterType);
-    console.log('Filtered characters:', filtered.length); // 调试日志
-    return filtered;
+    return characterPriorities.filter(char => char.type === filterType);
   };
 
   // 处理筛选类型变化
   const handleFilterChange = (type: string) => {
-    console.log('Changing filter to:', type); // 调试日志
     if (type === 'all') {
       setFilterType(null);
     } else {
       setFilterType(type);
     }
-    console.log('New filter type:', type === 'all' ? null : type); // 调试日志
   };
 
-  // 调试：显示当前状态
-  useEffect(() => {
-    console.log('Current state:', {
-      filterType,
-      ownedCharacters: ownedCharacters.length,
-      currentIchor
-    });
-  }, [filterType, ownedCharacters, currentIchor]);
+  // 选择所有免费角色
+  const selectAllFree = () => {
+    const freeCharacters = characterPriorities
+      .filter(char => char.ichorCost === 0)
+      .map(char => char.name);
+    setOwnedCharacters(prev => [...new Set([...prev, ...freeCharacters])]);
+  };
+
+  // 清除所有选择
+  const clearAll = () => {
+    setOwnedCharacters([]);
+  };
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -226,18 +216,13 @@ const UnlockOptimizer: React.FC = () => {
         </div>
         
         {/* 保存状态指示器 */}
-        {/* Removed lastSaved state, so this section is removed */}
-        
-        {/* 调试面板 */}
-        <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-4 mb-4">
-          <h4 className="font-medium text-yellow-800 mb-2">Debug Info:</h4>
-          <div className="text-xs text-yellow-700 space-y-1">
-            <div>Filter Type: {filterType || 'all'}</div>
-            <div>Owned Characters: {ownedCharacters.length}</div>
-            <div>Filtered Characters: {getFilteredCharacters().length}</div>
-            <div>Current Ichor: {currentIchor}</div>
+        {lastSaved && (
+          <div className="text-center mb-4">
+            <span className="text-xs text-text-secondary">
+              Last saved: {new Date(lastSaved).toLocaleString()}
+            </span>
           </div>
-        </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* 左侧：输入配置 */}
@@ -292,18 +277,13 @@ const UnlockOptimizer: React.FC = () => {
                 <div className="text-sm text-text-secondary mb-2">Quick actions:</div>
                 <div className="flex flex-wrap gap-2">
                   <button
-                    onClick={() => {
-                      const freeCharacters = characterPriorities
-                        .filter(char => char.ichorCost === 0)
-                        .map(char => char.name);
-                      setOwnedCharacters(prev => [...new Set([...prev, ...freeCharacters])]);
-                    }}
+                    onClick={selectAllFree}
                     className="px-3 py-1 bg-green-600 text-white rounded text-xs font-medium hover:bg-green-700 transition-colors"
                   >
                     Select All Free
                   </button>
                   <button
-                    onClick={() => setOwnedCharacters([])}
+                    onClick={clearAll}
                     className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors"
                   >
                     Clear All
