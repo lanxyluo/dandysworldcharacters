@@ -1,27 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- 首页 - 最高优先级 -->
   <url>
-    <loc>https://dandysworldcalculator.com/</loc>
-    <lastmod>2024-01-01</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://www.dandysworldcharacters.com/</loc>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
   </url>
+
+  <!-- 角色数据库主页 -->
   <url>
-    <loc>https://dandysworldcalculator.com/calculator</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://www.dandysworldcharacters.com/characters</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
   </url>
+
+  <!-- 计算器工具 - 高优先级 -->
   <url>
-    <loc>https://dandysworldcalculator.com/compare</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://www.dandysworldcharacters.com/calculator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <!-- 三件套优化器 -->
+  <url>
+    <loc>https://www.dandysworldcharacters.com/trinket-optimizer</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
   </url>
+
+  <!-- 生存指南 -->
   <url>
-    <loc>https://dandysworldcalculator.com/community</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://www.dandysworldcharacters.com/twisted-survival-guide</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <!-- 主要角色页面 - 高优先级 -->
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/astro</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/pebble</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/shelly</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/sprout</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/vee</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/bassie</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/bobette</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <!-- 重要角色 - Dandy -->
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/dandy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <!-- 常用角色页面 -->
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/boxten</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/poppy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/cosmo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/shrimpo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/flutter</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.dandysworldcharacters.com/characters/brightney</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <!-- 反馈和测试页面 -->
+  <url>
+    <loc>https://www.dandysworldcharacters.com/feedback</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
+  </url>
+
+  <!-- 关于页面 -->
+  <url>
+    <loc>https://www.dandysworldcharacters.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+    <lastmod>2025-01-31T12:00:00+00:00</lastmod>
   </url>
 </urlset>

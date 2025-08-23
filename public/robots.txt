@@ -1,9 +1,11 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://dandysworldcalculator.com/sitemap.xml
+# 网站地图位置
+Sitemap: https://www.dandysworldcharacters.com/sitemap.xml
 
-# Disallow admin or private areas (if any)
+# 不允许爬取的路径（如果有）
+Disallow: /api/
 Disallow: /admin/
-Disallow: /private/
+Disallow: /.env
+Disallow: /test/
