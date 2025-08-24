@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# 网站地图位置
+Sitemap: https://www.dandysworldcharacters.com/sitemap.xml
+
+# 不允许爬取的路径（如果有）
+Disallow: /api/
+Disallow: /admin/
+Disallow: /.env
+Disallow: /test/

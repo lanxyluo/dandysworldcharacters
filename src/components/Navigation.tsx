@@ -11,11 +11,12 @@ const Navigation: React.FC = () => {
   };
 
   const isToolsActive = () => {
-    return location.pathname === '/trinket-optimizer' || location.pathname === '/twisted-guide' || location.pathname === '/floor-predictor';
+    return location.pathname === '/trinket-optimizer' || location.pathname === '/twisted-guide';
   };
 
   const mainMenuItems = [
     { name: 'Characters', href: '/', icon: '👥' },
+    { name: 'Floor Calculator', href: '/floor-predictor', icon: '🏢' },
     { name: 'Compare', href: '/compare', icon: '⚖️' },
     { name: 'Calculator', href: '/calculator', icon: '🧮' },
     { name: 'Tools', href: '#', icon: '🔧' },
@@ -24,8 +25,7 @@ const Navigation: React.FC = () => {
 
   const toolsMenuItems = [
     { name: 'Trinket Optimizer', href: '/trinket-optimizer', icon: '⚡' },
-    { name: 'Twisted Guide', href: '/twisted-guide', icon: '🚨' },
-    { name: 'Floor Predictor', href: '/floor-predictor', icon: '🏢' }
+    { name: 'Twisted Guide', href: '/twisted-guide', icon: '🚨' }
   ];
 
   const toggleTools = () => {
