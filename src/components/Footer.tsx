@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
@@ -23,14 +24,49 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-text-secondary">
-              <li><a href="#characters" className="hover:text-accent-main transition-colors">All Characters</a></li>
-              <li><a href="#main" className="hover:text-accent-main transition-colors">Main Characters</a></li>
-              <li><a href="#guides" className="hover:text-accent-main transition-colors">Unlock Guides</a></li>
-              <li><a href="#compare" className="hover:text-accent-main transition-colors">Character Compare</a></li>
+              <li>
+                <Link to="/" className="hover:text-accent-main transition-colors flex items-center">
+                  🏠 Browse Characters
+                </Link>
+              </li>
+              <li>
+                <Link to="/compare" className="hover:text-accent-main transition-colors flex items-center">
+                  ⚖️ Compare & Plan
+                </Link>
+              </li>
+              <li>
+                <Link to="/calculator" className="hover:text-accent-main transition-colors flex items-center">
+                  🧮 Calculate Resources
+                </Link>
+              </li>
+              <li>
+                <Link to="/guides/game-mechanics" className="hover:text-accent-main transition-colors flex items-center">
+                  📚 Learn Strategies
+                </Link>
+              </li>
             </ul>
           </div>
           
-
+          <div>
+            <h3 className="font-semibold mb-4">Advanced Tools</h3>
+            <ul className="space-y-2 text-text-secondary">
+              <li>
+                <Link to="/trinket-optimizer" className="hover:text-accent-main transition-colors flex items-center">
+                  ⚡ Trinket Optimizer
+                </Link>
+              </li>
+              <li>
+                <Link to="/twisted-guide" className="hover:text-accent-main transition-colors flex items-center">
+                  🚨 Twisted Guide
+                </Link>
+              </li>
+              <li>
+                <Link to="/floor-predictor" className="hover:text-accent-main transition-colors flex items-center">
+                  🏢 Floor Predictor
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </footer>

@@ -225,6 +225,54 @@ const GameMechanicsGuide: React.FC = () => {
               ))}
             </div>
           </div>
+          
+          {/* 相关工具推荐区域 - 内链建设 */}
+          <div className="mt-16 pt-8 border-t border-border-primary">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-text-primary mb-4">Put Knowledge Into Practice</h2>
+              <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+                Now that you've learned the mechanics, use these tools to optimize your gameplay and character progression.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Link 
+                to="/calculator" 
+                className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
+              >
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🧮</div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">Research Calculator</h3>
+                <p className="text-sm text-text-secondary">Calculate Ichor costs and plan your unlocks</p>
+              </Link>
+              
+              <Link 
+                to="/compare" 
+                className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
+              >
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">⚖️</div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">Character Compare</h3>
+                <p className="text-sm text-text-secondary">Compare stats and build optimal teams</p>
+              </Link>
+              
+              <Link 
+                to="/trinket-optimizer" 
+                className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
+              >
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">⚡</div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">Trinket Optimizer</h3>
+                <p className="text-sm text-text-secondary">Find the best trinket combinations</p>
+              </Link>
+              
+              <Link 
+                to="/floor-predictor" 
+                className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
+              >
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🏢</div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">Floor Predictor</h3>
+                <p className="text-sm text-text-secondary">Plan your floor progression strategy</p>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </>

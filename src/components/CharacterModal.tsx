@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Character } from '../types/character';
+import { Link } from 'react-router-dom'; // Added Link import
 
 interface CharacterModalProps {
   character: Character | null;
@@ -138,6 +139,39 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, isOpen, onCl
                     )}
                   </div>
                 </div>
+              </div>
+            </div>
+            
+            {/* 相关工具推荐区域 - 内链建设 */}
+            <div className="mt-8 pt-6 border-t border-gray-600">
+              <h3 className="text-xl font-bold mb-4 text-center">Related Tools & Resources</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Link 
+                  to="/calculator" 
+                  className="bg-bg-secondary hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-4 text-center transition-all duration-300 border border-gray-600 hover:border-accent-main"
+                >
+                  <div className="text-2xl mb-2">🧮</div>
+                  <h4 className="font-semibold mb-1">Calculate Resources</h4>
+                  <p className="text-sm text-text-secondary">Plan your unlock strategy</p>
+                </Link>
+                
+                <Link 
+                  to="/compare" 
+                  className="bg-bg-secondary hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-4 text-center transition-all duration-300 border border-gray-600 hover:border-accent-main"
+                >
+                  <div className="text-2xl mb-2">⚖️</div>
+                  <h4 className="font-semibold mb-1">Compare Characters</h4>
+                  <p className="text-sm text-text-secondary">Find the best team composition</p>
+                </Link>
+                
+                <Link 
+                  to="/guides/game-mechanics" 
+                  className="bg-bg-secondary hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-4 text-center transition-all duration-300 border border-gray-600 hover:border-accent-main"
+                >
+                  <div className="text-2xl mb-2">📚</div>
+                  <h4 className="font-semibold mb-1">Game Strategies</h4>
+                  <p className="text-sm text-text-secondary">Master advanced techniques</p>
+                </Link>
               </div>
             </div>
           </div>
