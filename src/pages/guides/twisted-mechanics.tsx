@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const TwistedMechanicsGuide: React.FC = () => {
   const twistedTypes = [
@@ -211,14 +211,14 @@ const TwistedMechanicsGuide: React.FC = () => {
     <>
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Twisted Character Mechanics Guide - Dandy's World Game Strategy</title>
-          <meta name="description" content="深入了解Dandy's World中Twisted角色的行为模式、机制和生存策略。" />
-          <meta name="keywords" content="Dandy's World Twisted characters,enemy mechanics,survival strategies,game guide" />
-          <meta property="og:title" content="Twisted Character Mechanics Guide - Dandy's World Game Strategy" />
-          <meta property="og:description" content="深入了解Twisted角色行为模式、机制和生存策略。" />
-          <link rel="canonical" href="/guides/twisted-mechanics" />
-        </Helmet>
+        <SEO
+          title="Dandys World Twisted Mechanics Guide | Enemy Behavior & Survival Tips"
+          description="深入了解Dandy's World中Twisted角色的行为模式、机制和生存策略。掌握应对各种扭曲实体的关键技巧。"
+          keywords="dandys world, twisted mechanics, enemy behavior, survival strategies, game guide, twisted characters"
+          ogTitle="Dandys World Twisted Mechanics Guide"
+          ogDescription="深入了解Twisted角色行为模式、机制和生存策略"
+          canonical="/guides/twisted-mechanics"
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}

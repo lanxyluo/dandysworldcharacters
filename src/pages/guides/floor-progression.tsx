@@ -1,7 +1,7 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const FloorProgressionGuide: React.FC = () => {
   const floorTypes = [
@@ -286,16 +286,17 @@ const FloorProgressionGuide: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandys World Floor Progression Guide | Complete Strategy & Tips"
+        description="Master Dandy's World floor progression with comprehensive strategies, tips, and optimization techniques for each level."
+        keywords="dandys world, floor progression, level strategy, game progression, floor guide, level tips"
+        ogTitle="Dandys World Floor Progression Guide"
+        ogDescription="Master Dandy's World floor progression with comprehensive strategies and tips"
+        canonical="/guides/floor-progression"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Floor Progression Guide - Dandy's World Game Strategy</title>
-          <meta name="description" content="Comprehensive guide to floor progression in Dandy's World. Learn about different floor types, strategies, and special mechanics." />
-          <meta name="keywords" content="Dandy's World floors,floor progression,game strategy,floor guide" />
-          <meta property="og:title" content="Floor Progression Guide - Dandy's World Game Strategy" />
-          <meta property="og:description" content="Master floor progression with comprehensive strategies and floor-specific mechanics." />
-          <link rel="canonical" href="/guides/floor-progression" />
-        </Helmet>
+        
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}

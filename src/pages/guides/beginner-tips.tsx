@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const BeginnerTipsGuide: React.FC = () => {
   const basicTips = [
@@ -25,16 +25,16 @@ const BeginnerTipsGuide: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandys World Beginner Guide | Complete Game Tutorial & Tips"
+        description="Complete game guide from scratch for Dandy's World. Learn basic mechanics, essential tips, and fundamental strategies to get started."
+        keywords="dandys world, beginner guide, how to play, game tutorial, getting started, new player tips"
+        ogTitle="Dandys World Beginner Guide"
+        ogDescription="Complete game guide from scratch for Dandy's World. Learn basic mechanics, essential tips, and fundamental strategies."
+        canonical="/guides/beginner-tips"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Beginner Guide - Dandy's World Game Strategy</title>
-          <meta name="description" content="Complete game guide from scratch for Dandy's World. Learn basic mechanics, essential tips, and fundamental strategies to get started." />
-          <meta name="keywords" content="Dandy's World beginner guide,how to play,game tutorial,getting started" />
-          <meta property="og:title" content="Beginner Guide - Dandy's World Game Strategy" />
-          <meta property="og:description" content="Complete game guide from scratch for Dandy's World. Learn basic mechanics, essential tips, and fundamental strategies." />
-          <link rel="canonical" href="/guides/beginner-tips" />
-        </Helmet>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}

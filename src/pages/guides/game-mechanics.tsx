@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const GameMechanicsGuide: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -88,152 +88,78 @@ const GameMechanicsGuide: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandys World Game Mechanics Guide | Character Tips & Strategy Tutorials"
+        description="Most comprehensive Dandy's World game mechanics analysis, including character abilities, Twisted character countermeasures, trinket combinations and more. Master game techniques to become a survival expert!"
+        keywords="dandys world, game mechanics guide, character tips, strategy tutorials, twisted survival, survival tips, game strategy"
+        ogTitle="Dandys World Game Mechanics Guide"
+        ogDescription="Most comprehensive Dandy's World game mechanics analysis, including character abilities, Twisted character countermeasures, trinket combinations"
+        canonical="/guides/game-mechanics"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Dandys World Game Mechanics Guide | Character Tips & Strategy Tutorials</title>
-          <meta name="description" content="Most comprehensive Dandy's World game mechanics analysis, including character abilities, Twisted character countermeasures, trinket combinations and more. Master game techniques to become a survival expert!" />
-          <meta name="keywords" content="dandys world, game mechanics guide, character tips, strategy tutorials, twisted survival, survival tips, game strategy" />
-          <meta property="og:title" content="Dandys World Game Mechanics Guide" />
-          <meta property="og:description" content="Most comprehensive Dandy's World game mechanics analysis, including character abilities, Twisted character countermeasures, trinket combinations" />
-          <meta property="og:type" content="website" />
-          <link rel="canonical" href="/guides/game-mechanics" />
-        </Helmet>
+        {/* 页面标题 */}
+        <div className="text-center mb-12 px-4">
+          <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-green-500 to-blue-500 mb-4">
+            Dandy's World Complete Game Mechanics Guide
+          </h1>
+          <p className="text-xl text-text-secondary max-w-4xl mx-auto">
+            Most comprehensive game mechanics analysis, from basic operations to advanced strategies, helping you master survival skills and become a Dandy's World expert player.
+          </p>
+        </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Hero Section */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-rainbow-1 via-rainbow-3 to-rainbow-5 bg-clip-text text-transparent">
-              Dandy's World Complete Game Mechanics Guide
-            </h1>
-            <p className="text-xl text-text-secondary max-w-3xl mx-auto leading-relaxed">
-              Most comprehensive game mechanics analysis, from basic operations to advanced strategies, helping you master survival skills and become a Dandy's World expert player
-            </p>
+        {/* 搜索栏 */}
+        <div className="max-w-2xl mx-auto mb-12">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search game mechanics, tips, or strategies..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-3 bg-bg-card text-text-primary rounded-lg border border-border-primary focus:outline-none focus:ring-2 focus:ring-accent-main focus:border-transparent"
+            />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary">
+              🔍
+            </div>
           </div>
+        </div>
 
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-12">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search game mechanics, tips, or strategies..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-6 py-4 bg-bg-card border border-gray-600 rounded-xl text-white placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-main focus:border-transparent"
-              />
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-text-secondary">
-                🔍
+        {/* 快速提示 */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <span className="text-2xl mr-2">💡</span>
+            <h2 className="text-2xl font-bold text-text-primary">Quick Tips</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {quickTips.map((tip, index) => (
+              <div key={index} className="bg-bg-card p-4 rounded-lg border border-border-primary">
+                <p className="text-text-secondary text-sm">{tip}</p>
               </div>
-            </div>
+            ))}
           </div>
+        </div>
 
-          {/* Quick Tips */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6 text-center">💡 Quick Tips</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {quickTips.map((tip, index) => (
-                <div key={index} className="bg-bg-card p-4 rounded-lg border border-gray-600 hover:border-accent-main transition-colors">
-                  <p className="text-text-secondary">{tip}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Guide Categories */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-8 text-center">📚 Complete Guide Directory</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredCategories.map((category) => (
-                <Link
-                  key={category.id}
-                  to={category.href}
-                  className="group block"
-                >
-                  <div className="bg-bg-card p-6 rounded-xl border border-gray-600 hover:border-accent-main transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center text-2xl group-hover:scale-110 transition-transform`}>
-                      {category.icon}
-                    </div>
-                    <h3 className="text-lg font-semibold mb-2 text-center group-hover:text-accent-main transition-colors">
-                      {category.title}
-                    </h3>
-                    <p className="text-sm text-text-secondary text-center leading-relaxed">
-                      {category.description}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Related Tools */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-8 text-center">🛠️ Useful Tools</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Link to="/trinket-optimizer" className="group">
-                <div className="bg-bg-card p-6 rounded-xl border border-gray-600 hover:border-accent-main transition-all duration-300 hover:scale-105">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-2xl">
-                    ⚡
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-center group-hover:text-accent-main transition-colors">
-                    Trinket Optimizer
-                  </h3>
-                  <p className="text-sm text-text-secondary text-center">
-                    Find the best trinket combinations for you
-                  </p>
+        {/* 指南分类网格 */}
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredCategories.map((category) => (
+              <Link
+                key={category.id}
+                to={category.href}
+                className="group block bg-bg-card rounded-lg p-6 border border-border-primary hover:border-accent-main transition-all duration-300 hover:shadow-lg hover:shadow-accent-main/20"
+              >
+                <div className="text-4xl mb-4">{category.icon}</div>
+                <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-accent-main transition-colors">
+                  {category.title}
+                </h3>
+                <p className="text-text-secondary text-sm leading-relaxed">
+                  {category.description}
+                </p>
+                <div className="mt-4 flex items-center text-accent-main text-sm font-medium group-hover:text-accent-light transition-colors">
+                  Learn More →
                 </div>
               </Link>
-              
-              <Link to="/twisted-guide" className="group">
-                <div className="bg-bg-card p-6 rounded-xl border border-gray-600 hover:border-accent-main transition-all duration-300 hover:scale-105">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center text-2xl">
-                    🚨
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-center group-hover:text-accent-main transition-colors">
-                    Twisted Character Guide
-                  </h3>
-                  <p className="text-sm text-text-secondary text-center">
-                    Learn about each Twisted character
-                  </p>
-                </div>
-              </Link>
-              
-              <Link to="/floor-predictor" className="group">
-                <div className="bg-bg-card p-6 rounded-xl border border-gray-600 hover:border-accent-main transition-all duration-300 hover:scale-105">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-2xl">
-                    🏢
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-center group-hover:text-accent-main transition-colors">
-                    Floor Predictor
-                  </h3>
-                  <p className="text-sm text-text-secondary text-center">
-                    Predict floor layouts and difficulty
-                  </p>
-                </div>
-              </Link>
-            </div>
-          </div>
-
-          {/* SEO Content */}
-          <div className="bg-bg-card p-8 rounded-xl border border-gray-600">
-            <h2 className="text-2xl font-bold mb-6">🎮 Why Choose Our Game Mechanics Guide?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-text-secondary">
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-white">📖 Comprehensive</h3>
-                <p>Covers everything from basic operations to advanced strategies, suitable for players of all levels</p>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-white">🔬 Accurate</h3>
-                <p>Based on extensive game testing and community feedback, ensuring accuracy and practicality</p>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-white">⚡ Practical</h3>
-                <p>Every tip is verified and can be directly applied to improve game performance</p>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-white">🔄 Updated</h3>
-                <p>Continuously optimized content with game updates to maintain timeliness</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
