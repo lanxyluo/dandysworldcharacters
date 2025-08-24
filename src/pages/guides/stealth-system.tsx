@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const StealthSystemGuide: React.FC = () => {
   const stealthMechanics = [
@@ -72,17 +72,16 @@ const StealthSystemGuide: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandys World Stealth System Guide | Stealth Mechanics & Strategies"
+        description="Master Dandy's World stealth system. Learn stealth mechanics, detection avoidance, and advanced stealth strategies for survival."
+        keywords="dandys world, stealth system, stealth mechanics, detection avoidance, stealth strategies, survival guide"
+        ogTitle="Dandys World Stealth System Guide"
+        ogDescription="Master stealth mechanics and detection avoidance strategies"
+        canonical="/guides/stealth-system"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Stealth System Guide - Dandy's World Game Strategy</title>
-          <meta name="description" content="Master the stealth system in Dandy's World. Learn hiding techniques, sound management, and evasion strategies to survive encounters with Twisted characters." />
-          <meta name="keywords" content="Dandy's World stealth,stealth system,hiding techniques,evasion strategies" />
-          <meta property="og:title" content="Stealth System Guide - Dandy's World Game Strategy" />
-          <meta property="og:description" content="Master the stealth system in Dandy's World. Learn hiding techniques, sound management, and evasion strategies." />
-          <link rel="canonical" href="/guides/stealth-system" />
-        </Helmet>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}
           <nav className="mb-8">

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const StaminaManagementGuide: React.FC = () => {
   const staminaTips = [
@@ -68,17 +68,16 @@ const StaminaManagementGuide: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandys World Stamina Management Guide | Resource Optimization & Survival"
+        description="Master Dandy's World stamina management. Learn resource optimization, recovery strategies, and efficient stamina usage for survival."
+        keywords="dandys world, stamina management, resource optimization, stamina recovery, survival strategies, resource guide"
+        ogTitle="Dandys World Stamina Management Guide"
+        ogDescription="Master stamina management and resource optimization strategies"
+        canonical="/guides/stamina-management"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Stamina Management Guide - Dandy's World Game Strategy</title>
-          <meta name="description" content="Master stamina management in Dandy's World. Learn efficient stamina usage, recovery strategies, and route planning to extend exploration time." />
-          <meta name="keywords" content="Dandy's World stamina,stamina management,stamina recovery,game strategy" />
-          <meta property="og:title" content="Stamina Management Guide - Dandy's World Game Strategy" />
-          <meta property="og:description" content="Master stamina management in Dandy's World. Learn efficient stamina usage, recovery strategies, and route planning." />
-          <link rel="canonical" href="/guides/stamina-management" />
-        </Helmet>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}
           <nav className="mb-8">

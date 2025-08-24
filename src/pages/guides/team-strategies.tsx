@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const TeamStrategiesGuide: React.FC = () => {
   const teamRoles = [
@@ -96,17 +96,16 @@ const TeamStrategiesGuide: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandys World Team Strategies Guide | Team Composition & Coordination"
+        description="Master Dandy's World team strategies. Learn team composition, coordination techniques, and advanced team tactics for survival."
+        keywords="dandys world, team strategies, team composition, team coordination, multiplayer tactics, survival strategies"
+        ogTitle="Dandys World Team Strategies Guide"
+        ogDescription="Master team composition and coordination strategies"
+        canonical="/guides/team-strategies"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Team Strategies Guide - Dandy's World Game Strategy</title>
-          <meta name="description" content="Master team coordination and strategies in Dandy's World. Learn about team roles, coordination tactics, and effective teamwork." />
-          <meta name="keywords" content="Dandy's World team strategies,team coordination,team roles,multiplayer tactics" />
-          <meta property="og:title" content="Team Strategies Guide - Dandy's World Game Strategy" />
-          <meta property="og:description" content="Master team coordination and strategies in Dandy's World." />
-          <link rel="canonical" href="/guides/team-strategies" />
-        </Helmet>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}
           <nav className="mb-8">

@@ -35,13 +35,60 @@ export default function HomePage() {
     setSelectedCharacter(null);
   };
 
+  // Schema Markup for Website
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Dandys World Characters Database",
+    "description": "Complete database and tools for Dandys World game characters",
+    "url": "https://dandysworldcharacters.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://dandysworldcharacters.com/characters?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Dandys World Characters",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://dandysworldcharacters.com/logo.png"
+      }
+    }
+  };
+
   return (
     <>
       <SEO 
-        title="Dandys World Characters Database | Complete Guide & Stats"
-        description="Complete Dandy's World characters database with stats, abilities, and unlock guides. Find all toons, compare stats, and optimize your team builds."
-        keywords="dandys world, dandy's world characters, dandys world guide, character stats, abilities, unlock guide"
-        canonical="https://www.dandysworldcharacters.com/"
+        title="Dandys World Characters Database | Complete Character Stats & Guide"
+        description="Complete Dandys World characters database with stats, abilities, unlock guides and tools. Explore all 36+ Toons including Main Characters like Astro, Sprout, Vee with detailed builds and strategies."
+        keywords="dandys world, characters database, character stats, abilities, unlock guides, main characters, astro, sprout, vee, character builds"
+        ogTitle="Dandys World Characters Database | Complete Guide"
+        ogDescription="Complete database for all Dandys World characters with stats, guides and tools. Master all 36+ Toons including Main Characters."
+        ogImage="https://dandysworldcharacters.com/images/og-homepage.png"
+        ogUrl="https://dandysworldcharacters.com"
+        ogType="website"
+        ogSiteName="Dandys World Characters"
+        twitterCard="summary_large_image"
+        twitterTitle="Dandys World Characters Database"
+        twitterDescription="Complete character database and tools for Dandys World game"
+        twitterImage="https://dandysworldcharacters.com/images/twitter-card.png"
+        twitterSite="@DandysWorldChars"
+        canonical="https://dandysworldcharacters.com/"
+        robots="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+        viewport="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+        themeColor="#1a1a1a"
+        mobileWebAppCapable="yes"
+        appleMobileWebAppCapable="yes"
+        appleMobileWebAppStatusBarStyle="black-translucent"
+        appleMobileWebAppTitle="Dandys World"
+        formatDetection="telephone=no"
+      />
+      
+      {/* Schema Markup */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
       
       <Navigation />
@@ -58,7 +105,11 @@ export default function HomePage() {
       {/* Characters Grid */}
       <section id="characters" className="px-4 pb-16">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h1 className="text-4xl font-bold text-center mb-8">
+            Dandys World Characters Database
+          </h1>
+          
+          <h2 className="text-2xl font-semibold text-center mb-4 text-gray-300">
             All Characters
           </h2>
           

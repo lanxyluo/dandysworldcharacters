@@ -523,9 +523,48 @@ const TrinketOptimizer: React.FC = () => {
     <>
       <SEO 
         title="Dandys World Trinket Optimizer | Equipment Build Guide"
-        description="Dandy's World intelligent trinket recommendation system, providing personalized trinket combinations based on AI algorithms, including acquisition paths, build comparison, and meta analysis."
-        keywords="dandys world, trinket optimizer, equipment build, trinket optimization, intelligent recommendations, build analysis"
+        description="Essential Dandys World tools including Floor Predictor, Trinket Optimizer and Twisted Guide. Strategic planning tools to improve your survival rate and game strategy."
+        keywords="dandys world, trinket optimizer, equipment build, trinket optimization, intelligent recommendations, build analysis, character builds, equipment guide"
+        ogTitle="Dandys World Trinket Optimizer"
+        ogDescription="Intelligent trinket recommendation system with personalized builds and acquisition paths"
+        ogImage="https://dandysworldcharacters.com/images/tools/trinket-optimizer-og.png"
+        ogUrl="https://dandysworldcharacters.com/tools/trinket-optimizer"
+        ogType="website"
+        ogSiteName="Dandys World Characters"
+        twitterCard="summary_large_image"
+        twitterTitle="Dandys World Trinket Optimizer"
+        twitterDescription="Intelligent trinket recommendation system for optimal builds"
+        twitterImage="https://dandysworldcharacters.com/images/tools/trinket-optimizer-twitter.png"
+        twitterSite="@DandysWorldChars"
+        canonical="https://dandysworldcharacters.com/tools/trinket-optimizer"
+        robots="index, follow, max-snippet:160, max-image-preview:standard"
+        viewport="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+        themeColor="#1a1a1a"
+        mobileWebAppCapable="yes"
+        appleMobileWebAppCapable="yes"
+        appleMobileWebAppStatusBarStyle="black-translucent"
+        appleMobileWebAppTitle="Dandys World"
+        formatDetection="telephone=no"
       />
+      
+      {/* Schema Markup for Tool */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Dandys World Trinket Optimizer",
+          "description": "Intelligent trinket recommendation system for optimal equipment builds",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        })}}
+      />
+      
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
         <Navigation />
       
@@ -533,10 +572,13 @@ const TrinketOptimizer: React.FC = () => {
         {/* Page title */}
         <div className="text-center mb-8 relative z-10">
           <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
-            🎯 Trinket Optimizer
+            Dandys World Trinket Optimizer
           </h1>
+          <h2 className="text-2xl font-semibold text-blue-200 mb-2 drop-shadow-lg">
+            🎯 Intelligent Equipment Build System
+          </h2>
           <p className="text-xl text-blue-100 mb-4 drop-shadow-lg">
-            Intelligent Trinket Recommendation System - Optimal trinket combinations for every character
+            Optimal trinket combinations for every character with AI-powered recommendations
           </p>
           <div className="flex justify-center space-x-4 mt-4">
             <Link 
@@ -556,9 +598,9 @@ const TrinketOptimizer: React.FC = () => {
 
         {/* Configuration area */}
         <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6 shadow-lg mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">
+          <h3 className="text-2xl font-bold text-white mb-6">
             ⚙️ Configuration Settings
-          </h2>
+          </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Character selection */}

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const TrinketCombinationsGuide: React.FC = () => {
   const trinketCategories = [
@@ -96,17 +96,16 @@ const TrinketCombinationsGuide: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandys World Trinket Combinations Guide | Equipment Synergy & Builds"
+        description="Master Dandy's World trinket combinations and synergies. Learn optimal equipment builds for different playstyles and situations."
+        keywords="dandys world, trinket combinations, equipment builds, trinket synergy, optimal builds, equipment guide"
+        ogTitle="Dandys World Trinket Combinations Guide"
+        ogDescription="Master trinket combinations and synergies for optimal builds"
+        canonical="/guides/trinket-combinations"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Trinket Combinations Guide - Dandy's World Game Strategy</title>
-          <meta name="description" content="Master trinket combinations in Dandy's World. Learn how to create powerful builds by combining different trinket types for maximum effectiveness." />
-          <meta name="keywords" content="Dandy's World trinkets,trinket combinations,game strategy,build optimization" />
-          <meta property="og:title" content="Trinket Combinations Guide - Dandy's World Game Strategy" />
-          <meta property="og:description" content="Master trinket combinations in Dandy's World. Learn how to create powerful builds by combining different trinket types." />
-          <link rel="canonical" href="/guides/trinket-combinations" />
-        </Helmet>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}
           <nav className="mb-8">

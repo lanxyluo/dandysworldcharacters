@@ -785,9 +785,48 @@ const FloorPredictor: React.FC = () => {
     <>
       <SEO 
         title="Dandys World Floor Predictor | Survival Strategy Planner"
-        description="Dandy's World floor prediction tool for strategic planning. Predict machine counts, twisted characters, special events, and get survival strategies for each floor."
-        keywords="dandys world, floor predictor, survival strategy, machine prediction, twisted character prediction, game planning"
+        description="Essential Dandys World tools including Floor Predictor, Trinket Optimizer and Twisted Guide. Strategic planning tools to improve your survival rate and game strategy."
+        keywords="dandys world, floor predictor, survival strategy, machine prediction, twisted character prediction, game planning, survival guide, floor strategy"
+        ogTitle="Dandys World Floor Predictor"
+        ogDescription="Strategic floor planning tool for survival strategy optimization"
+        ogImage="https://dandysworldcharacters.com/images/tools/floor-predictor-og.png"
+        ogUrl="https://dandysworldcharacters.com/tools/floor-predictor"
+        ogType="website"
+        ogSiteName="Dandys World Characters"
+        twitterCard="summary_large_image"
+        twitterTitle="Dandys World Floor Predictor"
+        twitterDescription="Strategic floor planning tool for survival strategy"
+        twitterImage="https://dandysworldcharacters.com/images/tools/floor-predictor-twitter.png"
+        twitterSite="@DandysWorldChars"
+        canonical="https://dandysworldcharacters.com/tools/floor-predictor"
+        robots="index, follow, max-snippet:160, max-image-preview:standard"
+        viewport="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+        themeColor="#1a1a1a"
+        mobileWebAppCapable="yes"
+        appleMobileWebAppCapable="yes"
+        appleMobileWebAppStatusBarStyle="black-translucent"
+        appleMobileWebAppTitle="Dandys World"
+        formatDetection="telephone=no"
       />
+      
+      {/* Schema Markup for Tool */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Dandys World Floor Predictor",
+          "description": "Strategic floor planning tool for survival strategy optimization",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        })}}
+      />
+      
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
         <Navigation />
         
@@ -795,10 +834,13 @@ const FloorPredictor: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-8 relative z-10">
             <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
-              🏢 Floor Predictor
+              Dandys World Floor Predictor
             </h1>
+            <h2 className="text-2xl font-semibold text-blue-200 mb-2 drop-shadow-lg">
+              🏢 Strategic Survival Planning Tool
+            </h2>
             <p className="text-xl text-blue-100 mb-4 drop-shadow-lg">
-              Strategic Floor Planning Tool - Plan Your Survival Strategy
+              Plan Your Survival Strategy with Advanced Floor Prediction
             </p>
           </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../../components/Navigation';
+import SEO from '../../components/SEO';
 
 const SkillCheckGuide: React.FC = () => {
   const skillCheckTypes = [
@@ -72,17 +72,16 @@ const SkillCheckGuide: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Dandys World Skill Check Guide | Mechanics & Success Strategies"
+        description="Master Dandy's World skill check mechanics. Learn skill check types, success strategies, and optimization techniques for better performance."
+        keywords="dandys world, skill check guide, skill check mechanics, success strategies, skill optimization, game mechanics"
+        ogTitle="Dandys World Skill Check Guide"
+        ogDescription="Master skill check mechanics and success strategies"
+        canonical="/guides/skill-check-guide"
+      />
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
-        <Helmet>
-          <title>Skill Check Mechanics Guide - Dandy's World Game Strategy</title>
-          <meta name="description" content="In-depth analysis of Dandy's World skill check system, including perception, technical, physical, and social checks, their triggers and countermeasures." />
-          <meta name="keywords" content="Dandy's World skill checks,perception check,technical check,physical check,social check,game strategy" />
-          <meta property="og:title" content="Skill Check Mechanics Guide - Dandy's World Game Strategy" />
-          <meta property="og:description" content="In-depth analysis of Dandy's World skill check system, including perception, technical, physical, and social checks, their triggers and countermeasures." />
-          <link rel="canonical" href="/guides/skill-check-guide" />
-        </Helmet>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}
           <nav className="mb-8">
