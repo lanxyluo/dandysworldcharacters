@@ -2,7 +2,7 @@
 // 注意：需要替换为实际的Formspree表单ID
 export const FORMSPREEE_CONFIG = {
   // 从环境变量获取Formspree表单ID，如果没有设置则使用默认值
-  FORM_ID: process.env.REACT_APP_FORMSPREE_ID || 'YOUR_FORM_ID',
+  FORM_ID: import.meta.env.VITE_FORMSPREE_ID || 'YOUR_FORM_ID',
   
   // Formspree API端点
   ENDPOINT: 'https://formspree.io/f/',
