@@ -8,10 +8,10 @@ const TwistedGuidePage: React.FC = () => {
   return (
     <>
       <SEO
-        title="Twisted Survival Guide - Dandy's World Calculator"
+        title="Dandys World Twisted Guide | Enemy Strategy & Tips"
         description="Comprehensive survival guide for all Twisted entities in Dandy's World. Learn identification, strategies, and survival tips."
-        keywords="Dandy's World, twisted entities, survival guide, horror game, entity identification, survival strategies"
-        ogTitle="Twisted Survival Guide"
+        keywords="dandys world, twisted guide, enemy strategy, survival tips, twisted entities, horror game, entity identification"
+        ogTitle="Dandys World Twisted Guide"
         ogDescription="Master the art of survival against twisted entities"
         canonical="/twisted-guide"
       />

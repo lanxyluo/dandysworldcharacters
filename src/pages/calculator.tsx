@@ -14,10 +14,10 @@ const CalculatorPage: React.FC = () => {
   return (
     <>
       <SEO
-        title="Dandy's World Calculator - Character Unlock & Research Optimizer"
+        title="Dandys World Character Planner | Research & Unlock Optimizer"
         description="Optimize your Dandy's World character unlocks and research progress. Calculate the most efficient path to unlock characters and complete research."
-        keywords="Dandy's World, calculator, character unlock, research optimizer, Ichor calculator, Rodger, twisted research"
-        ogTitle="Dandy's World Calculator"
+        keywords="dandys world, character planner, research calculator, unlock optimizer, twisted research, ichor calculator"
+        ogTitle="Dandys World Character Planner"
         ogDescription="The ultimate tool for optimizing your Dandy's World progression"
         canonical="/calculator"
       />

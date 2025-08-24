@@ -784,9 +784,9 @@ const FloorPredictor: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Floor Predictor - Strategic Floor Planning Tool"
+        title="Dandys World Floor Predictor | Survival Strategy Planner"
         description="Dandy's World floor prediction tool for strategic planning. Predict machine counts, twisted characters, special events, and get survival strategies for each floor."
-        keywords="floor predictor, machine prediction, twisted character prediction, survival strategy, game planning"
+        keywords="dandys world, floor predictor, survival strategy, machine prediction, twisted character prediction, game planning"
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
         <Navigation />

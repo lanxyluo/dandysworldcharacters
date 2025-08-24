@@ -91,10 +91,10 @@ const GameMechanicsGuide: React.FC = () => {
       <Navigation />
       <div className="min-h-screen bg-bg-primary text-white pt-20">
         <Helmet>
-          <title>Dandy's World Complete Game Mechanics Guide - Most Comprehensive Strategy Analysis</title>
+          <title>Dandys World Game Mechanics Guide | Character Tips & Strategy Tutorials</title>
           <meta name="description" content="Most comprehensive Dandy's World game mechanics analysis, including character abilities, Twisted character countermeasures, trinket combinations and more. Master game techniques to become a survival expert!" />
-          <meta name="keywords" content="Dandy's World guide,Dandy's World how to play,how to avoid Twisted characters,Dandy's World guide,Twisted survival,game mechanics,survival tips" />
-          <meta property="og:title" content="Dandy's World Complete Game Mechanics Guide" />
+          <meta name="keywords" content="dandys world, game mechanics guide, character tips, strategy tutorials, twisted survival, survival tips, game strategy" />
+          <meta property="og:title" content="Dandys World Game Mechanics Guide" />
           <meta property="og:description" content="Most comprehensive Dandy's World game mechanics analysis, including character abilities, Twisted character countermeasures, trinket combinations" />
           <meta property="og:type" content="website" />
           <link rel="canonical" href="/guides/game-mechanics" />

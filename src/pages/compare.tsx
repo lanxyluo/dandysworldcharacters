@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 import { characters } from '../data/characters';
 import { Character } from '../types/character';
 import CharacterSelector from '../components/compare/CharacterSelector';
@@ -25,6 +26,13 @@ export default function ComparePage() {
 
   return (
     <>
+      <SEO 
+        title="Dandys World Character Comparison | Compare Toon Stats"
+        description="Compare Dandy's World characters side by side. Analyze stats, abilities, and requirements to make informed decisions about your team composition."
+        keywords="dandys world, character comparison, compare stats, toon comparison, team composition, character analysis"
+        canonical="/compare"
+      />
+      
       <Navigation />
       <div className="min-h-screen bg-gray-900 text-white p-6">
         <div className="max-w-7xl mx-auto">

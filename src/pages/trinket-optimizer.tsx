@@ -522,9 +522,9 @@ const TrinketOptimizer: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Trinket Optimizer - Intelligent Trinket Recommendation System"
+        title="Dandys World Trinket Optimizer | Equipment Build Guide"
         description="Dandy's World intelligent trinket recommendation system, providing personalized trinket combinations based on AI algorithms, including acquisition paths, build comparison, and meta analysis."
-        keywords="trinket optimizer, trinket optimization, intelligent recommendations, build analysis, acquisition path, meta analysis"
+        keywords="dandys world, trinket optimizer, equipment build, trinket optimization, intelligent recommendations, build analysis"
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
         <Navigation />

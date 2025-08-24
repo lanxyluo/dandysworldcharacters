@@ -5,6 +5,7 @@ import SearchAndFilter from '../components/SearchAndFilter';
 import CharacterCard from '../components/CharacterCard';
 import CharacterModal from '../components/CharacterModal';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 import { characters } from '../data/characters';
 import { Character } from '../types/character';
 
@@ -36,6 +37,13 @@ export default function HomePage() {
 
   return (
     <>
+      <SEO 
+        title="Dandys World Characters Database | Complete Guide & Stats"
+        description="Complete Dandy's World characters database with stats, abilities, and unlock guides. Find all toons, compare stats, and optimize your team builds."
+        keywords="dandys world, dandy's world characters, dandys world guide, character stats, abilities, unlock guide"
+        canonical="https://www.dandysworldcharacters.com/"
+      />
+      
       <Navigation />
       
       <HeroSection />
