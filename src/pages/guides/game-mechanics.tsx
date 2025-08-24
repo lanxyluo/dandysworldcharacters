@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ScrollToTopLink from '../../components/ScrollToTopLink';
 import Navigation from '../../components/Navigation';
 import SEO from '../../components/SEO';
 
@@ -206,7 +207,7 @@ const GameMechanicsGuide: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredCategories.map((category) => (
-                <Link
+                <ScrollToTopLink
                   key={category.id}
                   to={category.href}
                   className="group block bg-bg-card rounded-lg p-6 border border-border-primary hover:border-accent-main transition-all duration-300 hover:shadow-lg hover:shadow-accent-main/20"
@@ -221,7 +222,7 @@ const GameMechanicsGuide: React.FC = () => {
                   <div className="mt-4 flex items-center text-accent-main text-sm font-medium group-hover:text-accent-light transition-colors">
                     Learn More →
                   </div>
-                </Link>
+                </ScrollToTopLink>
               ))}
             </div>
           </div>
@@ -236,41 +237,41 @@ const GameMechanicsGuide: React.FC = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Link 
+              <ScrollToTopLink 
                 to="/calculator" 
                 className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🧮</div>
                 <h3 className="text-lg font-semibold text-text-primary mb-2">Research Calculator</h3>
                 <p className="text-sm text-text-secondary">Calculate Ichor costs and plan your unlocks</p>
-              </Link>
+              </ScrollToTopLink>
               
-              <Link 
+              <ScrollToTopLink 
                 to="/compare" 
                 className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">⚖️</div>
                 <h3 className="text-lg font-semibold text-text-primary mb-2">Character Compare</h3>
                 <p className="text-sm text-text-secondary">Compare stats and build optimal teams</p>
-              </Link>
+              </ScrollToTopLink>
               
-              <Link 
+              <ScrollToTopLink 
                 to="/trinket-optimizer" 
                 className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">⚡</div>
                 <h3 className="text-lg font-semibold text-text-primary mb-2">Trinket Optimizer</h3>
                 <p className="text-sm text-text-secondary">Find the best trinket combinations</p>
-              </Link>
+              </ScrollToTopLink>
               
-              <Link 
+              <ScrollToTopLink 
                 to="/floor-predictor" 
                 className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🏢</div>
                 <h3 className="text-lg font-semibold text-text-primary mb-2">Floor Predictor</h3>
                 <p className="text-sm text-text-secondary">Plan your floor progression strategy</p>
-              </Link>
+              </ScrollToTopLink>
             </div>
           </div>
         </div>

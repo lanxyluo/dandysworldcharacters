@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
 import ComparePage from './pages/compare';
 import CalculatorPage from './pages/calculator';
@@ -20,6 +21,7 @@ function App() {
   return (
     <HelmetProvider>
       <div className="min-h-screen text-white">
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/compare" element={<ComparePage />} />
