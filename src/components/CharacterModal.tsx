@@ -118,7 +118,7 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, isOpen, onCl
                 <div className="bg-bg-secondary rounded-lg p-6">
                   <h3 className="text-xl font-bold mb-4">Stats</h3>
                   <div className="space-y-3">
-                    {Object.entries(character.stats).map(([stat, value]) => (
+                    {Object.entries(character.attributes).map(([stat, value]) => (
                       <div key={stat} className="flex items-center justify-between">
                         <span className="capitalize">{formatStatName(stat)}</span>
                         <div className="flex items-center space-x-3">

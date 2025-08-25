@@ -34,7 +34,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
             <p className="text-sm text-text-secondary mb-4 capitalize">{character.type} • {character.rarity}</p>
             
             <div className="space-y-2 mb-4">
-              {Object.entries(character.stats).map(([stat, value]) => (
+              {Object.entries(character.attributes).map(([stat, value]) => (
                 <div key={stat} className="flex items-center justify-between text-sm">
                   <span className="capitalize">{formatStatName(stat)}</span>
                   <div className="flex items-center space-x-2">
@@ -60,7 +60,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
             <p className="text-sm text-text-secondary mb-4 capitalize">{character.type} • {character.rarity}</p>
             
             <div className="space-y-2 mb-4">
-              {Object.entries(character.stats).map(([stat, value]) => (
+              {Object.entries(character.attributes).map(([stat, value]) => (
                 <div key={stat} className="flex items-center justify-between text-sm">
                   <span className="capitalize">{formatStatName(stat)}</span>
                   <div className="flex items-center space-x-2">
