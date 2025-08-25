@@ -6,7 +6,7 @@ import HeroSection from '../components/HeroSection';
 import SearchAndFilter from '../components/SearchAndFilter';
 import CharacterCard from '../components/CharacterCard';
 import Footer from '../components/Footer';
-import { characters } from '../data/characters';
+import { characters } from '../data/characters/index';
 import { Character } from '../types/character';
 
 const HomePage: React.FC = () => {

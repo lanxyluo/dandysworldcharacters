@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Character } from '../types/character';
-import { characters } from '../data/characters';
+import { characters } from '../data/characters/index';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';

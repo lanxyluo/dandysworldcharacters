@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
-import { characters } from '../data/characters';
+import { characters } from '../data/characters/index';
 import { Character } from '../types/character';
 import CharacterSelector from '../components/compare/CharacterSelector';
 import ComparisonTable from '../components/compare/ComparisonTable';
