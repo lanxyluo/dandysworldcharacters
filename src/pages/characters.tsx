@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Character } from '../types/character';
 import { characters } from '../data/characters/index';
@@ -11,19 +11,13 @@ const CharactersPage: React.FC = () => {
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentFilter, setCurrentFilter] = useState<string>('all');
+  const [selectedType, setSelectedType] = useState<string>('all');
+  const [selectedRarity, setSelectedRarity] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   
   const navigate = useNavigate();
   const { characterId } = useParams();
-
-  // 重置所有筛选状态到默认值
-  const resetFilters = useCallback(() => {
-    setSearchTerm('');
-    setCurrentFilter('all');
-    setSortBy('name');
-    setSortOrder('asc');
-  }, []);
 
   // 当URL参数变化时，自动显示对应的角色详情
   useEffect(() => {
@@ -34,10 +28,8 @@ const CharactersPage: React.FC = () => {
       }
     } else {
       setSelectedCharacter(null);
-      // 当从详情页返回时，重置筛选状态
-      resetFilters();
     }
-  }, [characterId, resetFilters]);
+  }, [characterId]);
 
   // 处理角色选择
   const handleCharacterSelect = (character: Character) => {
@@ -62,14 +54,30 @@ const CharactersPage: React.FC = () => {
   // 过滤和排序角色
   const filteredAndSortedCharacters = characters
     .filter(character => {
-      // 搜索筛选
       const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            character.description.toLowerCase().includes(searchTerm.toLowerCase());
       
-      // 快速筛选（All/Main/Regular/Event）
-      const matchesQuickFilter = currentFilter === 'all' || character.type === currentFilter;
+      // 快速筛选逻辑（All/Main/Regular/Event）
+      let matchesQuickFilter = true;
+      if (currentFilter !== 'all') {
+        matchesQuickFilter = character.type === currentFilter;
+      }
       
-      return matchesSearch && matchesQuickFilter;
+      // 详细类型筛选
+      const matchesType = selectedType === 'all' || character.type === selectedType;
+      
+      // 稀有度筛选
+      const matchesRarity = selectedRarity === 'all' || character.rarity === selectedRarity;
+      
+      // 调试信息
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Character: ${character.name} (type: ${character.type}, rarity: ${character.rarity})`);
+        console.log(`Filters: searchTerm="${searchTerm}", currentFilter="${currentFilter}", selectedType="${selectedType}", selectedRarity="${selectedRarity}"`);
+        console.log(`Matches: Search=${matchesSearch}, QuickFilter=${matchesQuickFilter}, Type=${matchesType}, Rarity=${matchesRarity}`);
+        console.log(`Final result: ${matchesSearch && matchesQuickFilter && matchesType && matchesRarity}`);
+      }
+      
+      return matchesSearch && matchesQuickFilter && matchesType && matchesRarity;
     })
     .sort((a, b) => {
       let comparison = 0;
@@ -143,31 +151,34 @@ const CharactersPage: React.FC = () => {
         <link rel="canonical" href="https://www.dandysworldcharacters.com/characters" />
       </Helmet>
 
-      <Navigation />
-      <div className="min-h-screen bg-bg-primary pt-16">
-        {/* 如果没有选中角色，显示完整的角色页面 */}
-        {!selectedCharacter && (
-          <>
-            <HeroSection 
-              totalCharacters={characterStats.total}
-              mainCharacters={characterStats.main}
-              eventCharacters={characterStats.event}
-            />
-            <SearchAndFilter
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              currentFilter={currentFilter}
-              onFilterChange={setCurrentFilter}
-              sortBy={sortBy}
-              onSortChange={setSortBy}
-              sortOrder={sortOrder}
-              onSortOrderChange={setSortOrder}
-              onResetFilters={resetFilters}
-            />
-          </>
-        )}
-        
-        <div className="container mx-auto px-4 py-8">
+             <Navigation />
+       <div className="min-h-screen bg-bg-primary pt-16">
+         {/* 如果没有选中角色，显示完整的角色页面 */}
+         {!selectedCharacter && (
+           <>
+             <HeroSection 
+               totalCharacters={characterStats.total}
+               mainCharacters={characterStats.main}
+               eventCharacters={characterStats.event}
+             />
+                           <SearchAndFilter
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                currentFilter={currentFilter}
+                onFilterChange={setCurrentFilter}
+                selectedType={selectedType}
+                onTypeChange={setSelectedType}
+                selectedRarity={selectedRarity}
+                onRarityChange={setSelectedRarity}
+                sortBy={sortBy}
+                onSortChange={setSortBy}
+                sortOrder={sortOrder}
+                onSortOrderChange={setSortOrder}
+              />
+           </>
+         )}
+         
+         <div className="container mx-auto px-4 py-8">
           {/* 页面标题 - 只在没有选中角色时显示 */}
           {!selectedCharacter && (
             <div className="text-center mb-8">
@@ -597,8 +608,8 @@ const CharactersPage: React.FC = () => {
               )}
             </div>
           ) : (
-            // 角色列表页面
-            <>
+                         // 角色列表页面
+             <>
 
               {/* 角色网格 */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
