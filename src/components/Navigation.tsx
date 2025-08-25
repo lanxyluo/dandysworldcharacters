@@ -15,7 +15,7 @@ const Navigation: React.FC = () => {
   };
 
   const mainMenuItems = [
-    { name: 'Characters', href: '/', icon: '👥' },
+    { name: 'Characters', href: '/characters', icon: '👥' },
     { name: 'Floor Calculator', href: '/floor-predictor', icon: '🏢' },
     { name: 'Compare', href: '/compare', icon: '⚖️' },
     { name: 'Calculator', href: '/calculator', icon: '🧮' },

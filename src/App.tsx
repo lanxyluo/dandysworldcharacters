@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
+import CharactersPage from './pages/characters';
 import ComparePage from './pages/compare';
 import CalculatorPage from './pages/calculator';
 import GameMechanicsGuide from './pages/guides/game-mechanics';
@@ -24,6 +25,8 @@ function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/characters" element={<CharactersPage />} />
+          <Route path="/characters/:characterId" element={<CharactersPage />} />
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/calculator" element={<CalculatorPage />} />
           <Route path="/guides/game-mechanics" element={<GameMechanicsGuide />} />

@@ -36,8 +36,65 @@ export interface Character {
     other?: string[];
     note?: string;
   };
-  twistedVersion?: string; // 对应的扭曲版本ID
-  originalVersion?: string; // 原始版本ID (用于扭曲角色)
+  twistedVersion?: string;
+  
+  // 新增详细说明字段
+  detailedGuide?: {
+    abilityMechanics: {
+      active: {
+        detailedDescription: string;
+        howItWorks: string;
+        bestUsage: string;
+        visualEffects: string;
+      };
+      passive: {
+        detailedDescription: string;
+        howItWorks: string;
+        strategicValue: string;
+      };
+    };
+    strategies: {
+      playingAs: {
+        overview: string;
+        tips: string[];
+        commonMistakes: string[];
+        advancedTechniques: string[];
+      };
+      playingAgainst: {
+        overview: string;
+        counterStrategies: string[];
+        whatToAvoid: string[];
+        teamComposition: string[];
+      };
+    };
+    interactions: {
+      synergies: {
+        description: string;
+        bestPartners: Array<{
+          character: string;
+          reason: string;
+          combo: string;
+        }>;
+      };
+      counters: {
+        description: string;
+        strongAgainst: Array<{
+          character: string;
+          reason: string;
+        }>;
+        weakAgainst: Array<{
+          character: string;
+          reason: string;
+        }>;
+      };
+    };
+    scenarios: {
+      bestMaps: string[];
+      bestSituations: string[];
+      challengingSituations: string[];
+      teamRoles: string[];
+    };
+  };
 }
 
 export interface CharacterSelectorProps {

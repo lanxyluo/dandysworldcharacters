@@ -1,41 +1,34 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import SearchAndFilter from '../components/SearchAndFilter';
 import CharacterCard from '../components/CharacterCard';
-import CharacterModal from '../components/CharacterModal';
 import Footer from '../components/Footer';
-import SEO from '../components/SEO';
 import { characters } from '../data/characters';
 import { Character } from '../types/character';
 
-export default function HomePage() {
+const HomePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentFilter, setCurrentFilter] = useState('all');
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Filter and search characters
+  // 过滤角色
   const filteredCharacters = useMemo(() => {
     return characters.filter(character => {
-      const matchesFilter = currentFilter === 'all' || character.type === currentFilter;
       const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          character.fullName.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesFilter && matchesSearch;
+                           character.description.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      if (currentFilter === 'all') return matchesSearch;
+      if (currentFilter === 'main') return matchesSearch && character.type === 'main';
+      if (currentFilter === 'lethal') return matchesSearch && character.type === 'lethal';
+      if (currentFilter === 'twisted') return matchesSearch && character.type === 'twisted';
+      
+      return matchesSearch;
     });
   }, [searchTerm, currentFilter]);
 
-  const handleCharacterClick = (character: Character) => {
-    setSelectedCharacter(character);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedCharacter(null);
-  };
-
-  // Schema Markup for Website
+  // 网站结构化数据
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -59,31 +52,31 @@ export default function HomePage() {
 
   return (
     <>
-      <SEO 
-        title="Dandys World Characters Database | Complete Character Stats & Guide"
-        description="Complete Dandys World characters database with stats, abilities, unlock guides and tools. Explore all 36+ Toons including Main Characters like Astro, Sprout, Vee with detailed builds and strategies."
-        keywords="dandys world, characters database, character stats, abilities, unlock guides, main characters, astro, sprout, vee, character builds"
-        ogTitle="Dandys World Characters Database | Complete Guide"
-        ogDescription="Complete database for all Dandys World characters with stats, guides and tools. Master all 36+ Toons including Main Characters."
-        ogImage="https://dandysworldcharacters.com/images/og-homepage.png"
-        ogUrl="https://dandysworldcharacters.com"
-        ogType="website"
-        ogSiteName="Dandys World Characters"
-        twitterCard="summary_large_image"
-        twitterTitle="Dandys World Characters Database"
-        twitterDescription="Complete character database and tools for Dandys World game"
-        twitterImage="https://dandysworldcharacters.com/images/twitter-card.png"
-        twitterSite="@DandysWorldChars"
-        canonical="https://dandysworldcharacters.com/"
-        robots="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
-        viewport="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
-        themeColor="#1a1a1a"
-        mobileWebAppCapable="yes"
-        appleMobileWebAppCapable="yes"
-        appleMobileWebAppStatusBarStyle="black-translucent"
-        appleMobileWebAppTitle="Dandys World"
-        formatDetection="telephone=no"
-      />
+      <Helmet>
+        <title>Dandys World Characters Database | Complete Character Stats & Guide</title>
+        <meta name="description" content="Complete Dandys World characters database with stats, abilities, unlock guides and tools. Explore all 36+ Toons including Main Characters like Astro, Sprout, Vee with detailed builds and strategies." />
+        <meta name="keywords" content="dandys world, characters database, character stats, abilities, unlock guides, main characters, astro, sprout, vee, character builds" />
+        <meta property="og:title" content="Dandys World Characters Database | Complete Guide" />
+        <meta property="og:description" content="Complete database for all Dandys World characters with stats, guides and tools. Master all 36+ Toons including Main Characters." />
+        <meta property="og:image" content="https://dandysworldcharacters.com/images/og-homepage.png" />
+        <meta property="og:url" content="https://dandysworldcharacters.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Dandys World Characters" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Dandys World Characters Database" />
+        <meta name="twitter:description" content="Complete character database and tools for Dandys World game" />
+        <meta name="twitter:image" content="https://dandysworldcharacters.com/images/twitter-card.png" />
+        <meta name="twitter:site" content="@DandysWorldChars" />
+        <link rel="canonical" href="https://dandysworldcharacters.com/" />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+        <meta name="theme-color" content="#1a1a1a" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Dandys World" />
+        <meta name="format-detection" content="telephone=no" />
+      </Helmet>
       
       {/* Schema Markup */}
       <script
@@ -115,21 +108,27 @@ export default function HomePage() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {filteredCharacters.map((character) => (
-              <CharacterCard
-                key={character.id}
-                character={character}
-                onClick={() => handleCharacterClick(character)}
-              />
+              <Link key={character.id} to={`/characters/${character.id}`}>
+                <CharacterCard
+                  character={character}
+                  onClick={() => {}} // 空函数，因为现在使用Link导航
+                />
+              </Link>
             ))}
+          </div>
+          
+          {/* 查看更多角色按钮 */}
+          <div className="text-center mt-8">
+            <Link 
+              to="/characters"
+              className="inline-flex items-center px-6 py-3 bg-accent-main hover:bg-accent-main/80 text-white font-semibold rounded-lg transition-colors"
+            >
+              <span>View All Characters</span>
+              <span className="ml-2">→</span>
+            </Link>
           </div>
         </div>
       </section>
-
-      <CharacterModal
-        character={selectedCharacter}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />
       
       <Footer />
     </>

@@ -64,6 +64,140 @@ export const characters: Character[] = [
       ichor: 4500,
       research: "100% Research on Twisted Vee",
       mastery: "Complete all Mastery Quests on Brightney"
+    },
+    detailedGuide: {
+      abilityMechanics: {
+        active: {
+          detailedDescription: "Mic Check is Vee's signature ability that reveals the location of all Twisted enemies on the current floor for 5 seconds. This ability provides crucial intelligence about enemy positions and movement patterns.",
+          howItWorks: "When activated, Vee emits a high-frequency signal that temporarily disrupts Twisted camouflage systems. All Twisted enemies within the floor boundaries become visible with a distinctive red outline and pulsing effect, even through walls and obstacles.",
+          bestUsage: "Use Mic Check at the start of a floor to scout enemy positions, before entering new areas, or when you suspect Twisted enemies are nearby. The 5-second duration is perfect for planning your route or alerting teammates.",
+          visualEffects: "Twisted enemies glow with a bright red outline and emit pulsing waves. The effect is visible to all team members and works through walls, making it easy to spot hidden threats."
+        },
+        passive: {
+          detailedDescription: "Camera Hijack automatically marks incomplete machines that are within detection range of any Toon character, providing strategic information about objectives.",
+          howItWorks: "Vee's passive surveillance system continuously monitors the environment. When a Toon character approaches within 15 meters of an unfinished machine, it automatically gets marked with a blue holographic indicator visible to the entire team.",
+          strategicValue: "This passive ability eliminates the need for manual scouting of objectives and helps teams coordinate their efforts. It's particularly valuable in large maps or when playing with multiple Toons."
+        }
+      },
+      strategies: {
+        playingAs: {
+          overview: "Vee excels as a support and reconnaissance character. Your primary role is to provide intelligence and help your team avoid dangerous encounters while identifying objectives.",
+          tips: [
+            "Always communicate with your team before using Mic Check to coordinate movements",
+            "Use your passive ability to help teammates find objectives quickly",
+            "Stay near the back of your team due to low stealth and health",
+            "Prioritize survival over aggressive play - your information is more valuable than kills"
+          ],
+          commonMistakes: [
+            "Using Mic Check too frequently and running out of cooldowns when needed",
+            "Getting separated from your team due to low stealth",
+            "Trying to engage enemies directly instead of supporting from a distance",
+            "Not communicating information to teammates"
+          ],
+          advancedTechniques: [
+            "Chain Mic Check with other team abilities for maximum coverage",
+            "Use the 5-second window to plan escape routes",
+            "Coordinate with stealth characters to maximize information gathering",
+            "Time your ability usage with team movements for optimal efficiency"
+          ]
+        },
+        playingAgainst: {
+          overview: "Vee's low stealth and health make her vulnerable to direct attacks, but her abilities can quickly turn the tide if not dealt with properly.",
+          counterStrategies: [
+            "Focus Vee first in team fights to eliminate her information gathering",
+            "Use stealth abilities to approach Vee undetected",
+            "Coordinate attacks to overwhelm Vee before she can use Mic Check",
+            "Use abilities that can reach Vee from a distance"
+          ],
+          whatToAvoid: [
+            "Engaging Vee's team without first eliminating her",
+            "Grouping up when Vee uses Mic Check",
+            "Ignoring Vee's passive machine marking system",
+            "Allowing Vee to maintain safe positioning"
+          ],
+          teamComposition: [
+            "Include characters with high stealth to counter Vee's surveillance",
+            "Use characters with long-range abilities to pressure Vee",
+            "Consider characters that can disrupt team coordination",
+            "Include characters that can quickly eliminate low-health targets"
+          ]
+        }
+      },
+      interactions: {
+        synergies: {
+          description: "Vee works exceptionally well with characters that can capitalize on the information she provides and protect her from direct threats.",
+          bestPartners: [
+            {
+              character: "Astro",
+              reason: "Astro's stealth abilities complement Vee's low stealth, and both can work together for maximum information gathering.",
+              combo: "Vee reveals enemy positions with Mic Check, then Astro uses stealth to gather additional intelligence or eliminate isolated targets."
+            },
+            {
+              character: "Sprout",
+              reason: "Sprout's healing abilities help keep Vee alive, while Vee's information helps Sprout position safely.",
+              combo: "Vee provides reconnaissance while Sprout maintains team health, creating a strong support duo."
+            },
+            {
+              character: "Dandy",
+              reason: "Dandy's high damage output can quickly eliminate threats that Vee identifies, while Vee helps Dandy avoid dangerous situations.",
+              combo: "Vee scouts ahead and marks enemies, then Dandy engages with full knowledge of enemy positions."
+            }
+          ]
+        },
+        counters: {
+          description: "Vee's information gathering abilities make her a priority target, but her low combat stats make her vulnerable to various strategies.",
+          strongAgainst: [
+            {
+              character: "Twisted characters",
+              reason: "Vee's Mic Check ability directly counters Twisted stealth mechanics, making them much easier to track and avoid."
+            },
+            {
+              character: "Stealth-based characters",
+              reason: "Vee's passive ability can reveal hidden objectives and help counter stealth strategies."
+            }
+          ],
+          weakAgainst: [
+            {
+              character: "High-damage characters",
+              reason: "Vee's low health makes her extremely vulnerable to burst damage and focused attacks."
+            },
+            {
+              character: "Stealth characters",
+              reason: "Characters with high stealth can approach Vee undetected and eliminate her before she can provide information."
+            },
+            {
+              character: "Long-range characters",
+              reason: "Vee's low mobility and health make her an easy target for characters that can attack from a safe distance."
+            }
+          ]
+        }
+      },
+      scenarios: {
+        bestMaps: [
+          "Large, complex maps where information is crucial",
+          "Maps with many hidden objectives",
+          "Maps with multiple Twisted enemies",
+          "Team-based objective maps"
+        ],
+        bestSituations: [
+          "Playing with a coordinated team",
+          "When facing multiple Twisted enemies",
+          "Objective-focused gameplay",
+          "When team survival is more important than kills"
+        ],
+        challengingSituations: [
+          "Solo play or uncoordinated teams",
+          "Maps with many open areas and limited cover",
+          "When facing high-damage enemy compositions",
+          "Fast-paced, aggressive gameplay styles"
+        ],
+        teamRoles: [
+          "Primary reconnaissance and intelligence gatherer",
+          "Support character for objective completion",
+          "Team coordinator and information provider",
+          "Strategic advisor for team positioning"
+        ]
+      }
     }
   },
   {
