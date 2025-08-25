@@ -7,6 +7,10 @@ import { lethalCharacters } from './lethal-characters';
 // Export all character data
 export { mainCharacters } from './main-characters';
 export { commonCharacters } from './common-characters';
+export { regularCharacters } from './regular-characters';
+export { eventCharacters } from './event-characters';
+export { lethalCharacters } from './lethal-characters';
+export { twistedCharacters } from './twisted-characters';
 
 // Export types
 export type { Character } from '../../types/character';
@@ -14,7 +18,11 @@ export type { Character } from '../../types/character';
 // Utility functions
 export const getAllCharacters = (): Character[] => [
   ...mainCharacters,
-  ...commonCharacters
+  ...commonCharacters,
+  ...regularCharacters,
+  ...eventCharacters,
+  ...lethalCharacters,
+  ...twistedCharacters
 ];
 
 export const getCharacterById = (id: string): Character | undefined => {
@@ -71,6 +79,10 @@ export default {
   // Character arrays
   mainCharacters,
   commonCharacters,
+  regularCharacters,
+  eventCharacters,
+  lethalCharacters,
+  twistedCharacters,
   allCharacters: getAllCharacters(),
   
   // Utility functions
