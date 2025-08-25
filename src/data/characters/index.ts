@@ -9,7 +9,7 @@ export { mainCharacters } from './main-characters';
 export { commonCharacters } from './common-characters';
 
 // Export types
-export type { Character, UnlockStep, UnlockPlan } from './types/character';
+export type { Character } from '../../types/character';
 
 // Utility functions
 export const getAllCharacters = (): Character[] => [
