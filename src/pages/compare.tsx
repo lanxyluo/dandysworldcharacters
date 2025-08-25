@@ -170,13 +170,13 @@ export default function ComparePage() {
           {/* Character Selector */}
           {(!isMobile || !showComparison) && (
             <div className="mb-8">
-              <CharacterSelector
-                characters={characters}
-                selectedCharacters={selectedCharacters}
-                onAddCharacter={handleAddCharacter}
-                onRemoveCharacter={handleRemoveCharacter}
-                onClearAll={handleClearAll}
-              />
+                             <CharacterSelector
+                 characters={getAllCharacters()}
+                 selectedCharacters={selectedCharacters}
+                 onAddCharacter={handleAddCharacter}
+                 onRemoveCharacter={handleRemoveCharacter}
+                 onClearAll={handleClearAll}
+               />
             </div>
           )}
 
