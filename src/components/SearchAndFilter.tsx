@@ -5,14 +5,11 @@ interface SearchAndFilterProps {
   onSearchChange: (value: string) => void;
   currentFilter: string;
   onFilterChange: (filter: string) => void;
-  selectedType: string;
-  onTypeChange: (type: string) => void;
-  selectedRarity: string;
-  onRarityChange: (rarity: string) => void;
   sortBy: string;
   onSortChange: (sort: string) => void;
   sortOrder: 'asc' | 'desc';
   onSortOrderChange: (order: 'asc' | 'desc') => void;
+  onResetFilters: () => void;
 }
 
 const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
@@ -20,39 +17,17 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
   onSearchChange,
   currentFilter,
   onFilterChange,
-  selectedType,
-  onTypeChange,
-  selectedRarity,
-  onRarityChange,
   sortBy,
   onSortChange,
   sortOrder,
-  onSortOrderChange
+  onSortOrderChange,
+  onResetFilters
 }) => {
   const filters = [
     { key: 'all', label: 'All' },
     { key: 'main', label: 'Main' },
     { key: 'regular', label: 'Regular' },
     { key: 'event', label: 'Event' }
-  ];
-
-  const types = [
-    { value: 'all', label: 'All Types' },
-    { value: 'toon', label: 'Toon' },
-    { value: 'main', label: 'Main' },
-    { value: 'regular', label: 'Regular' },
-    { value: 'event', label: 'Event' },
-    { value: 'lethal', label: 'Lethal' },
-    { value: 'twisted', label: 'Twisted' }
-  ];
-
-  const rarities = [
-    { value: 'all', label: 'All Rarities' },
-    { value: 'common', label: 'Common' },
-    { value: 'uncommon', label: 'Uncommon' },
-    { value: 'rare', label: 'Rare' },
-    { value: 'legendary', label: 'Legendary' },
-    { value: 'twisted', label: 'Twisted' }
   ];
 
   const sortOptions = [
@@ -98,36 +73,8 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
             </div>
           </div>
 
-          {/* 详细筛选和排序 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* 类型筛选 */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-white">Character Type</label>
-              <select
-                value={selectedType}
-                onChange={(e) => onTypeChange(e.target.value)}
-                className="w-full px-3 py-2 bg-bg-card border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-accent-main"
-              >
-                {types.map((type) => (
-                  <option key={type.value} value={type.value}>{type.label}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* 稀有度筛选 */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-white">Rarity</label>
-              <select
-                value={selectedRarity}
-                onChange={(e) => onRarityChange(e.target.value)}
-                className="w-full px-3 py-2 bg-bg-card border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-accent-main"
-              >
-                {rarities.map((rarity) => (
-                  <option key={rarity.value} value={rarity.value}>{rarity.label}</option>
-                ))}
-              </select>
-            </div>
-
+          {/* 排序和重置 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             {/* 排序 */}
             <div>
               <label className="block text-sm font-medium mb-2 text-white">Sort By</label>
@@ -150,6 +97,17 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
               >
                 <span>{sortOrder === 'asc' ? '↑' : '↓'}</span>
                 <span>{sortOrder === 'asc' ? 'Ascending' : 'Descending'}</span>
+              </button>
+            </div>
+
+            {/* 重置筛选按钮 */}
+            <div className="flex items-end">
+              <button
+                onClick={onResetFilters}
+                className="w-full px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-md transition-colors flex items-center justify-center space-x-2"
+              >
+                <span>🔄</span>
+                <span>Reset Filters</span>
               </button>
             </div>
           </div>
