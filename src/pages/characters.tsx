@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Character } from '../types/character';
-import { characters } from '../data/characters/index';
+import { getAllCharacters } from '../data/characters/index';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
@@ -22,7 +22,7 @@ const CharactersPage: React.FC = () => {
   // 当URL参数变化时，自动显示对应的角色详情
   useEffect(() => {
     if (characterId) {
-      const character = characters.find(c => c.id === characterId);
+      const character = getAllCharacters().find(c => c.id === characterId);
       if (character) {
         setSelectedCharacter(character);
       }
@@ -46,13 +46,13 @@ const CharactersPage: React.FC = () => {
 
   // 计算角色统计
   const characterStats = {
-    total: characters.length,
-    main: characters.filter(c => c.type === 'main').length,
-    event: characters.filter(c => c.type === 'event').length
+    total: getAllCharacters().length,
+    main: getAllCharacters().filter(c => c.type === 'main').length,
+    event: getAllCharacters().filter(c => c.type === 'event').length
   };
 
   // 过滤和排序角色
-  const filteredAndSortedCharacters = characters
+  const filteredAndSortedCharacters = getAllCharacters()
     .filter(character => {
       const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            character.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -69,13 +69,7 @@ const CharactersPage: React.FC = () => {
       // 稀有度筛选
       const matchesRarity = selectedRarity === 'all' || character.rarity === selectedRarity;
       
-      // 调试信息
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`Character: ${character.name} (type: ${character.type}, rarity: ${character.rarity})`);
-        console.log(`Filters: searchTerm="${searchTerm}", currentFilter="${currentFilter}", selectedType="${selectedType}", selectedRarity="${selectedRarity}"`);
-        console.log(`Matches: Search=${matchesSearch}, QuickFilter=${matchesQuickFilter}, Type=${matchesType}, Rarity=${matchesRarity}`);
-        console.log(`Final result: ${matchesSearch && matchesQuickFilter && matchesType && matchesRarity}`);
-      }
+      // 调试信息已移除
       
       return matchesSearch && matchesQuickFilter && matchesType && matchesRarity;
     })
@@ -687,7 +681,7 @@ const CharactersPage: React.FC = () => {
 
               {/* 结果统计 */}
               <div className="mt-8 text-center text-text-secondary">
-                Showing {filteredAndSortedCharacters.length} of {characters.length} characters
+                Showing {filteredAndSortedCharacters.length} of {getAllCharacters().length} characters
               </div>
             </>
           )}

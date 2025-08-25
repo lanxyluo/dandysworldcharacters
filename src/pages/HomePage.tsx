@@ -6,7 +6,7 @@ import HeroSection from '../components/HeroSection';
 import SearchAndFilter from '../components/SearchAndFilter';
 import CharacterCard from '../components/CharacterCard';
 import Footer from '../components/Footer';
-import { characters } from '../data/characters/index';
+import { getAllCharacters } from '../data/characters/index';
 import { Character } from '../types/character';
 
 const HomePage: React.FC = () => {
@@ -15,7 +15,7 @@ const HomePage: React.FC = () => {
 
   // 过滤角色
   const filteredCharacters = useMemo(() => {
-    return characters.filter(character => {
+    return getAllCharacters().filter(character => {
       const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            character.description.toLowerCase().includes(searchTerm.toLowerCase());
       

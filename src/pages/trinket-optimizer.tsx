@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
-import { characters } from '../data/characters/index';
+import { getAllCharacters } from '../data/characters/index';
 import { 
   getIntelligentRecommendations,
   defaultEngineConfig 
@@ -48,7 +48,7 @@ const TrinketOptimizer: React.FC = () => {
   // Generate recommendations when character or game style changes
   useEffect(() => {
     if (selectedCharacter && selectedGameStyle) {
-      const character = characters.find(c => c.id === selectedCharacter);
+      const character = getAllCharacters().find(c => c.id === selectedCharacter);
       if (character) {
         // Update user preferences
         const updatedPreferences = {
@@ -76,7 +76,7 @@ const TrinketOptimizer: React.FC = () => {
   // Generate recommendations
   const generateRecommendations = () => {
     if (selectedCharacter && selectedGameStyle) {
-      const character = characters.find(c => c.id === selectedCharacter);
+      const character = getAllCharacters().find(c => c.id === selectedCharacter);
       if (character) {
         const newRecommendations = getIntelligentRecommendations(character, selectedGameStyle, 4);
         setRecommendations(newRecommendations);
@@ -614,7 +614,7 @@ const TrinketOptimizer: React.FC = () => {
                 className="w-full px-3 py-2 border border-white/30 rounded-md bg-white/20 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="">Please select a character</option>
-                {characters.map((character) => (
+                {getAllCharacters().map((character) => (
                   <option key={character.id} value={character.id} className="bg-gray-800 text-white">
                     {character.name} - {character.type}
                   </option>

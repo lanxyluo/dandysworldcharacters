@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
-import { characters } from '../data/characters/index';
+import { getAllCharacters } from '../data/characters/index';
 import { Character } from '../types/character';
 import CharacterSelector from '../components/compare/CharacterSelector';
 import ComparisonTable from '../components/compare/ComparisonTable';
@@ -59,7 +59,7 @@ export default function ComparePage() {
     };
 
     // Find characters that complement the selected ones
-    return characters
+    return getAllCharacters()
       .filter(c => !selectedCharacters.find(selected => selected.id === c.id))
       .map(character => {
         const complementScore = 
