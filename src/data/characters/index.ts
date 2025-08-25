@@ -1,8 +1,10 @@
 import { Character } from '../../types/character';
 import { mainCharacters } from './main-characters';
+import { commonCharacters } from './common-characters';
 import { regularCharacters } from './regular-characters';
 import { eventCharacters } from './event-characters';
 import { lethalCharacters } from './lethal-characters';
+import { twistedCharacters } from './twisted-characters';
 
 // Export all character data
 export { mainCharacters } from './main-characters';
