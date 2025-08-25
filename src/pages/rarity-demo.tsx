@@ -5,7 +5,7 @@ import {
   getDifficultyCategories, 
   getAbilityCategories,
   getCharactersByRarity
-} from '../data/index';
+} from '../data/characters';
 import { Character, Rarity } from '../types/character';
 
 const RarityDemo: React.FC = () => {

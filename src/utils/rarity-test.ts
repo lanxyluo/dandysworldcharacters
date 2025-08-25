@@ -5,7 +5,7 @@ import {
   getAbilityCategories,
   getCharactersByRarity,
   getCharactersByRaritySorted
-} from '../data/index';
+} from '../data/characters';
 
 // 测试稀有度系统
 export const testRaritySystem = () => {

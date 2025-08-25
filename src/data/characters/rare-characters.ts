@@ -2,45 +2,110 @@ import { Character } from '../../types/character';
 
 export const rareCharacters: Character[] = [
   {
-    id: "sprout",
-    name: "Sprout",
-    fullName: "Sprout",
+    id: "connie",
+    name: "Connie",
+    fullName: "Connie",
     type: "regular",
     rarity: "rare",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "📷",
     
     attributes: {
       health: 3,
       skillCheck: 2,
-      movementSpeed: 2,
+      movementSpeed: 1,
       stamina: 3,
-      stealth: 4,
+      stealth: 5,
       extractionSpeed: 4
     },
     
     abilities: {
       active: {
-        name: "Heal",
-        description: "Heals targeted Toon by 1 Heart at the cost of 100 Tapes",
-        cooldown: "60 seconds",
-        detailedDescription: "Sprout provides healing support at a higher cost than Cosmo",
-        howItWorks: "Consumes 100 tapes to restore 1 heart to target ally",
-        bestUsage: "Primary healing option for critical health restoration",
-        visualEffects: "Plant growth healing aura with green particle effects"
+        name: "Spotlight",
+        description: "Creates a focused light beam that stuns Twisteds for 3 seconds",
+        cooldown: "75 seconds",
+        detailedDescription: "Connie uses her camera flash to temporarily disable nearby threats. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Creates a directed light beam that stuns all Twisteds in a cone for 3 seconds",
+        bestUsage: "Emergency crowd control or creating safe windows for team movement",
+        visualEffects: "Camera flash with stunning light beam and dazed enemy indicators"
       },
       passive: {
-        name: "Photosynthesis",
-        description: "Regenerates stamina faster when near light sources",
-        detailedDescription: "Sprout draws energy from light to maintain vitality",
-        howItWorks: "Provides 50% stamina regeneration boost when near any light source",
-        strategicValue: "Encourages positioning near light sources for optimal performance"
+        name: "Focus",
+        description: "Stealth increases when standing still, but decreases when moving",
+        detailedDescription: "Connie is most effective when positioned carefully and remaining stationary. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Gains +2 stealth stars when stationary for 5+ seconds, loses -1 stealth star while moving",
+        strategicValue: "Encourages strategic positioning and patience for maximum stealth benefit"
+      }
+    },
+    
+    unlockRequirements: {
+      ichorCost: 2250,
+      researchRequirements: ["100% Research on Twisted Connie"],
+      taskCompletion: [],
+      prerequisites: []
+    },
+    
+    features: {
+      hasRainbowBorder: false,
+      hasUniqueVoiceLines: false,
+      voiceEffect: "Camera sounds",
+      characterRelations: [],
+      lightProducing: true,
+      lightColor: "Cyan camera light"
+    },
+    
+    description: "A camera character with positioning-based stealth and stunning abilities",
+    overview: "Connie specializes in stealth positioning and tactical crowd control",
+    gameplay: {
+      strengths: ["Maximum stealth (5 stars when positioned)", "Crowd control ability", "Good extraction speed", "Light production"],
+      weaknesses: ["Minimum movement speed", "Positioning dependent", "Stealth penalty while moving"],
+      bestStrategy: "Find optimal positions for machine work and use stunning ability for team protection",
+      teamRole: "Stealth Sniper/Crowd Controller"
+    }
+  },
+
+  {
+    id: "yatta",
+    name: "Yatta",
+    fullName: "Yatta",
+    type: "regular",
+    rarity: "rare",
+    isMainCharacter: false,
+    totalAttributePoints: 15,
+    image: "🎉",
+    
+    attributes: {
+      health: 3,
+      skillCheck: 4,
+      movementSpeed: 3,
+      stamina: 1,
+      stealth: 2,
+      extractionSpeed: 5
+    },
+    
+    abilities: {
+      active: {
+        name: "Celebration",
+        description: "Boosts all nearby teammates' extraction speed by 50% for 12 seconds",
+        cooldown: "90 seconds",
+        detailedDescription: "Yatta's enthusiasm spreads to nearby allies, enhancing their work efficiency. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Provides significant extraction speed boost to all Toons within range",
+        bestUsage: "Use during group machine completion sessions for maximum team efficiency",
+        visualEffects: "Confetti and celebration effects with productivity boost indicators"
+      },
+      passive: {
+        name: "Party Time",
+        description: "Extraction speed increases for each nearby teammate",
+        detailedDescription: "Yatta works better when surrounded by friends and teammates. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Gains 15% extraction speed for each teammate within proximity (max 45%)",
+        strategicValue: "Encourages group extraction work for optimal performance"
       }
     },
     
     unlockRequirements: {
       ichorCost: 2000,
-      researchRequirements: ["100% Research on Twisted Sprout"],
+      researchRequirements: ["100% Research on Twisted Yatta"],
       taskCompletion: [],
       prerequisites: []
     },
@@ -48,123 +113,62 @@ export const rareCharacters: Character[] = [
     features: {
       hasRainbowBorder: false,
       hasUniqueVoiceLines: false,
-      voiceEffect: "Plant growing sounds",
-      characterRelations: ["Cosmo - Best friend and healing partner"],
+      voiceEffect: "Celebration sounds",
+      characterRelations: [],
       lightProducing: false
     },
     
-    description: "A plant character providing primary healing and stamina regeneration",
-    overview: "Sprout serves as the main healer with light-based stamina bonuses",
+    description: "A party-themed character focused on team extraction bonuses and group work",
+    overview: "Yatta maximizes team extraction efficiency through group bonuses and celebration abilities",
     gameplay: {
-      strengths: ["Primary healing", "Good stealth", "Light-based stamina bonus", "High extraction speed"],
-      weaknesses: ["High healing cost", "Low mobility", "Dependent on light sources"],
-      bestStrategy: "Position near light sources while providing healing support to team",
-      teamRole: "Primary Healer/Stamina Support"
+      strengths: ["Maximum extraction speed (5 stars)", "Team extraction bonuses", "Group synergy", "High skill check"],
+      weaknesses: ["Minimum stamina (1 star)", "Dependent on teammates", "Limited solo capability"],
+      bestStrategy: "Focus on group machine completion to maximize extraction bonuses for entire team",
+      teamRole: "Team Extractor/Group Enhancer"
     }
   },
 
   {
-    id: "shelly",
-    name: "Shelly",
-    fullName: "Shelly",
+    id: "blot",
+    name: "Blot",
+    fullName: "Blot",
     type: "regular",
     rarity: "rare",
     isMainCharacter: false,
     totalAttributePoints: 15,
-    
-    attributes: {
-      health: 4,
-      skillCheck: 3,
-      movementSpeed: 2,
-      stamina: 2,
-      stealth: 3,
-      extractionSpeed: 4
-    },
-    
-    abilities: {
-      active: {
-        name: "Shell Shield",
-        description: "Creates a protective barrier that blocks one hit from Twisteds",
-        cooldown: "90 seconds",
-        detailedDescription: "Shelly uses her shell to create temporary protection",
-        howItWorks: "Provides one-time damage immunity to the next Twisted attack",
-        bestUsage: "Use before entering dangerous areas or when expecting attacks",
-        visualEffects: "Shell barrier animation with protective glow effects"
-      },
-      passive: {
-        name: "Hard Shell",
-        description: "Takes 25% less damage from all sources",
-        detailedDescription: "Shelly's natural armor provides consistent damage reduction",
-        howItWorks: "Reduces all incoming damage by 25%",
-        strategicValue: "Provides consistent survivability in all situations"
-      }
-    },
-    
-    unlockRequirements: {
-      ichorCost: 2500,
-      researchRequirements: ["100% Research on Twisted Shelly"],
-      taskCompletion: [],
-      prerequisites: []
-    },
-    
-    features: {
-      hasRainbowBorder: false,
-      hasUniqueVoiceLines: false,
-      voiceEffect: "Shell clinking sounds",
-      characterRelations: ["Tisha - Close friend through mastery connection"],
-      lightProducing: false
-    },
-    
-    description: "A shell character with defensive abilities and damage reduction",
-    overview: "Shelly provides consistent damage mitigation and emergency protection",
-    gameplay: {
-      strengths: ["High health", "Damage reduction", "Emergency protection", "Good extraction speed"],
-      weaknesses: ["Low mobility", "Poor stamina", "Limited offensive capabilities"],
-      bestStrategy: "Use defensive abilities proactively while maintaining steady extraction work",
-      teamRole: "Tank/Defensive Support"
-    }
-  },
-
-  {
-    id: "coal",
-    name: "Coal",
-    fullName: "Coal",
-    type: "regular",
-    rarity: "rare",
-    isMainCharacter: false,
-    totalAttributePoints: 15,
+    image: "🖋️",
     
     attributes: {
       health: 3,
-      skillCheck: 2,
+      skillCheck: 1,
       movementSpeed: 4,
-      stamina: 4,
+      stamina: 5,
       stealth: 2,
       extractionSpeed: 2
     },
     
     abilities: {
       active: {
-        name: "Smoke Screen",
-        description: "Creates a smoke cloud that reduces Twisted detection range for 6 seconds",
-        cooldown: "75 seconds",
-        detailedDescription: "Coal generates smoke to obscure visibility and reduce enemy awareness",
-        howItWorks: "Reduces Twisted detection range by 50% for all Toons within the smoke",
-        bestUsage: "Use for team escapes or to safely complete nearby machines",
-        visualEffects: "Dark smoke cloud with reduced visibility effects"
+        name: "Ink Spill",
+        description: "Creates a trail of ink that slows Twisteds by 50% for 10 seconds",
+        cooldown: "60 seconds",
+        detailedDescription: "Blot spills ink to create tactical movement restrictions for enemies. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Places a trail of ink that significantly slows any Twisted that walks through it",
+        bestUsage: "Create escape routes, protect teammates, or control enemy movement patterns",
+        visualEffects: "Black ink trail with slowing particle effects on affected Twisteds"
       },
       passive: {
-        name: "Ash Trail",
-        description: "Leaves behind a trail that slightly reduces Twisted movement speed",
-        detailedDescription: "Coal's ash trail creates minor obstacles for pursuing enemies",
-        howItWorks: "Reduces Twisted movement speed by 15% when they cross the ash trail",
-        strategicValue: "Provides tactical advantage during chases and escapes"
+        name: "Artistic Vision",
+        description: "Can see Twisted movement trails and recent paths",
+        detailedDescription: "Blot's artistic eye allows him to track enemy movement patterns. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Displays fading trails showing where Twisteds have moved in the last 30 seconds",
+        strategicValue: "Provides intelligence on enemy patrol patterns and recent activity"
       }
     },
     
     unlockRequirements: {
       ichorCost: 1800,
-      researchRequirements: ["100% Research on Twisted Coal"],
+      researchRequirements: ["100% Research on Twisted Blot"],
       taskCompletion: [],
       prerequisites: []
     },
@@ -172,185 +176,62 @@ export const rareCharacters: Character[] = [
     features: {
       hasRainbowBorder: false,
       hasUniqueVoiceLines: false,
-      voiceEffect: "Coal burning sounds",
-      characterRelations: ["Flutter - Identical stats"],
+      voiceEffect: "Ink splatting sounds",
+      characterRelations: [],
       lightProducing: false
     },
     
-    description: "A coal character with smoke-based stealth and mobility abilities",
-    overview: "Coal provides team stealth support and escape assistance",
+    description: "An ink bottle character with area denial and enemy tracking capabilities",
+    overview: "Blot provides tactical crowd control and intelligence gathering through enemy tracking",
     gameplay: {
-      strengths: ["Good mobility", "Team stealth support", "Escape assistance", "High stamina"],
-      weaknesses: ["Lower skill check", "Limited extraction capability", "Smoke duration"],
-      bestStrategy: "Use mobility for positioning while providing smoke cover for team operations",
-      teamRole: "Stealth Support/Mobile Scout"
+      strengths: ["Maximum stamina (5 stars)", "Area denial ability", "Enemy tracking", "Good mobility"],
+      weaknesses: ["Minimum skill check (1 star)", "Poor extraction capability", "Limited direct combat utility"],
+      bestStrategy: "Use mobility to track enemies and create strategic ink barriers for team protection",
+      teamRole: "Tactical Controller/Intelligence Gatherer"
     }
   },
 
   {
-    id: "pebble",
-    name: "Pebble",
-    fullName: "Pebble",
+    id: "brusha",
+    name: "Brusha",
+    fullName: "Brusha",
     type: "regular",
     rarity: "rare",
     isMainCharacter: false,
     totalAttributePoints: 15,
-    
-    attributes: {
-      health: 5,
-      skillCheck: 1,
-      movementSpeed: 1,
-      stamina: 5,
-      stealth: 1,
-      extractionSpeed: 3
-    },
-    
-    abilities: {
-      active: {
-        name: "Rock Solid",
-        description: "Becomes completely immune to damage for 3 seconds but cannot move",
-        cooldown: "120 seconds",
-        detailedDescription: "Pebble becomes an immovable fortress for emergency protection",
-        howItWorks: "Provides complete damage immunity while preventing all movement",
-        bestUsage: "Emergency protection when surrounded or during critical moments",
-        visualEffects: "Rock transformation with stone barrier effects"
-      },
-      passive: {
-        name: "Sturdy",
-        description: "Cannot be stunned or knocked back by Twisteds",
-        detailedDescription: "Pebble's solid nature makes him immune to displacement effects",
-        howItWorks: "Completely immune to stun, knockback, and other displacement abilities",
-        strategicValue: "Provides reliable positioning and consistent performance under pressure"
-      }
-    },
-    
-    unlockRequirements: {
-      ichorCost: 3000,
-      researchRequirements: ["100% Research on Twisted Pebble"],
-      taskCompletion: [],
-      prerequisites: []
-    },
-    
-    features: {
-      hasRainbowBorder: false,
-      hasUniqueVoiceLines: false,
-      voiceEffect: "Rock grinding sounds",
-      characterRelations: ["Toodles - Connected through mastery requirement"],
-      lightProducing: false
-    },
-    
-    description: "A rock character with maximum health and stamina, specializing in defense",
-    overview: "Pebble represents the ultimate tank with maximum survivability",
-    gameplay: {
-      strengths: ["Maximum health (5 stars)", "Maximum stamina (5 stars)", "Damage immunity", "Stun immunity"],
-      weaknesses: ["Minimum movement speed", "Minimum skill check", "Minimum stealth", "Immobile during active"],
-      bestStrategy: "Use as an anchor point for team operations while leveraging defensive abilities",
-      teamRole: "Ultimate Tank/Immovable Anchor"
-    }
-  },
-
-  {
-    id: "sprig",
-    name: "Sprig",
-    fullName: "Sprig",
-    type: "regular",
-    rarity: "rare",
-    isMainCharacter: false,
-    totalAttributePoints: 15,
+    image: "🖌️",
     
     attributes: {
       health: 3,
       skillCheck: 4,
       movementSpeed: 3,
-      stamina: 2,
-      stealth: 3,
+      stamina: 3,
+      stealth: 2,
       extractionSpeed: 3
     },
     
     abilities: {
       active: {
-        name: "Growth Spurt",
-        description: "Increases all stats by 1 star for 10 seconds",
-        cooldown: "100 seconds",
-        detailedDescription: "Sprig experiences a temporary growth phase with enhanced capabilities",
-        howItWorks: "Temporarily increases all attributes by 1 star for the duration",
-        bestUsage: "Use during critical machine completion or dangerous situations",
-        visualEffects: "Plant growth animation with stat boost indicators"
-      },
-      passive: {
-        name: "Adaptive Growth",
-        description: "Gains bonus stats based on the current floor number",
-        detailedDescription: "Sprig's performance improves as he progresses through floors",
-        howItWorks: "Gains +0.5 stars to all stats for every 5 floors completed",
-        strategicValue: "Provides scaling performance improvements for long-term progression"
-      }
-    },
-    
-    unlockRequirements: {
-      ichorCost: 2200,
-      researchRequirements: ["100% Research on Twisted Sprig"],
-      taskCompletion: [],
-      prerequisites: []
-    },
-    
-    features: {
-      hasRainbowBorder: false,
-      hasUniqueVoiceLines: false,
-      voiceEffect: "Plant growing sounds",
-      characterRelations: ["Spriglet - Evolution form"],
-      lightProducing: false
-    },
-    
-    description: "A growing plant character with adaptive stat bonuses and temporary enhancements",
-    overview: "Sprig provides balanced performance with scaling improvements and burst capabilities",
-    gameplay: {
-      strengths: ["High skill check", "Balanced stats", "Temporary enhancement", "Scaling performance"],
-      weaknesses: ["Low stamina", "Requires floor progression", "Limited burst duration"],
-      bestStrategy: "Progress through floors to maximize passive bonuses while using active for critical moments",
-      teamRole: "Adaptive Specialist/Balanced Support"
-    }
-  },
-
-  {
-    id: "spriglet",
-    name: "Spriglet",
-    fullName: "Spriglet",
-    type: "regular",
-    rarity: "rare",
-    isMainCharacter: false,
-    totalAttributePoints: 15,
-    
-    attributes: {
-      health: 2,
-      skillCheck: 5,
-      movementSpeed: 4,
-      stamina: 1,
-      stealth: 3,
-      extractionSpeed: 3
-    },
-    
-    abilities: {
-      active: {
-        name: "Rapid Growth",
-        description: "Increases extraction speed by 75% for 8 seconds",
+        name: "Artistic Inspiration",
+        description: "Boosts all nearby teammates' skill check by 100% for 8 seconds",
         cooldown: "80 seconds",
-        detailedDescription: "Spriglet accelerates growth for enhanced extraction efficiency",
-        howItWorks: "Provides significant extraction speed boost for machine completion",
-        bestUsage: "Use on important machines or when time is critical",
-        visualEffects: "Accelerated plant growth with speed trail effects"
+        detailedDescription: "Brusha inspires nearby allies to perform with artistic precision. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Doubles skill check window size for all teammates within range",
+        bestUsage: "Use during difficult machine sections to ensure team success",
+        visualEffects: "Paint brush strokes with inspiration aura and precision enhancement indicators"
       },
       passive: {
-        name: "Young Sprout",
-        description: "Movement speed increases when health is low",
-        detailedDescription: "Spriglet becomes more agile when threatened",
-        howItWorks: "Gains 30% movement speed when health drops below 50%",
-        strategicValue: "Provides escape mechanism when in danger"
+        name: "Paint Trail",
+        description: "Leaves behind paint marks that boost movement speed for teammates",
+        detailedDescription: "Brusha's artistic movement creates beneficial trails for the team. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Creates temporary speed boost zones where Brusha has walked",
+        strategicValue: "Provides team mobility enhancement through strategic movement"
       }
     },
     
     unlockRequirements: {
-      ichorCost: 2400,
-      researchRequirements: ["100% Research on Twisted Spriglet"],
+      ichorCost: 2100,
+      researchRequirements: ["100% Research on Twisted Brusha"],
       taskCompletion: [],
       prerequisites: []
     },
@@ -358,61 +239,193 @@ export const rareCharacters: Character[] = [
     features: {
       hasRainbowBorder: false,
       hasUniqueVoiceLines: false,
-      voiceEffect: "Young plant sounds",
-      characterRelations: ["Sprig - Base form"],
+      voiceEffect: "Paint brush sounds",
+      characterRelations: [],
       lightProducing: false
     },
     
-    description: "A young plant character with maximum skill check and speed-based abilities",
-    overview: "Spriglet excels at precision work with enhanced mobility under pressure",
+    description: "A paint brush character focused on team skill enhancement and mobility support",
+    overview: "Brusha provides team precision bonuses and movement speed support through artistic abilities",
     gameplay: {
-      strengths: ["Maximum skill check (5 stars)", "High mobility", "Extraction speed burst", "Danger-based speed"],
-      weaknesses: ["Low health", "Minimum stamina", "Health-dependent mobility"],
-      bestStrategy: "Focus on precision machine work while using mobility for positioning and escapes",
-      teamRole: "Precision Specialist/Mobile Extractor"
+      strengths: ["Excellent skill check support", "Team precision enhancement", "Movement trail bonuses", "Balanced stats"],
+      weaknesses: ["No outstanding individual stats", "Team-dependent abilities", "Moderate cooldown"],
+      bestStrategy: "Position to maximize team skill check bonuses while creating beneficial movement trails",
+      teamRole: "Team Enhancer/Support Artist"
     }
   },
 
   {
-    id: "spriggy",
-    name: "Spriggy",
-    fullName: "Spriggy",
+    id: "flyte",
+    name: "Flyte",
+    fullName: "Flyte",
     type: "regular",
     rarity: "rare",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "✈️",
     
     attributes: {
       health: 3,
       skillCheck: 3,
-      movementSpeed: 3,
+      movementSpeed: 5,
+      stamina: 2,
+      stealth: 2,
+      extractionSpeed: 3
+    },
+    
+    abilities: {
+      active: {
+        name: "Gust",
+        description: "Creates wind barriers that block Twisted movement for 6 seconds",
+        cooldown: "75 seconds",
+        detailedDescription: "Flyte generates powerful wind currents that create temporary barriers. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Places wind barrier walls that completely block Twisted movement but allow Toon passage",
+        bestUsage: "Create safe zones, block chokepoints, or protect teammates during extractions",
+        visualEffects: "Wind particle effects with visible air barrier walls"
+      },
+      passive: {
+        name: "Aerodynamic",
+        description: "Movement speed increases by 25% when stamina is below 50%",
+        detailedDescription: "Flyte becomes more aerodynamic when tired and catches wind currents. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Gains significant speed boost when stamina falls below half capacity",
+        strategicValue: "Provides emergency mobility when stamina management becomes critical"
+      }
+    },
+    
+    unlockRequirements: {
+      ichorCost: 2300,
+      researchRequirements: ["100% Research on Twisted Flyte"],
+      taskCompletion: [],
+      prerequisites: []
+    },
+    
+    features: {
+      hasRainbowBorder: false,
+      hasUniqueVoiceLines: false,
+      voiceEffect: "Wind gust sounds",
+      characterRelations: [],
+      lightProducing: false
+    },
+    
+    description: "A paper airplane character with barrier creation and high-speed mobility",
+    overview: "Flyte specializes in area control and emergency high-speed movement",
+    gameplay: {
+      strengths: ["Maximum movement speed (5 stars)", "Barrier creation ability", "Emergency speed boost", "Area control"],
+      weaknesses: ["Low stamina", "Stamina-dependent passive", "Limited duration barriers"],
+      bestStrategy: "Use speed for positioning and create strategic barriers to control enemy movement",
+      teamRole: "Area Controller/High-Speed Scout"
+    }
+  },
+
+  {
+    id: "rudie",
+    name: "Rudie",
+    fullName: "Rudie",
+    type: "regular",
+    rarity: "rare",
+    isMainCharacter: false,
+    totalAttributePoints: 15,
+    image: "🍭",
+    
+    attributes: {
+      health: 3,
+      skillCheck: 2,
+      movementSpeed: 4,
       stamina: 3,
+      stealth: 1,
+      extractionSpeed: 4
+    },
+    
+    abilities: {
+      active: {
+        name: "Candy Cane Hook",
+        description: "Pulls a targeted Twisted towards you and stuns them for 2 seconds",
+        cooldown: "100 seconds",
+        detailedDescription: "Rudie uses his candy cane to manipulate enemy positioning. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Forces a selected Twisted to move to Rudie's location and become briefly stunned",
+        bestUsage: "Separate dangerous Twisteds from groups or create tactical positioning advantages",
+        visualEffects: "Candy cane hook animation with pulling force and stun effects"
+      },
+      passive: {
+        name: "Sweet Scent",
+        description: "Twisteds are 25% more likely to target Rudie over other Toons",
+        detailedDescription: "Rudie's sweet nature makes him more appealing to hostile entities. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Increases Twisted targeting priority, making him more likely to be chased",
+        strategicValue: "Can serve as intentional distraction for tactical team positioning"
+      }
+    },
+    
+    unlockRequirements: {
+      ichorCost: 1200,
+      researchRequirements: ["Christmas Event participation"],
+      taskCompletion: [],
+      prerequisites: ["Christmas Event"],
+      specialCurrency: {
+        type: "Ornaments",
+        amount: 800
+      }
+    },
+    
+    features: {
+      hasRainbowBorder: false,
+      hasUniqueVoiceLines: false,
+      voiceEffect: "Candy wrapper sounds",
+      characterRelations: ["Christmas event character"],
+      lightProducing: true,
+      lightColor: "Red candy cane light"
+    },
+    
+    description: "A Christmas candy cane character with enemy manipulation and distraction abilities",
+    overview: "Rudie provides tactical enemy positioning control with built-in distraction capabilities",
+    gameplay: {
+      strengths: ["Enemy manipulation ability", "Good mobility", "Light production", "Tactical control"],
+      weaknesses: ["Increased targeting priority", "Low stealth", "Event-limited availability"],
+      bestStrategy: "Use enemy manipulation tactically while accepting increased attention as strategic distraction",
+      teamRole: "Tactical Controller/Intentional Distraction"
+    }
+  },
+
+  {
+    id: "rnd",
+    name: "R&D",
+    fullName: "R&D",
+    type: "regular",
+    rarity: "rare",
+    isMainCharacter: false,
+    totalAttributePoints: 15,
+    image: "🔬",
+    
+    attributes: {
+      health: 4,
+      skillCheck: 3,
+      movementSpeed: 2,
+      stamina: 2,
       stealth: 4,
       extractionSpeed: 3
     },
     
     abilities: {
       active: {
-        name: "Camouflage",
-        description: "Becomes nearly invisible to Twisteds for 6 seconds",
+        name: "Analysis",
+        description: "Reveals weak points on machines, doubling extraction progress for 10 seconds",
         cooldown: "90 seconds",
-        detailedDescription: "Spriggy blends into the environment for enhanced stealth",
-        howItWorks: "Reduces Twisted detection range by 80% for the duration",
-        bestUsage: "Use for safe machine completion or team reconnaissance",
-        visualEffects: "Environment blending effect with transparency animation"
+        detailedDescription: "R&D uses scientific analysis to optimize machine interaction efficiency. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Doubles extraction progress rate for both self and nearby teammates on current machine",
+        bestUsage: "Use on nearly complete machines or during critical extraction phases",
+        visualEffects: "Scientific scanning overlay with efficiency boost indicators"
       },
       passive: {
-        name: "Natural Blend",
-        description: "Stealth increases when near plants or natural elements",
-        detailedDescription: "Spriggy's plant nature enhances stealth in natural environments",
-        howItWorks: "Gains +1 star stealth when near any plant or natural object",
-        strategicValue: "Encourages positioning in natural areas for optimal stealth"
+        name: "Research Data",
+        description: "Gains 50% more research progress from all interactions with Twisteds",
+        detailedDescription: "R&D's scientific nature accelerates learning from enemy encounters. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "All research progress from Twisted encounters is increased by 50%",
+        strategicValue: "Significantly accelerates character unlocking and progression systems"
       }
     },
     
     unlockRequirements: {
-      ichorCost: 2600,
-      researchRequirements: ["100% Research on Twisted Spriggy"],
+      ichorCost: 2400,
+      researchRequirements: ["100% Research on Twisted R&D"],
       taskCompletion: [],
       prerequisites: []
     },
@@ -420,142 +433,81 @@ export const rareCharacters: Character[] = [
     features: {
       hasRainbowBorder: false,
       hasUniqueVoiceLines: false,
-      voiceEffect: "Plant rustling sounds",
-      characterRelations: ["Sprigget - Evolution form"],
+      voiceEffect: "Scientific equipment sounds",
+      characterRelations: [],
       lightProducing: false
     },
     
-    description: "A plant character specializing in stealth and environmental camouflage",
-    overview: "Spriggy provides excellent stealth capabilities with environmental bonuses",
+    description: "A research character focused on efficiency optimization and progression acceleration",
+    overview: "R&D provides scientific advantages in extraction efficiency and research progression",
     gameplay: {
-      strengths: ["Good stealth", "Environmental bonuses", "Camouflage ability", "Balanced stats"],
-      weaknesses: ["No outstanding specializations", "Environment dependent", "Limited offensive capabilities"],
-      bestStrategy: "Position in natural areas for stealth bonuses while using camouflage for critical operations",
-      teamRole: "Stealth Specialist/Environmental Scout"
+      strengths: ["Good health", "Research acceleration", "Extraction efficiency boost", "Scientific precision"],
+      weaknesses: ["Low mobility", "Poor stamina", "High investment cost"],
+      bestStrategy: "Focus on machine optimization while leveraging research bonuses for long-term progression",
+      teamRole: "Scientific Support/Progression Accelerator"
     }
   },
 
   {
-    id: "sprigget",
-    name: "Sprigget",
-    fullName: "Sprigget",
+    id: "blot_jr",
+    name: "Blot Jr.",
+    fullName: "Blot Jr.",
     type: "regular",
     rarity: "rare",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🖋️",
     
     attributes: {
-      health: 4,
+      health: 2,
       skillCheck: 2,
-      movementSpeed: 2,
-      stamina: 4,
-      stealth: 3,
-      extractionSpeed: 3
+      movementSpeed: 3,
+      stamina: 3,
+      stealth: -200, // Special case: lowest stealth in game
+      extractionSpeed: 5
     },
     
     abilities: {
       active: {
-        name: "Root Network",
-        description: "Creates a network that reveals nearby Twisteds for 8 seconds",
-        cooldown: "100 seconds",
-        detailedDescription: "Sprigget extends roots to gather information about nearby threats",
-        howItWorks: "Reveals all Twisteds within range and shows their movement patterns",
-        bestUsage: "Use for reconnaissance before entering new areas",
-        visualEffects: "Root network animation with enemy revelation effects"
+        name: "Ink Splash",
+        description: "Creates a large ink area that blinds all Twisteds for 5 seconds",
+        cooldown: "120 seconds",
+        detailedDescription: "Blot Jr. creates a massive ink explosion that disorients all nearby enemies. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "Creates large ink cloud that prevents all Twisteds in area from seeing or chasing",
+        bestUsage: "Emergency area denial when team is overwhelmed or needs safe extraction time",
+        visualEffects: "Massive black ink explosion with blinding cloud effects"
       },
       passive: {
-        name: "Deep Roots",
-        description: "Cannot be moved by Twisted abilities",
-        detailedDescription: "Sprigget's deep roots provide stability against displacement",
-        howItWorks: "Immune to push, pull, and other movement-impairing effects",
-        strategicValue: "Provides consistent positioning and reliable machine operation"
+        name: "Invisible Ink",
+        description: "Despite having terrible stealth, occasionally becomes completely invisible",
+        detailedDescription: "Blot Jr.'s unpredictable ink occasionally provides perfect concealment. *Based on character description inference, actual effects subject to in-game performance*",
+        howItWorks: "5% chance per second to become completely invisible for 3 seconds",
+        strategicValue: "Provides unpredictable but powerful stealth moments despite poor base stealth"
       }
     },
     
     unlockRequirements: {
       ichorCost: 2800,
-      researchRequirements: ["100% Research on Twisted Sprigget"],
-      taskCompletion: [],
-      prerequisites: []
+      researchRequirements: ["100% Research on Twisted Blot Jr."],
+      taskCompletion: ["Complete all Mastery Quests on Blot"],
+      prerequisites: ["100% Mastery on Blot"]
     },
     
     features: {
       hasRainbowBorder: false,
       hasUniqueVoiceLines: false,
-      voiceEffect: "Root movement sounds",
-      characterRelations: ["Spriggy - Base form"],
+      voiceEffect: "Small ink splashing",
+      characterRelations: ["Blot - Parent character through mastery requirement"],
       lightProducing: false
     },
     
-    description: "A mature plant character with information gathering and stability abilities",
-    overview: "Sprigget provides reconnaissance capabilities with reliable positioning",
+    description: "A small ink bottle with the worst stealth but powerful area denial abilities",
+    overview: "Blot Jr. represents extreme risk-reward gameplay with terrible stealth but game-changing abilities",
     gameplay: {
-      strengths: ["Good health", "Good stamina", "Enemy revelation", "Movement immunity"],
-      weaknesses: ["Low mobility", "Lower skill check", "Limited offensive capabilities"],
-      bestStrategy: "Use root network for team safety while maintaining steady machine work",
-      teamRole: "Reconnaissance Specialist/Stable Worker"
-    }
-  },
-
-  {
-    id: "spriggette",
-    name: "Spriggette",
-    fullName: "Spriggette",
-    type: "regular",
-    rarity: "rare",
-    isMainCharacter: false,
-    totalAttributePoints: 15,
-    
-    attributes: {
-      health: 3,
-      skillCheck: 4,
-      movementSpeed: 3,
-      stamina: 2,
-      stealth: 3,
-      extractionSpeed: 4
-    },
-    
-    abilities: {
-      active: {
-        name: "Flower Power",
-        description: "Increases skill check window size and extraction speed for 12 seconds",
-        cooldown: "110 seconds",
-        detailedDescription: "Spriggette blooms with enhanced precision and efficiency",
-        howItWorks: "Doubles skill check window size and provides 50% extraction speed boost",
-        bestUsage: "Use on difficult machines or when maximum efficiency is needed",
-        visualEffects: "Flower blooming animation with enhanced extraction effects"
-      },
-      passive: {
-        name: "Seasonal Bloom",
-        description: "Performance varies based on in-game time or floor progression",
-        detailedDescription: "Spriggette's abilities follow natural cycles",
-        howItWorks: "Gains 25% bonus to all stats on even-numbered floors, 25% penalty on odd floors",
-        strategicValue: "Provides strategic timing considerations for optimal performance"
-      }
-    },
-    
-    unlockRequirements: {
-      ichorCost: 3200,
-      researchRequirements: ["100% Research on Twisted Spriggette"],
-      taskCompletion: [],
-      prerequisites: []
-    },
-    
-    features: {
-      hasRainbowBorder: false,
-      hasUniqueVoiceLines: false,
-      voiceEffect: "Flower blooming sounds",
-      characterRelations: ["Sprigget - Evolution form"],
-      lightProducing: false
-    },
-    
-    description: "A flowering plant character with precision enhancement and seasonal bonuses",
-    overview: "Spriggette provides enhanced precision with cyclical performance patterns",
-    gameplay: {
-      strengths: ["High skill check", "Good extraction speed", "Precision enhancement", "Strategic timing"],
-      weaknesses: ["Low stamina", "Cyclical performance", "Requires floor planning"],
-      bestStrategy: "Plan floor progression to maximize even-floor bonuses while using flower power strategically",
-      teamRole: "Precision Enhancer/Strategic Specialist"
+      strengths: ["Maximum extraction speed (5 stars)", "Powerful area denial", "Unpredictable invisibility", "Game-changing active"],
+      weaknesses: ["Worst stealth in game (-200)", "High visibility", "Low health", "Extreme challenge"],
+      bestStrategy: "Only for expert players who can leverage invisibility luck and area denial timing",
+      teamRole: "High-Risk Area Controller/Challenge Character"
     }
   }
 ];

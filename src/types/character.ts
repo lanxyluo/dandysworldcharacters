@@ -9,14 +9,21 @@ export interface Character {
   rarity: Rarity;
   isMainCharacter: boolean;
   totalAttributePoints: number;
+  image: string; // 添加image字段
   
-  attributes: {
+  // 让attributes变为可选，兼容stats格式
+  attributes?: {
     health: number;
     skillCheck: number;
     movementSpeed: number;
     stamina: number;
     stealth: number;
     extractionSpeed: number;
+  };
+  
+  // 兼容旧的stats格式
+  stats?: {
+    [key: string]: number;
   };
   
   abilities: {
@@ -47,6 +54,17 @@ export interface Character {
       type: string;
       amount: number;
     };
+  };
+  
+  // 添加requirements字段以兼容旧格式
+  requirements?: {
+    ichor?: number;
+    ornaments?: number;
+    baskets?: number;
+    research?: string;
+    mastery?: string;
+    other?: string[];
+    note?: string;
   };
   
   features: {

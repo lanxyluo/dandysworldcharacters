@@ -118,17 +118,21 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, isOpen, onCl
                 <div className="bg-bg-secondary rounded-lg p-6">
                   <h3 className="text-xl font-bold mb-4">Stats</h3>
                   <div className="space-y-3">
-                    {Object.entries(character.attributes).map(([stat, value]) => (
-                      <div key={stat} className="flex items-center justify-between">
-                        <span className="capitalize">{formatStatName(stat)}</span>
-                        <div className="flex items-center space-x-3">
-                          <div className="stat-bar w-24">
-                            <div className="stat-fill" style={{ width: `${((value as number) / 5) * 100}%` }}></div>
+                    {(() => {
+                      // 获取角色属性数据，兼容stats和attributes两种格式
+                      const characterStats = character.attributes || (character as any).stats || {};
+                      return Object.entries(characterStats).map(([stat, value]) => (
+                        <div key={stat} className="flex items-center justify-between">
+                          <span className="capitalize">{formatStatName(stat)}</span>
+                          <div className="flex items-center space-x-3">
+                            <div className="stat-bar w-24">
+                              <div className="stat-fill" style={{ width: `${((value as number) / 5) * 100}%` }}></div>
+                            </div>
+                            <span className="text-accent-main font-bold">{value as number}/5</span>
                           </div>
-                          <span className="text-accent-main font-bold">{value as number}/5</span>
                         </div>
-                      </div>
-                    ))}
+                      ));
+                    })()}
                   </div>
                 </div>
               </div>
