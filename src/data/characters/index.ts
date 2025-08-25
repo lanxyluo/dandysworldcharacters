@@ -1,6 +1,7 @@
 import { Character } from '../../types/character';
 import { mainCharacters } from './main-characters';
 import { commonCharacters } from './common-characters';
+import { uncommonCharacters } from './uncommon-characters';
 import { regularCharacters } from './regular-characters';
 import { eventCharacters } from './event-characters';
 import { lethalCharacters } from './lethal-characters';
@@ -9,6 +10,7 @@ import { twistedCharacters } from './twisted-characters';
 // Export all character data
 export { mainCharacters } from './main-characters';
 export { commonCharacters } from './common-characters';
+export { uncommonCharacters } from './uncommon-characters';
 export { regularCharacters } from './regular-characters';
 export { eventCharacters } from './event-characters';
 export { lethalCharacters } from './lethal-characters';
@@ -21,6 +23,7 @@ export type { Character } from '../../types/character';
 export const getAllCharacters = (): Character[] => [
   ...mainCharacters,
   ...commonCharacters,
+  ...uncommonCharacters,
   ...regularCharacters,
   ...eventCharacters,
   ...lethalCharacters,
@@ -48,7 +51,7 @@ export const getPlayableCharacters = (): Character[] => {
 };
 
 export const getRegularCharacters = (): Character[] => {
-  return [...commonCharacters];
+  return [...commonCharacters, ...uncommonCharacters];
 };
 
 // Character statistics
@@ -59,6 +62,7 @@ export const characterStats = {
   regular: {
     total: getRegularCharacters().length,
     common: commonCharacters.length,
+    uncommon: uncommonCharacters.length,
   },
   attributeSystem: {
     totalPoints: {
@@ -81,6 +85,7 @@ export default {
   // Character arrays
   mainCharacters,
   commonCharacters,
+  uncommonCharacters,
   regularCharacters,
   eventCharacters,
   lethalCharacters,

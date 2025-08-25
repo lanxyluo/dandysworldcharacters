@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserProgress, loadUserProgress, updateUserProgress } from '../../utils/storage';
-import { twistedCharacters } from '../../data/twisted-characters';
+import { twistedCharacters } from '../../data/characters';
 
 // 组件数据结构
 interface ResearchData {

@@ -4,41 +4,70 @@ export type Rarity = 'common' | 'uncommon' | 'rare' | 'legendary' | 'twisted';
 export interface Character {
   id: string;
   name: string;
-  fullName?: string;
-  image: string;
+  fullName: string;
   type: CharacterType;
   rarity: Rarity;
-  description: string;
-  stats: {
-    skillCheck: number;
-    stealth: number;
-    speed: number;
+  isMainCharacter: boolean;
+  totalAttributePoints: number;
+  
+  attributes: {
     health: number;
-    damage: number;
+    skillCheck: number;
+    movementSpeed: number;
+    stamina: number;
+    stealth: number;
+    extractionSpeed: number;
   };
+  
   abilities: {
     active: {
       name: string;
       description: string;
-      cooldown: number;
+      cooldown: string;
+      detailedDescription: string;
+      howItWorks: string;
+      bestUsage: string;
+      visualEffects: string;
     };
     passive: {
       name: string;
       description: string;
+      detailedDescription: string;
+      howItWorks: string;
+      strategicValue: string;
     };
   };
-  requirements: {
-    ichor?: number;
-    ornaments?: number;
-    baskets?: number;
-    research?: string;
-    mastery?: string;
-    other?: string[];
-    note?: string;
-  };
-  twistedVersion?: string;
   
-  // 新增详细说明字段
+  unlockRequirements: {
+    ichorCost: number;
+    researchRequirements: string[];
+    taskCompletion: string[];
+    prerequisites: string[];
+    specialCurrency?: {
+      type: string;
+      amount: number;
+    };
+  };
+  
+  features: {
+    hasRainbowBorder: boolean;
+    hasUniqueVoiceLines: boolean;
+    voiceEffect: string;
+    characterRelations: string[];
+    lightProducing?: boolean;
+    lightColor?: string;
+  };
+  
+  description: string;
+  overview: string;
+  gameplay: {
+    strengths: string[];
+    weaknesses: string[];
+    bestStrategy: string;
+    teamRole: string;
+  };
+  
+  // 保留原有的详细说明字段以向后兼容
   detailedGuide?: {
     abilityMechanics: {
       active: {
