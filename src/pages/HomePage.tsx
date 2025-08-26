@@ -3,10 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
-import SearchAndFilter from '../components/SearchAndFilter';
 import CharacterCard from '../components/CharacterCard';
 import Footer from '../components/Footer';
-import { getAllCharacters } from '../data/characters/index';
+import { getOfficialPlayableCharacters } from '../data/characters/index';
 import { Character } from '../types/character';
 
 const HomePage: React.FC = () => {
@@ -15,14 +14,14 @@ const HomePage: React.FC = () => {
 
   // 过滤角色
   const filteredCharacters = useMemo(() => {
-    return getAllCharacters().filter(character => {
+    return getOfficialPlayableCharacters().filter(character => {
       const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            character.description.toLowerCase().includes(searchTerm.toLowerCase());
       
       if (currentFilter === 'all') return matchesSearch;
       if (currentFilter === 'main') return matchesSearch && character.type === 'main';
-      if (currentFilter === 'lethal') return matchesSearch && character.type === 'lethal';
-      if (currentFilter === 'twisted') return matchesSearch && character.type === 'twisted';
+      if (currentFilter === 'regular') return matchesSearch && character.type === 'regular';
+      if (currentFilter === 'event') return matchesSearch && character.type === 'event';
       
       return matchesSearch;
     });
@@ -86,14 +85,49 @@ const HomePage: React.FC = () => {
       
       <Navigation />
       
-      <HeroSection />
-      
-      <SearchAndFilter
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        currentFilter={currentFilter}
-        onFilterChange={setCurrentFilter}
+      <HeroSection 
+        totalCharacters={getOfficialPlayableCharacters().length}
+        mainCharacters={getOfficialPlayableCharacters().filter(c => c.type === 'main').length}
+        eventCharacters={getOfficialPlayableCharacters().filter(c => c.type === 'event').length}
       />
+      
+      {/* Simple search and filter controls for homepage */}
+      <section className="px-4 mb-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="glass-effect rounded-2xl p-6">
+            <div className="flex flex-col lg:flex-row gap-4 items-center">
+              <div className="flex-1 relative w-full">
+                <input
+                  type="text"
+                  placeholder="Search characters..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-bg-card text-white px-4 py-3 pl-12 rounded-lg border border-gray-600 focus:border-accent-main focus:outline-none transition-colors"
+                />
+                <svg className="w-5 h-5 absolute left-4 top-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { key: 'all', label: 'All' },
+                  { key: 'main', label: 'Main' },
+                  { key: 'regular', label: 'Regular' },
+                  { key: 'event', label: 'Event' },
+                ].map((f) => (
+                  <button
+                    key={f.key}
+                    onClick={() => setCurrentFilter(f.key)}
+                    className={`filter-btn ${currentFilter === f.key ? 'active' : ''}`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       
       {/* Characters Grid */}
       <section id="characters" className="px-4 pb-16">

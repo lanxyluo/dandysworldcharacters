@@ -62,8 +62,13 @@ export const getMainCharacters = (): Character[] => mainCharacters;
 
 export const getPlayableCharacters = (): Character[] => {
   return getAllCharacters().filter(character => 
-    character.type !== "lethal"
+    character.type !== "lethal" && character.type !== 'twisted'
   );
+};
+
+// Official playable set (excludes lethal/twisted) used for homepage counts and listings
+export const getOfficialPlayableCharacters = (): Character[] => {
+  return getPlayableCharacters();
 };
 
 export const getRegularCharacters = (): Character[] => {

@@ -9,11 +9,12 @@ interface CharacterCardProps {
 const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => {
   const isMain = character.type === 'main';
   const isLethal = character.type === 'lethal';
+  const isSpecialRed = ['dandy', 'dyle'].includes((character.id || character.name || '').toLowerCase());
   
   let cardClass = 'bg-bg-card border border-gray-600';
   if (isMain) {
     cardClass = 'rainbow-border';
-  } else if (isLethal) {
+  } else if (isLethal && isSpecialRed) {
     cardClass = 'bg-red-900 border-red-600';
   }
   
@@ -44,7 +45,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
       {isMain ? (
         <div className="rainbow-border-content p-6">
           <div className="text-center">
-            <div className="text-6xl mb-4 animate-float">{character.image}</div>
+            <div className="text-6xl mb-4 animate-float" style={{ minHeight: '2em' }}>{character.image || '🔹'}</div>
             <h3 className="text-xl font-bold mb-2">{character.name}</h3>
             <p className="text-sm text-text-secondary mb-4 capitalize">{character.type} • {character.rarity}</p>
             
@@ -72,7 +73,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
       ) : (
         <div className="p-6">
           <div className="text-center">
-            <div className="text-6xl mb-4">{character.image}</div>
+            <div className="text-6xl mb-4" style={{ minHeight: '2em' }}>{character.image || '🔹'}</div>
             <h3 className="text-xl font-bold mb-2">{character.name}</h3>
             <p className="text-sm text-text-secondary mb-4 capitalize">{character.type} • {character.rarity}</p>
             
@@ -93,8 +94,8 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, onClick }) => 
             )}
             
             <button className={`w-full py-2 px-4 rounded-lg transition-colors ${
-              isLethal 
-                ? 'bg-red-600 hover:bg-red-700 text-white' 
+              isLethal && isSpecialRed
+                ? 'bg-red-600 hover:bg-red-700 text-white'
                 : 'bg-accent-main hover:bg-blue-600 text-white'
             }`}>
               View Details

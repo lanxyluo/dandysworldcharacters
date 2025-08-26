@@ -8,6 +8,7 @@ export const mainCharacters: Character[] = [
     type: "main",
     rarity: "legendary",
     isMainCharacter: true,
+    image: "🌙",
     totalAttributePoints: 16,
     
     attributes: {
@@ -69,9 +70,10 @@ export const mainCharacters: Character[] = [
     name: "Bassie",
     fullName: "Bassie Bloomington",
     type: "main",
-    rarity: "legendary",
+    rarity: "uncommon",
     isMainCharacter: true,
-    totalAttributePoints: 16,
+    image: "🐰",
+    totalAttributePoints: 15,
     
     attributes: {
       health: 2,
@@ -135,9 +137,10 @@ export const mainCharacters: Character[] = [
     name: "Bobette",
     fullName: "Bobette the Bauble",
     type: "main",
-    rarity: "legendary",
+    rarity: "uncommon",
     isMainCharacter: true,
-    totalAttributePoints: 16,
+    image: "🎁",
+    totalAttributePoints: 15,
     
     attributes: {
       health: 2,
@@ -151,10 +154,10 @@ export const mainCharacters: Character[] = [
     abilities: {
       active: {
         name: "Precious Packaging",
-        description: "Wraps in a gift box for 8 seconds, becoming invincible but immobile",
+        description: "Wraps in a gift box for 8 seconds, becoming invisible but immobile",
         cooldown: "90 seconds",
-        detailedDescription: "Bobette encases herself in a festive gift box, becoming completely invincible to all damage but unable to move",
-        howItWorks: "Instantly transforms into a gift box state, providing complete damage immunity for 8 seconds",
+        detailedDescription: "Bobette encases herself in a festive gift box, becoming invisible and unable to move for the duration",
+        howItWorks: "Instantly transforms into a gift box state, providing invisibility while preventing movement for 8 seconds",
         bestUsage: "Emergency escape from dangerous situations or when caught by multiple Twisteds",
         visualEffects: "Christmas-themed gift wrapping animation with festive sparkles and ribbon effects"
       },
@@ -203,6 +206,7 @@ export const mainCharacters: Character[] = [
     type: "main",
     rarity: "legendary",
     isMainCharacter: true,
+    image: "🪨",
     totalAttributePoints: 16,
     
     attributes: {
@@ -265,6 +269,7 @@ export const mainCharacters: Character[] = [
     type: "main",
     rarity: "legendary",
     isMainCharacter: true,
+    image: "🪨",
     totalAttributePoints: 16,
     
     attributes: {
@@ -328,6 +333,7 @@ export const mainCharacters: Character[] = [
     type: "main",
     rarity: "legendary",
     isMainCharacter: true,
+    image: "🌱",
     totalAttributePoints: 16,
     
     attributes: {
@@ -390,6 +396,7 @@ export const mainCharacters: Character[] = [
     type: "main",
     rarity: "legendary",
     isMainCharacter: true,
+    image: "📺",
     totalAttributePoints: 16,
     
     attributes: {

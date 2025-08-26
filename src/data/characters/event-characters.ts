@@ -68,6 +68,10 @@ export const eventCharacters: Character[] = [
     }
   },
 
+  
+
+  
+
   {
     id: "ginger",
     name: "Ginger",

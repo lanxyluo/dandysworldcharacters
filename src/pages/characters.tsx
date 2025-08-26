@@ -9,12 +9,23 @@ import SearchAndFilter from '../components/SearchAndFilter';
 
 const CharactersPage: React.FC = () => {
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentFilter, setCurrentFilter] = useState<string>('all');
-  const [selectedType, setSelectedType] = useState<string>('all');
-  const [selectedRarity, setSelectedRarity] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('name');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  type FilterTab = 'all' | 'main' | 'regular' | 'event';
+  type SortKey = 'name' | 'rarity';
+  type SortDir = 'asc' | 'desc';
+  interface FilterState {
+    tab: FilterTab;
+    search: string;
+    rarity: 'all' | 'common' | 'uncommon' | 'rare' | 'legendary' | 'twisted';
+    sortKey: SortKey;
+    sortDir: SortDir;
+  }
+  const [filterState, setFilterState] = useState<FilterState>({
+    tab: 'all',
+    search: '',
+    rarity: 'all',
+    sortKey: 'name',
+    sortDir: 'asc'
+  });
   
   const navigate = useNavigate();
   const { characterId } = useParams();
@@ -45,65 +56,53 @@ const CharactersPage: React.FC = () => {
   };
 
   // 计算角色统计
+  const allCharacters = getAllCharacters();
   const characterStats = {
-    total: getAllCharacters().length,
-    main: getAllCharacters().filter(c => c.type === 'main').length,
-    event: getAllCharacters().filter(c => c.type === 'event').length
+    total: allCharacters.length,
+    main: allCharacters.filter(c => c.type === 'main').length,
+    event: allCharacters.filter(c => c.type === 'event').length
+  };
+  const tabCounts = {
+    all: allCharacters.length,
+    main: allCharacters.filter(c => c.type === 'main').length,
+    regular: allCharacters.filter(c => c.type === 'regular').length,
+    event: allCharacters.filter(c => c.type === 'event').length
   };
 
   // 过滤和排序角色
-  const filteredAndSortedCharacters = getAllCharacters()
+  const filteredAndSortedCharacters = allCharacters
     .filter(character => {
-      const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           character.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const search = filterState.search.trim().toLowerCase();
+      const matchesSearch = search === '' ||
+        character.name.toLowerCase().includes(search) ||
+        character.description.toLowerCase().includes(search);
       
       // 快速筛选逻辑（All/Main/Regular/Event）
-      let matchesQuickFilter = true;
-      if (currentFilter !== 'all') {
-        matchesQuickFilter = character.type === currentFilter;
-      }
+      const matchesTab = filterState.tab === 'all' ? true : character.type === filterState.tab;
       
-      // 详细类型筛选
-      const matchesType = selectedType === 'all' || character.type === selectedType;
-      
-      // 稀有度筛选
-      const matchesRarity = selectedRarity === 'all' || character.rarity === selectedRarity;
+      // 稀有度筛选（仅在 Regular 下有效）
+      const matchesRarity =
+        filterState.tab === 'regular'
+          ? (filterState.rarity === 'all' || character.rarity === filterState.rarity)
+          : true;
       
       // 调试信息已移除
       
-      return matchesSearch && matchesQuickFilter && matchesType && matchesRarity;
+      return matchesSearch && matchesTab && matchesRarity;
     })
     .sort((a, b) => {
       let comparison = 0;
-      switch (sortBy) {
+      switch (filterState.sortKey) {
         case 'name':
           comparison = a.name.localeCompare(b.name);
-          break;
-        case 'type':
-          comparison = a.type.localeCompare(b.type);
           break;
         case 'rarity':
           comparison = a.rarity.localeCompare(b.rarity);
           break;
-        case 'skillCheck':
-          comparison = a.stats.skillCheck - b.stats.skillCheck;
-          break;
-        case 'stealth':
-          comparison = a.stats.stealth - b.stats.stealth;
-          break;
-        case 'speed':
-          comparison = a.stats.speed - b.stats.speed;
-          break;
-        case 'health':
-          comparison = a.stats.health - b.stats.health;
-          break;
-        case 'damage':
-          comparison = a.stats.damage - b.stats.damage;
-          break;
         default:
           comparison = 0;
       }
-      return sortOrder === 'asc' ? comparison : -comparison;
+      return filterState.sortDir === 'asc' ? comparison : -comparison;
     });
 
   const getTypeColor = (type: string) => {
@@ -155,20 +154,21 @@ const CharactersPage: React.FC = () => {
                mainCharacters={characterStats.main}
                eventCharacters={characterStats.event}
              />
-                           <SearchAndFilter
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                currentFilter={currentFilter}
-                onFilterChange={setCurrentFilter}
-                selectedType={selectedType}
-                onTypeChange={setSelectedType}
-                selectedRarity={selectedRarity}
-                onRarityChange={setSelectedRarity}
-                sortBy={sortBy}
-                onSortChange={setSortBy}
-                sortOrder={sortOrder}
-                onSortOrderChange={setSortOrder}
-              />
+             <SearchAndFilter
+               value={filterState}
+               counts={tabCounts}
+               onChange={(next) => {
+                 const leavingRegular = filterState.tab === 'regular' && next.tab !== 'regular';
+                 const nextRarity = leavingRegular ? 'all' : (next.rarity ?? filterState.rarity);
+                 setFilterState({
+                   ...filterState,
+                   ...next,
+                   rarity: nextRarity
+                 });
+                 const listTop = document.querySelector('.container');
+                 if (listTop) listTop.scrollIntoView({ behavior: 'smooth' });
+               }}
+             />
            </>
          )}
          
@@ -225,23 +225,23 @@ const CharactersPage: React.FC = () => {
               {/* 统计信息 */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
                 <div className="text-center p-4 bg-bg-secondary rounded-lg">
-                  <div className="text-2xl font-bold text-accent-main">{selectedCharacter.stats.skillCheck}/5</div>
+                  <div className="text-2xl font-bold text-accent-main">{(selectedCharacter.stats?.skillCheck ?? 0)}/5</div>
                   <div className="text-sm text-text-secondary">Skill Check</div>
                 </div>
                 <div className="text-center p-4 bg-bg-secondary rounded-lg">
-                  <div className="text-2xl font-bold text-accent-main">{selectedCharacter.stats.stealth}/5</div>
+                  <div className="text-2xl font-bold text-accent-main">{(selectedCharacter.stats?.stealth ?? 0)}/5</div>
                   <div className="text-sm text-text-secondary">Stealth</div>
                 </div>
                 <div className="text-center p-4 bg-bg-secondary rounded-lg">
-                  <div className="text-2xl font-bold text-accent-main">{selectedCharacter.stats.speed}/5</div>
+                  <div className="text-2xl font-bold text-accent-main">{(selectedCharacter.stats?.speed ?? 0)}/5</div>
                   <div className="text-sm text-text-secondary">Speed</div>
                 </div>
                 <div className="text-center p-4 bg-bg-secondary rounded-lg">
-                  <div className="text-2xl font-bold text-accent-main">{selectedCharacter.stats.health}/5</div>
+                  <div className="text-2xl font-bold text-accent-main">{(selectedCharacter.stats?.health ?? 0)}/5</div>
                   <div className="text-sm text-text-secondary">Health</div>
                 </div>
                 <div className="text-center p-4 bg-bg-secondary rounded-lg">
-                  <div className="text-2xl font-bold text-accent-main">{selectedCharacter.stats.damage}/5</div>
+                  <div className="text-2xl font-bold text-accent-main">{(selectedCharacter.stats?.damage ?? 0)}/5</div>
                   <div className="text-sm text-text-secondary">Damage</div>
                 </div>
               </div>
@@ -637,23 +637,23 @@ const CharactersPage: React.FC = () => {
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span>Skill:</span>
-                        <span className="font-semibold text-accent-main">{character.stats.skillCheck}/5</span>
+                        <span className="font-semibold text-accent-main">{(character.stats?.skillCheck ?? 0)}/5</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span>Stealth:</span>
-                        <span className="font-semibold text-accent-main">{character.stats.stealth}/5</span>
+                        <span className="font-semibold text-accent-main">{(character.stats?.stealth ?? 0)}/5</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span>Speed:</span>
-                        <span className="font-semibold text-accent-main">{character.stats.speed}/5</span>
+                        <span className="font-semibold text-accent-main">{(character.stats?.speed ?? 0)}/5</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span>Health:</span>
-                        <span className="font-semibold text-accent-main">{character.stats.health}/5</span>
+                        <span className="font-semibold text-accent-main">{(character.stats?.health ?? 0)}/5</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span>Damage:</span>
-                        <span className="font-semibold text-accent-main">{character.stats.damage}/5</span>
+                        <span className="font-semibold text-accent-main">{(character.stats?.damage ?? 0)}/5</span>
                       </div>
                     </div>
 

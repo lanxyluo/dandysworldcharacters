@@ -9,6 +9,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "💡",
     
     attributes: {
       health: 3,
@@ -72,6 +73,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🧬",
     
     attributes: {
       health: 3,
@@ -134,6 +136,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "📎",
     
     attributes: {
       health: 2,
@@ -196,6 +199,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🪞",
     
     attributes: {
       health: 3,
@@ -258,6 +262,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🦋",
     
     attributes: {
       health: 3,
@@ -320,6 +325,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🎈",
     
     attributes: {
       health: 2,
@@ -382,6 +388,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🎭",
     
     attributes: {
       health: 3,
@@ -444,6 +451,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 5, // Special case - 1 star in all stats
+    image: "🍤",
     
     attributes: {
       health: 1,
@@ -506,6 +514,7 @@ export const uncommonCharacters: Character[] = [
     rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🎤",
     
     attributes: {
       health: 3,

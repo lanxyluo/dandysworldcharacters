@@ -9,6 +9,7 @@ export const commonCharacters: Character[] = [
     rarity: "common",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "📦",
     
     attributes: {
       health: 3,
@@ -71,6 +72,7 @@ export const commonCharacters: Character[] = [
     rarity: "common",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🫧",
     
     attributes: {
       health: 3,
@@ -134,6 +136,7 @@ export const commonCharacters: Character[] = [
     rarity: "common",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🐟",
     
     attributes: {
       health: 3,
@@ -196,6 +199,7 @@ export const commonCharacters: Character[] = [
     rarity: "common",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🌼",
     
     attributes: {
       health: 3,
@@ -258,6 +262,7 @@ export const commonCharacters: Character[] = [
     rarity: "common",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🧻",
     
     attributes: {
       health: 3,
@@ -320,6 +325,7 @@ export const commonCharacters: Character[] = [
     rarity: "common",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🔎",
     
     attributes: {
       health: 3,
@@ -382,6 +388,7 @@ export const commonCharacters: Character[] = [
     rarity: "common",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "☕",
     
     attributes: {
       health: 4,
@@ -444,6 +451,7 @@ export const commonCharacters: Character[] = [
     rarity: "common",
     isMainCharacter: false,
     totalAttributePoints: 15,
+    image: "🧸",
     
     attributes: {
       health: 2,

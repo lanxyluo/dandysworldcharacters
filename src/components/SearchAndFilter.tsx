@@ -1,50 +1,30 @@
 import React from 'react';
 
+interface FilterState {
+  tab: 'all' | 'main' | 'regular' | 'event';
+  search: string;
+  rarity: 'all' | 'common' | 'uncommon' | 'rare' | 'legendary' | 'twisted';
+  sortKey: 'name' | 'rarity';
+  sortDir: 'asc' | 'desc';
+}
+
 interface SearchAndFilterProps {
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
-  currentFilter: string;
-  onFilterChange: (filter: string) => void;
-  selectedType: string;
-  onTypeChange: (type: string) => void;
-  selectedRarity: string;
-  onRarityChange: (rarity: string) => void;
-  sortBy: string;
-  onSortChange: (sort: string) => void;
-  sortOrder: 'asc' | 'desc';
-  onSortOrderChange: (order: 'asc' | 'desc') => void;
+  value: FilterState;
+  counts: { all: number; main: number; regular: number; event: number };
+  onChange: (next: Partial<FilterState>) => void;
 }
 
 const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
-  searchTerm,
-  onSearchChange,
-  currentFilter,
-  onFilterChange,
-  selectedType,
-  onTypeChange,
-  selectedRarity,
-  onRarityChange,
-  sortBy,
-  onSortChange,
-  sortOrder,
-  onSortOrderChange
+  value,
+  counts,
+  onChange
 }) => {
   const filters = [
-    { key: 'all', label: 'All' },
-    { key: 'main', label: 'Main' },
-    { key: 'regular', label: 'Regular' },
-    { key: 'event', label: 'Event' }
-  ];
-
-  const types = [
-    { value: 'all', label: 'All Types' },
-    { value: 'toon', label: 'Toon' },
-    { value: 'main', label: 'Main' },
-    { value: 'regular', label: 'Regular' },
-    { value: 'event', label: 'Event' },
-    { value: 'lethal', label: 'Lethal' },
-    { value: 'twisted', label: 'Twisted' }
-  ];
+    { key: 'all', label: 'All', count: counts.all },
+    { key: 'main', label: 'Main', count: counts.main },
+    { key: 'regular', label: 'Regular', count: counts.regular },
+    { key: 'event', label: 'Event', count: counts.event }
+  ] as const;
 
   const rarities = [
     { value: 'all', label: 'All Rarities' },
@@ -57,13 +37,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
 
   const sortOptions = [
     { value: 'name', label: 'Name' },
-    { value: 'type', label: 'Type' },
-    { value: 'rarity', label: 'Rarity' },
-    { value: 'skillCheck', label: 'Skill Check' },
-    { value: 'stealth', label: 'Stealth' },
-    { value: 'speed', label: 'Speed' },
-    { value: 'health', label: 'Health' },
-    { value: 'damage', label: 'Damage' }
+    { value: 'rarity', label: 'Rarity' }
   ];
 
   return (
@@ -76,51 +50,38 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
               <input 
                 type="text" 
                 placeholder="Search characters..." 
-                value={searchTerm}
-                onChange={(e) => onSearchChange(e.target.value)}
+                value={value.search}
+                onChange={(e) => onChange({ search: e.target.value })}
                 className="w-full bg-bg-card text-white px-4 py-3 pl-12 rounded-lg border border-gray-600 focus:border-accent-main focus:outline-none transition-colors"
               />
               <svg className="w-5 h-5 absolute left-4 top-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
-            
             <div className="flex flex-wrap gap-2">
               {filters.map((filter) => (
                 <button
                   key={filter.key}
-                  onClick={() => onFilterChange(filter.key)}
-                  className={`filter-btn ${currentFilter === filter.key ? 'active' : ''}`}
+                  onClick={() => onChange({ tab: filter.key })}
+                  className={`filter-btn ${value.tab === filter.key ? 'active' : ''}`}
                 >
                   {filter.label}
+                  <span className="ml-2 text-xs opacity-70">{filter.count}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* 详细筛选和排序 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* 类型筛选 */}
-            <div>
-              <label className="block text-sm font-medium mb-2 text-white">Character Type</label>
-              <select
-                value={selectedType}
-                onChange={(e) => onTypeChange(e.target.value)}
-                className="w-full px-3 py-2 bg-bg-card border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-accent-main"
-              >
-                {types.map((type) => (
-                  <option key={type.value} value={type.value}>{type.label}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* 稀有度筛选 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            {/* 稀有度筛选：仅在 Regular 下显示 */}
             <div>
               <label className="block text-sm font-medium mb-2 text-white">Rarity</label>
               <select
-                value={selectedRarity}
-                onChange={(e) => onRarityChange(e.target.value)}
-                className="w-full px-3 py-2 bg-bg-card border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-accent-main"
+                value={value.rarity}
+                onChange={(e) => onChange({ rarity: e.target.value as FilterState['rarity'] })}
+                disabled={value.tab !== 'regular'}
+                className="w-full px-3 py-2 bg-bg-card border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-accent-main disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {rarities.map((rarity) => (
                   <option key={rarity.value} value={rarity.value}>{rarity.label}</option>
@@ -132,8 +93,8 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
             <div>
               <label className="block text-sm font-medium mb-2 text-white">Sort By</label>
               <select
-                value={sortBy}
-                onChange={(e) => onSortChange(e.target.value)}
+                value={value.sortKey}
+                onChange={(e) => onChange({ sortKey: e.target.value as FilterState['sortKey'] })}
                 className="w-full px-3 py-2 bg-bg-card border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-accent-main"
               >
                 {sortOptions.map((option) => (
@@ -145,13 +106,23 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
             {/* 排序方向切换 */}
             <div className="flex items-end">
               <button
-                onClick={() => onSortOrderChange(sortOrder === 'asc' ? 'desc' : 'asc')}
+                onClick={() => onChange({ sortDir: value.sortDir === 'asc' ? 'desc' : 'asc' })}
                 className="w-full px-4 py-2 bg-accent-main hover:bg-accent-main/80 text-white rounded-md transition-colors flex items-center justify-center space-x-2"
               >
-                <span>{sortOrder === 'asc' ? '↑' : '↓'}</span>
-                <span>{sortOrder === 'asc' ? 'Ascending' : 'Descending'}</span>
+                <span>{value.sortDir === 'asc' ? '↑' : '↓'}</span>
+                <span>{value.sortDir === 'asc' ? 'Ascending' : 'Descending'}</span>
               </button>
             </div>
+          </div>
+
+          {/* 清除条件 */}
+          <div className="mt-4 flex justify-end">
+            <button
+              onClick={() => onChange({ tab: 'all', search: '', rarity: 'all', sortKey: 'name', sortDir: 'asc' })}
+              className="px-4 py-2 border border-gray-600 text-white rounded-md hover:bg-white/5 transition-colors"
+            >
+              Clear filters
+            </button>
           </div>
         </div>
       </div>
