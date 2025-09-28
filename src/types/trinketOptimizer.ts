@@ -1,6 +1,6 @@
-// Trinket Optimizer 智能推荐系统类型定义
+// TODO: update
 
-// 基础饰品接口扩展
+// TODO: update
 export interface EnhancedTrinket {
   id: string;
   name: string;
@@ -16,7 +16,7 @@ export interface EnhancedTrinket {
   drawbacks: string[];
   bestFor: string[];
   
-  // 新增字段
+  // TODO: update
   acquisition: TrinketAcquisition;
   metaTags: string[];
   difficulty: 'beginner' | 'intermediate' | 'advanced';
@@ -24,17 +24,17 @@ export interface EnhancedTrinket {
   usageRate: number; // 0-100
 }
 
-// 饰品获取信息
+// TODO: update
 export interface TrinketAcquisition {
   requirements: AcquisitionRequirement[];
   estimatedCost: string;
   priority: 'low' | 'medium' | 'high' | 'critical';
-  alternatives: string[]; // 替代饰品ID
+  alternatives: string[]; // TODO: update
   unlockPath: UnlockStep[];
   estimatedTime: string;
 }
 
-// 获取要求
+// TODO: update
 export interface AcquisitionRequirement {
   type: 'research' | 'currency' | 'achievement' | 'boss' | 'event' | 'level';
   description: string;
@@ -42,7 +42,7 @@ export interface AcquisitionRequirement {
   completed: boolean;
 }
 
-// 解锁步骤
+// TODO: update
 export interface UnlockStep {
   step: number;
   description: string;
@@ -51,7 +51,7 @@ export interface UnlockStep {
   completed: boolean;
 }
 
-// 饰品统计
+// TODO: update
 export interface TrinketStats {
   damage?: number;
   defense?: number;
@@ -66,7 +66,7 @@ export interface TrinketStats {
   cooldownReduction?: number;
   range?: number;
   areaOfEffect?: number;
-  // 新增统计
+  // TODO: update
   skillCheck?: number;
   extractionSpeed?: number;
   stealth?: number;
@@ -74,7 +74,7 @@ export interface TrinketStats {
   distractionEffectiveness?: number;
 }
 
-// 饰品效果
+// TODO: update
 export interface TrinketEffect {
   name: string;
   description: string;
@@ -83,12 +83,12 @@ export interface TrinketEffect {
   duration?: number;
   stackable: boolean;
   maxStacks?: number;
-  // 新增字段
-  condition?: string; // 触发条件
-  cooldown?: number; // 冷却时间
+  // TODO: update
+  condition?: string; // TODO: update
+  cooldown?: number; // TODO: update
 }
 
-// 智能推荐接口
+// TODO: update
 export interface IntelligentRecommendation {
   id: string;
   name: string;
@@ -98,7 +98,7 @@ export interface IntelligentRecommendation {
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   scenarios: string[];
   metaTags: string[];
-  confidence: number; // 1-5星
+  confidence: number; // TODO: update
   alternatives: AlternativeBuild[];
   acquisition: BuildAcquisition;
   teamCompatibility: TeamCompatibility;
@@ -106,16 +106,16 @@ export interface IntelligentRecommendation {
   progressionPath: ProgressionPath;
 }
 
-// 推荐推理
+// TODO: update
 export interface RecommendationReasoning {
-  primary: string; // 主要推理
+  primary: string; // TODO: update
   statSynergy: StatSynergy[];
   scenarioExplanation: string;
   numericalBenefits: NumericalBenefit[];
   tradeoffs: string[];
 }
 
-// 统计协同
+// TODO: update
 export interface StatSynergy {
   stats: string[];
   description: string;
@@ -124,7 +124,7 @@ export interface StatSynergy {
   improvement: string;
 }
 
-// 数值收益
+// TODO: update
 export interface NumericalBenefit {
   stat: string;
   from: number;
@@ -133,18 +133,18 @@ export interface NumericalBenefit {
   description: string;
 }
 
-// 推荐效果
+// TODO: update
 export interface RecommendationEffectiveness {
-  overall: number; // 1-5星
+  overall: number; // TODO: update
   damage: number;
   survival: number;
   utility: number;
   teamSupport: number;
   soloPlay: number;
-  highFloor: number; // 高楼层表现
+  highFloor: number; // TODO: update
 }
 
-// 替代构建
+// TODO: update
 export interface AlternativeBuild {
   name: string;
   trinkets: EnhancedTrinket[];
@@ -152,27 +152,27 @@ export interface AlternativeBuild {
   tradeoffs: string[];
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   cost: 'budget' | 'moderate' | 'expensive';
-  effectiveness: number; // 1-5星
+  effectiveness: number; // TODO: update
 }
 
-// 构建获取
+// TODO: update
 export interface BuildAcquisition {
   requirements: AcquisitionRequirement[];
   estimatedCost: string;
   priority: 'low' | 'medium' | 'high' | 'critical';
-  alternatives: string[]; // 替代构建ID
-  unlockSequence: string[]; // 解锁顺序
+  alternatives: string[]; // TODO: update
+  unlockSequence: string[]; // TODO: update
 }
 
-// 团队兼容性
+// TODO: update
 export interface TeamCompatibility {
-  worksWellWith: string[]; // 角色ID
-  conflictsWith: string[]; // 角色ID
-  teamRoles: string[]; // 适合的团队角色
+  worksWellWith: string[]; // TODO: update
+  conflictsWith: string[]; // TODO: update
+  teamRoles: string[]; // TODO: update
   compositionNotes: string;
 }
 
-// 元数据分析
+// TODO: update
 export interface MetaAnalysis {
   popularity: number; // 0-100
   winRate: number; // 0-100
@@ -183,7 +183,7 @@ export interface MetaAnalysis {
   weaknesses: string[];
 }
 
-// 升级路径
+// TODO: update
 export interface ProgressionPath {
   current: string;
   next: string;
@@ -193,7 +193,7 @@ export interface ProgressionPath {
   resourceRequirements: string[];
 }
 
-// 升级步骤
+// TODO: update
 export interface ProgressionStep {
   step: number;
   description: string;
@@ -202,23 +202,23 @@ export interface ProgressionStep {
   priority: 'low' | 'medium' | 'high';
 }
 
-// 构建比较
+// TODO: update
 export interface BuildComparison {
   builds: IntelligentRecommendation[];
   comparisonMetrics: ComparisonMetric[];
-  winner: string; // 获胜构建ID
+  winner: string; // TODO: update
   analysis: string;
 }
 
-// 比较指标
+// TODO: update
 export interface ComparisonMetric {
   name: string;
   values: { [buildId: string]: number };
   unit: string;
-  weight: number; // 权重
+  weight: number; // TODO: update
 }
 
-// 用户偏好
+// TODO: update
 export interface UserPreferences {
   playstyle: 'aggressive' | 'defensive' | 'support' | 'hybrid' | 'balanced';
   difficulty: 'beginner' | 'intermediate' | 'advanced';
@@ -229,7 +229,7 @@ export interface UserPreferences {
   metaPreference: 'meta' | 'offMeta' | 'balanced';
 }
 
-// 构建模拟器结果
+// TODO: update
 export interface BuildSimulationResult {
   buildId: string;
   threatLevel: string;
@@ -240,7 +240,7 @@ export interface BuildSimulationResult {
   recommendations: string[];
 }
 
-// 保存的构建
+// TODO: update
 export interface SavedBuild {
   id: string;
   name: string;
@@ -250,10 +250,10 @@ export interface SavedBuild {
   updatedAt: Date;
   tags: string[];
   notes: string;
-  rating: number; // 用户评分
+  rating: number; // TODO: update
 }
 
-// 构建代码
+// TODO: update
 export interface BuildCode {
   code: string;
   version: string;
@@ -266,7 +266,7 @@ export interface BuildCode {
   };
 }
 
-// 搜索和过滤选项
+// TODO: update
 export interface SearchFilters {
   query: string;
   rarity: string[];
@@ -279,7 +279,7 @@ export interface SearchFilters {
   teamCompatibility: string[];
 }
 
-// 推荐引擎配置
+// TODO: update
 export interface RecommendationEngineConfig {
   weights: {
     statSynergy: number;

@@ -68,7 +68,7 @@ export const lethalCharacters: Character[] = [
         playingAgainst: {
           overview: "Dandy-lethal is the ultimate threat, requires team collaboration to counter.",
           counterStrategies: [
-            "Team collaboration to分散他们的注意力",
+            "Translation pending",
             "Use high health characters to withstand attacks",
             "Quickly escape fear range"
           ],
@@ -106,7 +106,7 @@ export const lethalCharacters: Character[] = [
           weakAgainst: [
             {
               character: "Team collaboration",
-              reason: "Team coordination can分散他们的注意力"
+              reason: "Translation pending"
             }
           ]
         }

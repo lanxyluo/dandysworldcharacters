@@ -8,18 +8,18 @@ interface Character {
   type: 'main' | 'toon' | 'regular' | 'event' | 'lethal';
   rarity: 'common' | 'uncommon' | 'rare' | 'legendary';
   abilities: string[];
-  researchBonus?: number; // Rodger特有
+  researchBonus?: number; // TODO: update
   unlockRequirements?: string[];
-  priority: number; // 1-5, 5为最高优先级
+  priority: number; // TODO: update
 }
 
-// 角色优先级数据 - 基于真实数据文件，移除重复项
+// TODO: update
 const characterPriorities = [
-  // 最高优先级 - 免费角色和核心角色
+  // TODO: update
   { name: 'Boxten', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: 'Free character, increases extraction speed' },
   { name: 'Poppy', ichorCost: 0, type: 'toon', rarity: 'common', priority: 5, reason: 'Free character, movement speed boost' },
   
-  // 高优先级 - 主角色 (Legendary)
+  // TODO: update
   { name: 'Astro', ichorCost: 5000, type: 'main', rarity: 'legendary', priority: 5, reason: 'Main character, maximum stealth ability, restores teammate stamina' },
   { name: 'Vee', ichorCost: 4500, type: 'main', rarity: 'legendary', priority: 5, reason: 'Main character, highlights Twisted, marks incomplete machines' },
   { name: 'Pebble', ichorCost: 3750, type: 'main', rarity: 'legendary', priority: 5, reason: 'Main character, maximum movement speed, sniffs items' },
@@ -28,13 +28,13 @@ const characterPriorities = [
   { name: 'Bobette', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 4, reason: 'Main character, Christmas limited, invisibility ability' },
   { name: 'Bassie', ichorCost: 2500, type: 'main', rarity: 'legendary', priority: 4, reason: 'Main character, Easter limited, team sharing' },
   
-  // 高优先级 - 实用角色
+  // TODO: update
   { name: 'Rodger', ichorCost: 1200, type: 'regular', rarity: 'rare', priority: 5, reason: '2x research speed, key to unlocking other characters' },
   { name: 'Cosmo', ichorCost: 750, type: 'regular', rarity: 'uncommon', priority: 4, reason: 'Sugar rush, sweet scent, high cost-effectiveness' },
   { name: 'Tisha', ichorCost: 500, type: 'regular', rarity: 'uncommon', priority: 4, reason: 'Clears negative status, auto-collects items' },
   { name: 'Brightney', ichorCost: 1000, type: 'regular', rarity: 'uncommon', priority: 4, reason: 'Light source, reveals Twisted, dark area vision' },
   
-  // 中等优先级 - 战斗和实用角色
+  // TODO: update
   { name: 'Shrimpo', ichorCost: 50, type: 'regular', rarity: 'uncommon', priority: 3, reason: 'Cheapest character, rage mode, extraction speed boost when alone' },
   { name: 'Goob', ichorCost: 800, type: 'regular', rarity: 'uncommon', priority: 3, reason: 'Bear hug protection, team support, stamina recovery' },
   { name: 'Finn', ichorCost: 900, type: 'regular', rarity: 'common', priority: 3, reason: 'Octopus character, multi-tasking, pulling ability' },
@@ -42,7 +42,7 @@ const characterPriorities = [
   { name: 'Gigi', ichorCost: 1350, type: 'regular', rarity: 'rare', priority: 3, reason: 'Gachapon character, random rewards, lucky draws' },
   { name: 'Glisten', ichorCost: 2300, type: 'regular', rarity: 'rare', priority: 3, reason: 'Reflective ability, vanity, special mechanics' },
   
-  // 中等优先级 - 特殊用途角色
+  // TODO: update
   { name: 'Scraps', ichorCost: 1750, type: 'regular', rarity: 'rare', priority: 3, reason: 'Ranged attacks, resource utilization, advanced players' },
   { name: 'Teagan', ichorCost: 1100, type: 'regular', rarity: 'uncommon', priority: 3, reason: 'Tea time, soothes existence, team support' },
   { name: 'Razzle & Dazzle', ichorCost: 1600, type: 'regular', rarity: 'rare', priority: 3, reason: 'Dual character, position swap, dual nature' },
@@ -64,128 +64,16 @@ const UnlockOptimizer: React.FC = () => {
   const [ownedCharacters, setOwnedCharacters] = useState<string[]>([]);
   const [recommendation, setRecommendation] = useState<UnlockRecommendation | null>(null);
   const [filterType, setFilterType] = useState<string | null>(null);
-  const [lastSaved, setLastSaved] = useState<string | null>(null);
-
-  // 加载保存的用户进度
-  useEffect(() => {
-    const savedProgress = loadUserProgress();
-    if (savedProgress) {
-      setCurrentIchor(savedProgress.currentIchor);
-      setOwnedCharacters(savedProgress.ownedCharacters);
-      setLastSaved(savedProgress.lastUpdated);
-    }
-  }, []);
-
-  // 手动保存进度
-  const saveProgress = useCallback(() => {
-    const progress: UserProgress = {
-      ownedCharacters,
-      currentIchor,
-      researchProgress: {},
-      lastUpdated: new Date().toISOString()
-    };
-    saveUserProgress(progress);
-    setLastSaved(progress.lastUpdated);
-  }, [ownedCharacters, currentIchor]);
-
-  // 推荐算法逻辑
-  const getUnlockRecommendation = (currentIchor: number, ownedCharacters: string[]): UnlockRecommendation => {
-    const availableCharacters = characterPriorities.filter(char => 
-      !ownedCharacters.includes(char.name) && char.ichorCost <= currentIchor
+  const [lastSaved, setLastSaved] = useState<string | null>Translation pending<= currentIchor
     );
     
     if (availableCharacters.length === 0) {
       const nextCheapest = characterPriorities
-        .filter(char => !ownedCharacters.includes(char.name))
-        .sort((a, b) => a.ichorCost - b.ichorCost)[0];
-      
-      return {
-        recommendation: `Save ${nextCheapest.ichorCost - currentIchor} more Ichor for ${nextCheapest.name}`,
-        target: nextCheapest,
-        canAfford: false
-      };
-    }
-    
-    const bestOption = availableCharacters.sort((a, b) => b.priority - a.priority)[0];
-    
-    return {
-      recommendation: `Unlock ${bestOption.name} next`,
-      reason: bestOption.reason,
-      target: bestOption,
-      canAfford: true,
-      alternatives: availableCharacters.slice(1, 3)
-    };
-  };
-
-  const calculateOptimization = () => {
-    const result = getUnlockRecommendation(currentIchor, ownedCharacters);
-    setRecommendation(result);
-  };
-
-  const toggleCharacterOwnership = (characterName: string) => {
-    setOwnedCharacters(prev => {
-      const newOwned = prev.includes(characterName) 
-        ? prev.filter(name => name !== characterName)
-        : [...prev, characterName];
-      return newOwned;
-    });
-  };
-
-  const getPriorityColor = (priority: number) => {
-    if (priority === 5) return 'bg-red-600';
-    if (priority === 4) return 'bg-orange-600';
-    if (priority === 3) return 'bg-yellow-600';
-    if (priority === 2) return 'bg-blue-600';
-    return 'bg-green-600';
-  };
-
-  const getPriorityText = (priority: number) => {
-    if (priority === 5) return 'Critical';
-    if (priority === 4) return 'High';
-    if (priority === 3) return 'Medium';
-    if (priority === 2) return 'Low';
-    return 'Very Low';
-  };
-
-  // 获取筛选后的角色列表
-  const getFilteredCharacters = () => {
-    if (!filterType || filterType === 'all') {
-      return characterPriorities;
-    }
-    return characterPriorities.filter(char => char.type === filterType);
-  };
-
-  // 处理筛选类型变化
-  const handleFilterChange = (type: string) => {
-    if (type === 'all') {
-      setFilterType(null);
-    } else {
-      setFilterType(type);
-    }
-  };
-
-  // 选择所有免费角色
-  const selectAllFree = () => {
-    const freeCharacters = characterPriorities
-      .filter(char => char.ichorCost === 0)
-      .map(char => char.name);
-    setOwnedCharacters(prev => [...new Set([...prev, ...freeCharacters])]);
-  };
-
-  // 清除所有选择
-  const clearAll = () => {
-    setOwnedCharacters([]);
-  };
-
-  return (
-    <div className="max-w-6xl mx-auto">
+        .filter(char =>Translation pending<div className="max-w-6xl mx-auto">
       <div className="bg-bg-card rounded-lg p-8 shadow-lg">
         <h2 className="text-2xl font-bold text-text-primary mb-6 text-center">
           Unlock Optimizer
-        </h2>
-        
-        {/* 统计信息 */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        </h2>Translation pending<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-bg-secondary rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-accent-main">
               {characterPriorities.length}
@@ -213,22 +101,14 @@ const UnlockOptimizer: React.FC = () => {
             </div>
             <div className="text-sm text-text-secondary">Total Cost</div>
           </div>
-        </div>
-        
-        {/* 保存状态指示器 */}
-        {lastSaved && (
-          <div className="text-center mb-4">
+        </div>Translation pending<div className="text-center mb-4">
             <span className="text-xs text-text-secondary">
               Last saved: {new Date(lastSaved).toLocaleString()}
             </span>
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* 左侧：输入配置 */}
-          <div className="space-y-6">
-            {/* 当前Ichor数量 */}
-            <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">Translation pending<div className="space-y-6">Translation pending<div>
               <label className="block text-sm font-medium text-text-secondary mb-2">
                 Current Ichor: {currentIchor.toLocaleString()}
               </label>
@@ -246,14 +126,8 @@ const UnlockOptimizer: React.FC = () => {
                 <span>5,000</span>
                 <span>10,000</span>
               </div>
-            </div>
-
-            {/* 已拥有角色 */}
-            <div>
-              <h3 className="text-lg font-semibold text-text-primary mb-3">Owned Characters</h3>
-              
-              {/* 角色类型过滤器 */}
-              <div className="mb-3">
+            </div>Translation pending<div>
+              <h3 className="text-lg font-semibold text-text-primary mb-3">Owned Characters</h3>Translation pending<div className="mb-3">
                 <div className="text-sm text-text-secondary mb-2">Filter by type:</div>
                 <div className="flex flex-wrap gap-2">
                   {['all', 'main', 'toon', 'regular', 'event', 'lethal'].map((type) => (
@@ -270,10 +144,7 @@ const UnlockOptimizer: React.FC = () => {
                     </button>
                   ))}
                 </div>
-              </div>
-              
-              {/* 快速操作按钮 */}
-              <div className="mb-3">
+              </div>Translation pending<div className="mb-3">
                 <div className="text-sm text-text-secondary mb-2">Quick actions:</div>
                 <div className="flex flex-wrap gap-2">
                   <button
@@ -323,16 +194,11 @@ const UnlockOptimizer: React.FC = () => {
             >
               Get Unlock Recommendation
             </button>
-          </div>
-
-          {/* 右侧：推荐结果 */}
-          <div className="bg-bg-secondary rounded-lg p-6">
+          </div>Translation pending<div className="bg-bg-secondary rounded-lg p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Unlock Recommendation</h3>
             
             {recommendation ? (
-              <div className="space-y-6">
-                {/* 主要推荐 */}
-                <div className={`bg-bg-card rounded-lg p-4 border-l-4 ${
+              <div className="space-y-6">Translation pending<div className={`bg-bg-card rounded-lg p-4 border-l-4 ${
                   recommendation.canAfford ? 'border-green-500' : 'border-yellow-500'
                 }`}>
                   <div className="text-xl font-bold text-text-primary mb-2">
@@ -368,11 +234,7 @@ const UnlockOptimizer: React.FC = () => {
                       {recommendation.target.rarity}
                     </span>
                   </div>
-                </div>
-
-                {/* 替代选择 */}
-                {recommendation.alternatives && recommendation.alternatives.length > 0 && (
-                  <div>
+                </div>Translation pending<div>
                     <h4 className="font-medium text-text-primary mb-3">Alternative Options:</h4>
                     <div className="space-y-2">
                       {recommendation.alternatives.map((char, index) => (
@@ -410,11 +272,7 @@ const UnlockOptimizer: React.FC = () => {
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
-
-                {/* 所有角色优先级列表 */}
-                <div>
+                  </div>Translation pending<div>
                   <h4 className="font-medium text-text-primary mb-3">Character Priority List:</h4>
                   <div className="space-y-2 max-h-64 overflow-y-auto">
                     {characterPriorities

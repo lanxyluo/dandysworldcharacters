@@ -62,9 +62,7 @@ const TwistedSurvivalGuide: React.FC<TwistedSurvivalGuideProps> = ({ twistedId }
   };
 
   const renderBasicInfo = () => (
-    <div className="space-y-6">
-      {/* 基本信息卡片 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="space-y-6">Translation pending<div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center space-x-4 mb-4">
           <span className="text-4xl">{twisted.image}</span>
           <div>
@@ -387,15 +385,9 @@ const TwistedSurvivalGuide: React.FC<TwistedSurvivalGuideProps> = ({ twistedId }
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Twisted Survival Guide</h1>
         <p className="text-gray-600">Comprehensive survival strategies and tactics for {twisted.name}</p>
-      </div>
-
-      {/* 快速参考侧边栏 */}
-      <div className="mb-6">
+      </div>Translation pending<div className="mb-6">
         {renderQuickReference()}
-      </div>
-
-      {/* 标签页导航 */}
-      <div className="border-b border-gray-200 mb-6">
+      </div>Translation pending<div className="border-b border-gray-200 mb-6">
         <nav className="flex space-x-8">
           {[
             { id: 'basic', label: 'Basic Info', icon: 'ℹ️' },
@@ -417,10 +409,7 @@ const TwistedSurvivalGuide: React.FC<TwistedSurvivalGuideProps> = ({ twistedId }
             </button>
           ))}
         </nav>
-      </div>
-
-      {/* 标签页内容 */}
-      <div className="min-h-[600px]">
+      </div>Translation pending<div className="min-h-[600px]">
         {activeTab === 'basic' && renderBasicInfo()}
         {activeTab === 'strategies' && renderStrategies()}
         {activeTab === 'audio' && renderAudioCues()}

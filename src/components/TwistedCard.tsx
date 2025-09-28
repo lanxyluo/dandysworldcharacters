@@ -59,10 +59,7 @@ const TwistedCard: React.FC<TwistedCardProps> = ({ twisted, onClick }) => {
               {twisted.dangerLevel.toUpperCase()}
             </span>
           </div>
-        </div>
-        
-        {/* 基本统计 */}
-        <div className="space-y-3 mb-4">
+        </div>Translation pending<div className="space-y-3 mb-4">
           <div className="flex items-center justify-between text-sm">
             <span className="capitalize text-text-secondary">Speed</span>
             <div className="flex items-center space-x-2">
@@ -81,10 +78,7 @@ const TwistedCard: React.FC<TwistedCardProps> = ({ twisted, onClick }) => {
               <span className="text-accent-main font-semibold w-6">{twisted.attentionSpan}</span>
             </div>
           </div>
-        </div>
-
-        {/* 特殊能力预览 */}
-        <div className="mb-4">
+        </div>Translation pending<div className="mb-4">
           <h4 className="text-sm font-semibold text-text-primary mb-2">Special Abilities</h4>
           <div className="flex flex-wrap gap-1">
             {twisted.specialAbilities.slice(0, 2).map((ability, index) => (
@@ -101,10 +95,7 @@ const TwistedCard: React.FC<TwistedCardProps> = ({ twisted, onClick }) => {
               </span>
             )}
           </div>
-        </div>
-
-        {/* 危险等级指示器 */}
-        <div className={`text-center py-2 rounded-lg border ${getDangerLevelBg(twisted.dangerLevel)}`}>
+        </div>Translation pending<div className={`text-center py-2 rounded-lg border ${getDangerLevelBg(twisted.dangerLevel)}`}>
           <span className={`text-sm font-bold ${getDangerLevelColor(twisted.dangerLevel)}`}>
             {twisted.dangerLevel === 'extreme' ? '⚠️ EXTREME DANGER ⚠️' : 
              twisted.dangerLevel === 'high' ? '🚨 HIGH RISK 🚨' :

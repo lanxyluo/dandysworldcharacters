@@ -15,20 +15,20 @@ export interface Twisted {
   spawnLocations: string[];
   behavior: string;
   
-  // 新增字段：详细生存策略
+  // TODO: update
   survivalStrategies: SurvivalStrategy[];
   
-  // 新增字段：音频识别系统
+  // TODO: update
   audioCues: AudioCues;
   
-  // 新增字段：危险组合警告
+  // TODO: update
   deadlyCombos: DeadlyCombo[];
   
-  // 新增字段：优先级目标系统
+  // TODO: update
   priorityTargets: PriorityTarget[];
 }
 
-// 生存策略接口
+// TODO: update
 export interface SurvivalStrategy {
   id: string;
   title: string;
@@ -43,7 +43,7 @@ export interface SurvivalStrategy {
   counterStrategies: string[];
 }
 
-// 音频提示接口
+// TODO: update
 export interface AudioCues {
   walking: string;
   detection: string;
@@ -54,30 +54,30 @@ export interface AudioCues {
   audioPatterns: AudioPattern[];
 }
 
-// 音频模式接口
+// TODO: update
 export interface AudioPattern {
   name: string;
   description: string;
   trigger: string;
   response: string;
-  duration: number; // 秒
+  duration: number; // TODO: update
 }
 
-// 危险组合接口
+// TODO: update
 export interface DeadlyCombo {
   partner: string;
   danger: 'dangerous' | 'lethal' | 'extreme';
   reason: string;
   strategy: string;
   escapeRoute: string;
-  priority: number; // 1-10, 10为最高优先级
+  priority: number; // TODO: update
 }
 
-// 优先级目标接口
+// TODO: update
 export interface PriorityTarget {
   target: string;
   reason: string;
   whenPresent: string;
   avoidanceStrategy: string;
-  priority: number; // 1-10, 10为最高优先级
+  priority: number; // TODO: update
 }

@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">核心模块</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4">Core Modules</h3>
             <ul className="space-y-2">
               {quickLinks.map((item) => (
                 <li key={item.id}>
@@ -28,11 +28,11 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">增强工具</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4">Power Tools</h3>
             <ul className="space-y-2 text-text-secondary">
               <li>
-                <ScrollToTopLink to="/trinket-builds" className="hover:text-accent-main transition-colors">
-                  🛠️ Trinket Optimizer
+                <ScrollToTopLink to="/trinket-optimizer" className="hover:text-accent-main transition-colors">
+                  🧠 Trinket Optimizer
                 </ScrollToTopLink>
               </li>
               <li>
@@ -42,18 +42,18 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <ScrollToTopLink to="/floor-predictor" className="hover:text-accent-main transition-colors">
-                  🏢 Floor Predictor
+                  🗺️ Floor Predictor
                 </ScrollToTopLink>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">指南精选</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4">Guide Highlights</h3>
             <ul className="space-y-2 text-text-secondary">
               <li>
                 <ScrollToTopLink to="/guides/beginner-tips" className="hover:text-accent-main transition-colors">
-                  🌟 Beginner Tips
+                  💡 Beginner Tips
                 </ScrollToTopLink>
               </li>
               <li>
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <ScrollToTopLink to="/guides/stealth-system" className="hover:text-accent-main transition-colors">
-                  🕵️‍♀️ Stealth System
+                  🕵️ Stealth System
                 </ScrollToTopLink>
               </li>
               <li>
@@ -75,9 +75,10 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">关于本站</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4">About This Site</h3>
             <p className="text-text-secondary text-sm mb-4">
-              Dandy's World 玩家工具集合：提供数据、配装、Twisted 对抗和研究规划，帮助团队快速对齐策略。
+              Dandy's World Tools combines data-driven loadouts, Twisted counter plans, and research timelines so your
+              squad stays coordinated every run.
             </p>
             <div className="flex space-x-4 text-text-secondary">
               <a href="#" className="hover:text-accent-main transition-colors" aria-label="Discord">

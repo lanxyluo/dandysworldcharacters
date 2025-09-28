@@ -43,9 +43,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
   return (
     <section className="px-4 mb-12">
       <div className="max-w-7xl mx-auto">
-        <div className="glass-effect rounded-2xl p-6">
-          {/* 搜索和快速筛选 */}
-          <div className="flex flex-col lg:flex-row gap-4 items-center mb-6">
+        <div className="glass-effect rounded-2xl p-6">Translation pending<div className="flex flex-col lg:flex-row gap-4 items-center mb-6">
             <div className="flex-1 relative">
               <input 
                 type="text" 
@@ -70,12 +68,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* 详细筛选和排序 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
-            {/* 稀有度筛选：仅在 Regular 下显示 */}
-            <div>
+          </div>Translation pending<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">Translation pending<div>
               <label className="block text-sm font-medium mb-2 text-white">Rarity</label>
               <select
                 value={value.rarity}
@@ -87,10 +80,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
                   <option key={rarity.value} value={rarity.value}>{rarity.label}</option>
                 ))}
               </select>
-            </div>
-
-            {/* 排序 */}
-            <div>
+            </div>Translation pending<div>
               <label className="block text-sm font-medium mb-2 text-white">Sort By</label>
               <select
                 value={value.sortKey}
@@ -101,10 +91,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </select>
-            </div>
-
-            {/* 排序方向切换 */}
-            <div className="flex items-end">
+            </div>Translation pending<div className="flex items-end">
               <button
                 onClick={() => onChange({ sortDir: value.sortDir === 'asc' ? 'desc' : 'asc' })}
                 className="w-full px-4 py-2 bg-accent-main hover:bg-accent-main/80 text-white rounded-md transition-colors flex items-center justify-center space-x-2"
@@ -113,10 +100,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
                 <span>{value.sortDir === 'asc' ? 'Ascending' : 'Descending'}</span>
               </button>
             </div>
-          </div>
-
-          {/* 清除条件 */}
-          <div className="mt-4 flex justify-end">
+          </div>Translation pending<div className="mt-4 flex justify-end">
             <button
               onClick={() => onChange({ tab: 'all', search: '', rarity: 'all', sortKey: 'name', sortDir: 'asc' })}
               className="px-4 py-2 border border-gray-600 text-white rounded-md hover:bg-white/5 transition-colors"

@@ -5,14 +5,14 @@ const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // 每次路由变化时滚动到顶部
+    // scroll to the top every time the route changes
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
   }, [pathname]);
 
-  return null; // 这个组件不渲染任何内容
+  return null; // component does not render any markup
 };
 
 export default ScrollToTop;

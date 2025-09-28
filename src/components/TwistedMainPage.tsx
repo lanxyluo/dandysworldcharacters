@@ -17,9 +17,7 @@ const TwistedMainPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 顶部导航 */}
-      <div className="bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-gray-50">Translation pending<div className="bg-white shadow-sm border-b">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -60,10 +58,7 @@ const TwistedMainPage: React.FC = () => {
             )}
           </div>
         </div>
-      </div>
-
-      {/* 主要内容区域 */}
-      <div className="py-6">
+      </div>Translation pending<div className="py-6">
         {activeView === 'search' && (
           <TwistedSearch onSelectTwisted={handleSelectTwisted} />
         )}
@@ -71,10 +66,7 @@ const TwistedMainPage: React.FC = () => {
         {activeView === 'guide' && selectedTwistedId && (
           <TwistedSurvivalGuide twistedId={selectedTwistedId} />
         )}
-      </div>
-
-      {/* 底部信息 */}
-      <div className="bg-white border-t mt-12">
+      </div>Translation pending<div className="bg-white border-t mt-12">
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>

@@ -106,21 +106,21 @@ export class TrinketRecommendationEngine {
     const second = this.getTrinketDetails(secondId);
 
     if (!first || !second) {
-      return '基础组合';
+      return 'Translation pending';
     }
 
     const commonTags = first.metaTags.filter((tag) => second.metaTags.includes(tag));
     const sharedSynergies = first.synergies?.filter((id) => second.synergies?.includes(id)) ?? [];
 
     if (sharedSynergies.length) {
-      return `协同：${sharedSynergies.join('、')}`;
+      return `Translation pending`;
     }
 
     if (commonTags.length) {
-      return `共通标签：${commonTags.join('、')}`;
+      return `Translation pending`;
     }
 
-    return '基础组合';
+    return 'Translation pending';
   }
 }
 

@@ -11,15 +11,15 @@ interface SmartRecommendationsProps {
 }
 
 const experienceLabels: Record<PlayerExperience, string> = {
-  beginner: '新手',
-  intermediate: '进阶',
-  advanced: '专家',
+  beginner: 'Translation pending',
+  intermediate: 'Translation pending',
+  advanced: 'Translation pending',
 };
 
 const gameModeLabels: Record<SupportedGameMode, string> = {
-  normal: '标准模式',
+  normal: 'Translation pending',
   'dandy-run': 'Dandy Run',
-  'main-run': '主角挑战',
+  'main-run': 'Translation pending',
 };
 
 export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
@@ -54,8 +54,8 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   if (!selectedCharacter) {
     return (
       <div className="bg-gray-800 rounded-lg p-6 text-gray-300">
-        <h3 className="text-xl font-semibold text-white mb-3">智能推荐</h3>
-        <p>请选择角色以获取专属 Trinket 配装建议。</p>
+        <h3 className="text-xl font-semibold text-white mb-3">Translation pending</h3>
+        <p>Translation pending</p>
       </div>
     );
   }
@@ -63,10 +63,10 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   return (
     <div className="space-y-6">
       <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-        <h3 className="text-xl font-semibold text-white mb-4">偏好设置</h3>
+        <h3 className="text-xl font-semibold text-white mb-4">Translation pending</h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">经验水平</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Translation pending</label>
             <div className="flex bg-gray-900 border border-gray-700 rounded-lg overflow-hidden">
               {(['beginner', 'intermediate', 'advanced'] as PlayerExperience[]).map((level) => (
                 <button
@@ -83,7 +83,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">游戏模式</label>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Translation pending</label>
             <div className="flex bg-gray-900 border border-gray-700 rounded-lg overflow-hidden">
               {(['normal', 'dandy-run', 'main-run'] as SupportedGameMode[]).map((mode) => (
                 <button
@@ -102,10 +102,10 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
       </div>
 
       <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-        <h3 className="text-xl font-semibold text-white mb-4">推荐配装</h3>
+        <h3 className="text-xl font-semibold text-white mb-4">Translation pending</h3>
         <div className="space-y-4">
           {recommendations.length === 0 ? (
-            <div className="text-gray-400">暂无符合条件的推荐，请尝试调整过滤条件。</div>
+            <div className="text-gray-400">Translation pending</div>
           ) : (
             recommendations.map((recommendation, index) => {
               const [firstId, secondId] = recommendation.trinketIds;
@@ -116,15 +116,11 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                 <div key={recommendation.id} className="bg-gray-900 rounded-lg p-5 border border-gray-700">
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div>
-                      <div className="text-sm text-gray-400 mb-1">推荐 #{index + 1}</div>
+                      <div className="text-sm text-gray-400 mb-1">Translation pending</div>
                       <h4 className="text-lg font-semibold text-white">{recommendation.description}</h4>
                     </div>
                     <button
-                      onClick={() => onTrinketSelect(recommendation.trinketIds)}
-                      className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-sm font-medium rounded-md text-white"
-                    >
-                      使用此配装
-                    </button>
+                      onClick={() =>Translation pending</button>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -141,15 +137,9 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                     >
                       {recommendation.strategy}
                     </span>
-                    <span className="text-xs text-gray-300">
-                      难度：{recommendation.difficulty}
-                    </span>
-                    <span className="text-xs text-yellow-300">
-                      社区评分：{recommendation.communityRating}/5
-                    </span>
-                    <span className="text-xs text-blue-300">
-                      使用率：{Math.round(recommendation.usageRate * 100)}%
-                    </span>
+                    <span className="text-xs text-gray-300">Translation pending</span>
+                    <span className="text-xs text-yellow-300">Translation pending</span>
+                    <span className="text-xs text-blue-300">Translation pending</span>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -157,7 +147,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                       <div key={idx} className="bg-gray-800 rounded-md p-4 border border-gray-700">
                         <div className="text-sm font-semibold text-white">{trinket?.name ?? recommendation.trinketIds[idx]}</div>
                         <div className="text-xs text-gray-400 mt-1">
-                          {trinket ? `${trinket.rarity} · ${trinket.type}` : '未收录饰品'}
+                          {trinket ? `${trinket.rarity} · ${trinket.type}` : 'Translation pending'}
                         </div>
                         {trinket && <p className="text-xs text-gray-300 mt-2">{trinket.description}</p>}
                       </div>
@@ -166,7 +156,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
 
                   <div className="grid md:grid-cols-2 gap-4 text-sm">
                     <div>
-                      <h5 className="text-green-400 font-semibold mb-2">优势</h5>
+                      <h5 className="text-green-400 font-semibold mb-2">Translation pending</h5>
                       <ul className="space-y-1 text-gray-300">
                         {recommendation.reasons.map((reason) => (
                           <li key={reason}>• {reason}</li>
@@ -174,7 +164,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                       </ul>
                     </div>
                     <div>
-                      <h5 className="text-red-400 font-semibold mb-2">注意事项</h5>
+                      <h5 className="text-red-400 font-semibold mb-2">Translation pending</h5>
                       <ul className="space-y-1 text-gray-300">
                         {recommendation.warnings.map((warning) => (
                           <li key={warning}>• {warning}</li>
@@ -191,7 +181,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
 
       {popularCombinations.length > 0 && (
         <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-          <h3 className="text-xl font-semibold text-white mb-4">社区流行组合</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">Translation pending</h3>
           <div className="space-y-3">
             {popularCombinations.map((combo, index) => (
               <div key={`${combo.trinkets.join('-')}-${index}`} className="bg-gray-900 rounded-lg p-4 border border-gray-700">
@@ -206,9 +196,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                       );
                     })}
                   </div>
-                  <div className="text-xs text-blue-300">
-                    使用率：{Math.round(combo.usageRate * 100)}%
-                  </div>
+                  <div className="text-xs text-blue-300">Translation pending</div>
                 </div>
                 <div className="text-xs text-gray-400 mt-2">{combo.synergy}</div>
               </div>

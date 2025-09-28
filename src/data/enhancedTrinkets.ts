@@ -1,8 +1,8 @@
 import { EnhancedTrinket } from '../types/trinketOptimizer';
 
-// 增强的饰品数据库
+// TODO: update
 export const enhancedTrinkets: EnhancedTrinket[] = [
-  // 攻击型饰品
+  // TODO: update
   {
     id: 'bloodlust-charm',
     name: 'Bloodlust Charm',
@@ -18,33 +18,33 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
     effects: [
       {
         name: 'Blood Rage',
-        description: '每次击杀敌人后，攻击力提升10%，持续15秒',
+        description: 'Translation pending',
         trigger: 'onKill',
         value: 10,
         duration: 15,
         stackable: true,
         maxStacks: 5,
-        condition: '击杀敌人',
+        condition: 'Translation pending',
         cooldown: 0
       }
     ],
-    description: '一个充满血腥气息的护身符，能够激发使用者的战斗欲望。',
+    description: 'Translation pending',
     image: '🩸',
-    unlockCondition: '完成Blood Moon事件',
+    unlockCondition: 'Translation pending',
     synergies: ['berserker-axe', 'vampire-ring'],
-    drawbacks: ['增加受到的伤害5%'],
+    drawbacks: ['Translation pending'],
     bestFor: ['warrior', 'berserker', 'assassin'],
     acquisition: {
       requirements: [
         {
           type: 'event',
-          description: '完成Blood Moon事件',
+          description: 'Translation pending',
           value: 'Blood Moon Event',
           completed: false
         },
         {
           type: 'achievement',
-          description: '击杀100个敌人',
+          description: 'Translation pending',
           value: 100,
           completed: false
         }
@@ -55,22 +55,22 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
       unlockPath: [
         {
           step: 1,
-          description: '参与Blood Moon事件',
-          requirement: '事件期间在线',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '1 hour',
           completed: false
         },
         {
           step: 2,
-          description: '击杀50个敌人',
-          requirement: '累计击杀数',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '30 minutes',
           completed: false
         },
         {
           step: 3,
-          description: '完成事件挑战',
-          requirement: '达到事件目标',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '30 minutes',
           completed: false
         }
@@ -97,32 +97,32 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
     effects: [
       {
         name: 'Chain Lightning',
-        description: '攻击有25%几率触发连锁闪电，对周围敌人造成额外伤害',
+        description: 'Translation pending',
         trigger: 'onHit',
         value: 25,
         duration: undefined,
         stackable: false,
-        condition: '攻击命中',
+        condition: 'Translation pending',
         cooldown: 3
       }
     ],
-    description: '一个充满电能的晶体核心，能够释放强大的闪电攻击。',
+    description: 'Translation pending',
     image: '⚡',
-    unlockCondition: '击败Storm Lord',
+    unlockCondition: 'Translation pending',
     synergies: ['thunder-hammer', 'storm-caller'],
-    drawbacks: ['在雨天受到额外伤害'],
+    drawbacks: ['Translation pending'],
     bestFor: ['mage', 'elementalist', 'paladin'],
     acquisition: {
       requirements: [
         {
           type: 'boss',
-          description: '击败Storm Lord',
+          description: 'Translation pending',
           value: 'Storm Lord Boss',
           completed: false
         },
         {
           type: 'level',
-          description: '达到15级',
+          description: 'Translation pending',
           value: 15,
           completed: false
         }
@@ -133,22 +133,22 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
       unlockPath: [
         {
           step: 1,
-          description: '达到15级',
-          requirement: '角色等级',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '3 hours',
           completed: false
         },
         {
           step: 2,
-          description: '找到Storm Lord位置',
-          requirement: '探索地图',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '1 hour',
           completed: false
         },
         {
           step: 3,
-          description: '击败Storm Lord',
-          requirement: 'Boss战胜利',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '1 hour',
           completed: false
         }
@@ -175,32 +175,32 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
     effects: [
       {
         name: 'Shadow Step',
-        description: '进入隐身状态，持续10秒，期间移动速度提升50%',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 50,
         duration: 10,
         stackable: false,
-        condition: '非战斗状态',
+        condition: 'Translation pending',
         cooldown: 30
       }
     ],
-    description: '一件能够隐藏使用者身形的斗篷，适合潜行和逃脱。',
+    description: 'Translation pending',
     image: '👻',
-    unlockCondition: '完成Stealth Mission',
+    unlockCondition: 'Translation pending',
     synergies: ['silent-boots', 'shadow-dagger'],
-    drawbacks: ['在强光下效果减弱'],
+    drawbacks: ['Translation pending'],
     bestFor: ['assassin', 'rogue', 'scout'],
     acquisition: {
       requirements: [
         {
           type: 'achievement',
-          description: '完成Stealth Mission',
+          description: 'Translation pending',
           value: 'Stealth Mission',
           completed: false
         },
         {
           type: 'research',
-          description: '100% Twisted Toodles研究',
+          description: 'Translation pending',
           value: '100% Research',
           completed: false
         }
@@ -211,22 +211,22 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
       unlockPath: [
         {
           step: 1,
-          description: '完成Twisted Toodles研究',
-          requirement: '研究进度100%',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '2 hours',
           completed: false
         },
         {
           step: 2,
-          description: '接受Stealth Mission',
-          requirement: '与NPC对话',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '10 minutes',
           completed: false
         },
         {
           step: 3,
-          description: '完成潜行任务',
-          requirement: '不被发现完成任务',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '50 minutes',
           completed: false
         }
@@ -253,32 +253,32 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
     effects: [
       {
         name: 'Quick Extraction',
-        description: '提取速度提升40%，技能检查成功率提升25%',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 40,
         duration: undefined,
         stackable: false,
-        condition: '进行提取',
+        condition: 'Translation pending',
         cooldown: 0
       }
     ],
-    description: '专门提升提取效率的饰品，适合快速完成目标的玩家。',
+    description: 'Translation pending',
     image: '🚀',
-    unlockCondition: '完成100次成功提取',
+    unlockCondition: 'Translation pending',
     synergies: ['extraction-boost', 'stamina-booster'],
-    drawbacks: ['降低战斗能力'],
+    drawbacks: ['Translation pending'],
     bestFor: ['extractor', 'support', 'balanced'],
     acquisition: {
       requirements: [
         {
           type: 'achievement',
-          description: '完成100次成功提取',
+          description: 'Translation pending',
           value: 100,
           completed: false
         },
         {
           type: 'research',
-          description: '50% Twisted Dandy研究',
+          description: 'Translation pending',
           value: '50% Research',
           completed: false
         }
@@ -289,15 +289,15 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
       unlockPath: [
         {
           step: 1,
-          description: '开始Twisted Dandy研究',
-          requirement: '研究进度50%',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '4 hours',
           completed: false
         },
         {
           step: 2,
-          description: '进行提取任务',
-          requirement: '累计100次成功',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '4 hours',
           completed: false
         }
@@ -324,32 +324,32 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
     effects: [
       {
         name: 'Master Distraction',
-        description: '干扰效果提升35%，移动速度提升20%',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 35,
         duration: undefined,
         stackable: false,
-        condition: '进行干扰',
+        condition: 'Translation pending',
         cooldown: 0
       }
     ],
-    description: '专家级干扰饰品，能够创建有效的干扰并快速逃脱。',
+    description: 'Translation pending',
     image: '🎭',
-    unlockCondition: '完成Distraction Challenge',
+    unlockCondition: 'Translation pending',
     synergies: ['distraction-field', 'quick-escape'],
-    drawbacks: ['降低直接战斗能力'],
+    drawbacks: ['Translation pending'],
     bestFor: ['distractor', 'scout', 'support'],
     acquisition: {
       requirements: [
         {
           type: 'achievement',
-          description: '完成Distraction Challenge',
+          description: 'Translation pending',
           value: 'Distraction Challenge',
           completed: false
         },
         {
           type: 'research',
-          description: '75% Twisted Bobette研究',
+          description: 'Translation pending',
           value: '75% Research',
           completed: false
         }
@@ -360,22 +360,22 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
       unlockPath: [
         {
           step: 1,
-          description: '推进Twisted Bobette研究',
-          requirement: '研究进度75%',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '2 hours',
           completed: false
         },
         {
           step: 2,
-          description: '接受干扰挑战',
-          requirement: '与挑战NPC对话',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '15 minutes',
           completed: false
         },
         {
           step: 3,
-          description: '完成干扰挑战',
-          requirement: '成功干扰10个敌人',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '1.5 hours',
           completed: false
         }
@@ -402,32 +402,32 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
     effects: [
       {
         name: 'Support Field',
-        description: '为附近队友提供30%的团队支援效果，治疗效果提升25%',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 30,
         duration: undefined,
         stackable: false,
-        condition: '队友在范围内',
+        condition: 'Translation pending',
         cooldown: 0
       }
     ],
-    description: '一个充满正能量的光环，能够帮助你的团队。',
+    description: 'Translation pending',
     image: '💫',
-    unlockCondition: '完成Support Trial',
+    unlockCondition: 'Translation pending',
     synergies: ['team-link', 'healing-spring'],
-    drawbacks: ['降低个人战斗能力'],
+    drawbacks: ['Translation pending'],
     bestFor: ['support', 'healer', 'paladin'],
     acquisition: {
       requirements: [
         {
           type: 'achievement',
-          description: '完成Support Trial',
+          description: 'Translation pending',
           value: 'Support Trial',
           completed: false
         },
         {
           type: 'research',
-          description: '100% Twisted Astro研究',
+          description: 'Translation pending',
           value: '100% Research',
           completed: false
         }
@@ -438,22 +438,22 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
       unlockPath: [
         {
           step: 1,
-          description: '完成Twisted Astro研究',
-          requirement: '研究进度100%',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '3 hours',
           completed: false
         },
         {
           step: 2,
-          description: '接受支援试炼',
-          requirement: '与试炼NPC对话',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '15 minutes',
           completed: false
         },
         {
           step: 3,
-          description: '完成支援试炼',
-          requirement: '成功支援5个队友',
+          description: 'Translation pending',
+          requirement: 'Translation pending',
           estimatedTime: '1.5 hours',
           completed: false
         }
@@ -467,7 +467,7 @@ export const enhancedTrinkets: EnhancedTrinket[] = [
   }
 ];
 
-// 获取饰品数据的工具函数
+// TODO: update
 export const getEnhancedTrinketById = (id: string): EnhancedTrinket | undefined => {
   return enhancedTrinkets.find(trinket => trinket.id === id);
 };

@@ -36,9 +36,7 @@ const TwistedSearchAndFilter: React.FC<TwistedSearchAndFilterProps> = ({
   return (
     <section className="px-4 mb-12">
       <div className="max-w-7xl mx-auto">
-        <div className="glass-effect rounded-2xl p-6">
-          {/* 搜索栏 */}
-          <div className="mb-6">
+        <div className="glass-effect rounded-2xl p-6">Translation pending<div className="mb-6">
             <div className="relative">
               <input 
                 type="text" 
@@ -51,12 +49,7 @@ const TwistedSearchAndFilter: React.FC<TwistedSearchAndFilterProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
-          </div>
-          
-          {/* 筛选按钮组 */}
-          <div className="space-y-4">
-            {/* 类型筛选 */}
-            <div>
+          </div>Translation pending<div className="space-y-4">Translation pending<div>
               <h3 className="text-sm font-medium text-text-secondary mb-3">Filter by Type</h3>
               <div className="flex flex-wrap gap-2">
                 {typeFilters.map((filter) => (
@@ -70,10 +63,7 @@ const TwistedSearchAndFilter: React.FC<TwistedSearchAndFilterProps> = ({
                   </button>
                 ))}
               </div>
-            </div>
-
-            {/* 危险等级筛选 */}
-            <div>
+            </div>Translation pending<div>
               <h3 className="text-sm font-medium text-text-secondary mb-3">Filter by Danger Level</h3>
               <div className="flex flex-wrap gap-2">
                 {dangerFilters.map((filter) => (

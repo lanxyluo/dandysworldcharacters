@@ -9,9 +9,9 @@ export interface Character {
   rarity: Rarity;
   isMainCharacter: boolean;
   totalAttributePoints: number;
-  image: string; // 添加image字段
+  image: string; // TODO: update
   
-  // 让attributes变为可选，兼容stats格式
+  // TODO: update
   attributes?: {
     health: number;
     skillCheck: number;
@@ -21,7 +21,7 @@ export interface Character {
     extractionSpeed: number;
   };
   
-  // 兼容旧的stats格式
+  // TODO: update
   stats?: {
     [key: string]: number;
   };
@@ -56,7 +56,7 @@ export interface Character {
     };
   };
   
-  // 添加requirements字段以兼容旧格式
+  // TODO: update
   requirements?: {
     ichor?: number;
     ornaments?: number;
@@ -85,7 +85,7 @@ export interface Character {
     teamRole: string;
   };
   
-  // 保留原有的详细说明字段以向后兼容
+  // TODO: update
   detailedGuide?: {
     abilityMechanics: {
       active: {
@@ -143,4 +143,3 @@ export interface Character {
     };
   };
 }
-

@@ -1,4 +1,4 @@
-// 饰品类型定义
+// TODO: update
 export interface Trinket {
   id: string;
   name: string;
@@ -10,9 +10,9 @@ export interface Trinket {
   description: string;
   image: string; // emoji representation
   unlockCondition?: string;
-  synergies: string[]; // 与其他饰品的协同效果
-  drawbacks: string[]; // 负面效果
-  bestFor: string[]; // 最适合的角色类型
+  synergies: string[]; // TODO: update
+  drawbacks: string[]; // TODO: update
+  bestFor: string[]; // TODO: update
 }
 
 export interface TrinketStats {
@@ -36,14 +36,14 @@ export interface TrinketEffect {
   description: string;
   trigger: 'passive' | 'onHit' | 'onKill' | 'onDamage' | 'onHeal' | 'onBlock' | 'onDodge';
   value: number;
-  duration?: number; // 持续时间（秒），undefined表示永久
-  stackable: boolean; // 是否可叠加
-  maxStacks?: number; // 最大叠加层数
+  duration?: number; // TODO: update
+  stackable: boolean; // TODO: update
+  maxStacks?: number; // TODO: update
 }
 
-// 饰品数据
+// TODO: update
 export const trinkets: Trinket[] = [
-  // 攻击型饰品
+  // TODO: update
   {
     id: 'bloodlust-charm',
     name: 'Bloodlust Charm',
@@ -58,7 +58,7 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Blood Rage',
-        description: '每次击杀敌人后，攻击力提升10%，持续15秒',
+        description: 'Translation pending',
         trigger: 'onKill',
         value: 10,
         duration: 15,
@@ -66,11 +66,11 @@ export const trinkets: Trinket[] = [
         maxStacks: 5
       }
     ],
-    description: '一个充满血腥气息的护身符，能够激发使用者的战斗欲望。',
+    description: 'Translation pending',
     image: '🩸',
-    unlockCondition: '完成Blood Moon事件',
+    unlockCondition: 'Translation pending',
     synergies: ['berserker-axe', 'vampire-ring'],
-    drawbacks: ['增加受到的伤害5%'],
+    drawbacks: ['Translation pending'],
     bestFor: ['warrior', 'berserker', 'assassin']
   },
   {
@@ -87,18 +87,18 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Chain Lightning',
-        description: '攻击有25%几率触发连锁闪电，对周围敌人造成额外伤害',
+        description: 'Translation pending',
         trigger: 'onHit',
         value: 25,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '一个充满电能的晶体核心，能够释放强大的闪电攻击。',
+    description: 'Translation pending',
     image: '⚡',
-    unlockCondition: '击败Storm Lord',
+    unlockCondition: 'Translation pending',
     synergies: ['thunder-hammer', 'storm-caller'],
-    drawbacks: ['在雨天受到额外伤害'],
+    drawbacks: ['Translation pending'],
     bestFor: ['mage', 'elementalist', 'paladin']
   },
   {
@@ -115,22 +115,22 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Rage Mode',
-        description: '生命值低于30%时，攻击力翻倍，但防御力减半',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 100,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '一把传说中的战斧，能够激发使用者内心最深处的狂暴力量。',
+    description: 'Translation pending',
     image: '🪓',
-    unlockCondition: '完成Berserker Trial',
+    unlockCondition: 'Translation pending',
     synergies: ['bloodlust-charm', 'rage-potion'],
-    drawbacks: ['降低理智值，增加失控风险'],
+    drawbacks: ['Translation pending'],
     bestFor: ['berserker', 'warrior', 'barbarian']
   },
 
-  // 防御型饰品
+  // TODO: update
   {
     id: 'guardian-shield',
     name: 'Guardian Shield',
@@ -145,18 +145,18 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Guardian\'s Protection',
-        description: '为附近队友提供15%的伤害减免',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 15,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '一面神圣的盾牌，能够保护使用者和队友免受伤害。',
+    description: 'Translation pending',
     image: '🛡️',
-    unlockCondition: '完成Guardian Quest',
+    unlockCondition: 'Translation pending',
     synergies: ['paladin-armor', 'holy-aura'],
-    drawbacks: ['降低移动速度10%'],
+    drawbacks: ['Translation pending'],
     bestFor: ['tank', 'paladin', 'guardian']
   },
   {
@@ -173,18 +173,18 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Life Steal',
-        description: '攻击有15%几率恢复造成伤害的20%生命值',
+        description: 'Translation pending',
         trigger: 'onHit',
         value: 20,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '一枚神秘的戒指，能够从敌人身上吸取生命力。',
+    description: 'Translation pending',
     image: '💍',
-    unlockCondition: '击败Vampire Lord',
+    unlockCondition: 'Translation pending',
     synergies: ['bloodlust-charm', 'life-steal-gem'],
-    drawbacks: ['在阳光下效果减半'],
+    drawbacks: ['Translation pending'],
     bestFor: ['assassin', 'rogue', 'necromancer']
   },
   {
@@ -201,22 +201,22 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Dragon\'s Fury',
-        description: '受到攻击时，有30%几率释放火焰反击',
+        description: 'Translation pending',
         trigger: 'onDamage',
         value: 30,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '用远古巨龙的鳞片制成的护甲，具有强大的防护能力和反击效果。',
+    description: 'Translation pending',
     image: '🐉',
-    unlockCondition: '击败Ancient Dragon',
+    unlockCondition: 'Translation pending',
     synergies: ['fire-sword', 'dragon-heart'],
-    drawbacks: ['增加冰霜伤害的易伤性'],
+    drawbacks: ['Translation pending'],
     bestFor: ['dragon-knight', 'warrior', 'tank']
   },
 
-  // 实用型饰品
+  // TODO: update
   {
     id: 'time-warp-crystal',
     name: 'Time Warp Crystal',
@@ -230,18 +230,18 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Time Manipulation',
-        description: '技能冷却时间减少25%，移动速度提升15%',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 25,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '一块能够扭曲时间的神秘晶体，让使用者能够更快地行动。',
+    description: 'Translation pending',
     image: '⏰',
-    unlockCondition: '完成Time Trial',
+    unlockCondition: 'Translation pending',
     synergies: ['speed-boots', 'haste-potion'],
-    drawbacks: ['随机触发时间异常效果'],
+    drawbacks: ['Translation pending'],
     bestFor: ['mage', 'assassin', 'support']
   },
   {
@@ -257,18 +257,18 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Regeneration',
-        description: '每秒恢复最大生命值的2%',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 2,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '一个充满治愈能量的泉水，能够持续恢复使用者的生命值。',
+    description: 'Translation pending',
     image: '💧',
-    unlockCondition: '完成Healer\'s Path',
+    unlockCondition: 'Translation pending',
     synergies: ['holy-aura', 'life-gem'],
-    drawbacks: ['在战斗中效果减半'],
+    drawbacks: ['Translation pending'],
     bestFor: ['healer', 'support', 'paladin']
   },
   {
@@ -284,22 +284,22 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Shadow Step',
-        description: '进入隐身状态，持续10秒，期间移动速度提升50%',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 50,
         duration: 10,
         stackable: false
       }
     ],
-    description: '一件能够隐藏使用者身形的斗篷，适合潜行和逃脱。',
+    description: 'Translation pending',
     image: '👻',
-    unlockCondition: '完成Stealth Mission',
+    unlockCondition: 'Translation pending',
     synergies: ['silent-boots', 'shadow-dagger'],
-    drawbacks: ['在强光下效果减弱'],
+    drawbacks: ['Translation pending'],
     bestFor: ['assassin', 'rogue', 'scout']
   },
 
-  // 混合型饰品
+  // TODO: update
   {
     id: 'elemental-harmony',
     name: 'Elemental Harmony',
@@ -314,18 +314,18 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Elemental Mastery',
-        description: '根据当前环境元素，获得相应的攻击和防御加成',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 25,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '一个能够与自然元素产生共鸣的饰品，提供平衡的攻防能力。',
+    description: 'Translation pending',
     image: '🌪️',
-    unlockCondition: '完成Elemental Trial',
+    unlockCondition: 'Translation pending',
     synergies: ['fire-gem', 'ice-crystal', 'lightning-core'],
-    drawbacks: ['在元素混乱区域效果不稳定'],
+    drawbacks: ['Translation pending'],
     bestFor: ['elementalist', 'druid', 'mage']
   },
   {
@@ -342,23 +342,23 @@ export const trinkets: Trinket[] = [
     effects: [
       {
         name: 'Rebirth',
-        description: '死亡时有50%几率复活，恢复50%生命值',
+        description: 'Translation pending',
         trigger: 'passive',
         value: 50,
         duration: undefined,
         stackable: false
       }
     ],
-    description: '一根来自不死鸟的羽毛，蕴含着重生的神秘力量。',
+    description: 'Translation pending',
     image: '🔥',
-    unlockCondition: '击败Phoenix',
+    unlockCondition: 'Translation pending',
     synergies: ['fire-sword', 'immortality-potion'],
-    drawbacks: ['复活后虚弱状态持续30秒'],
+    drawbacks: ['Translation pending'],
     bestFor: ['phoenix-knight', 'immortal', 'warrior']
   }
 ];
 
-// 饰品分类函数
+// TODO: update
 export const getTrinketsByType = (type: Trinket['type']) => {
   return trinkets.filter(trinket => trinket.type === type);
 };
@@ -381,7 +381,7 @@ export const getTrinketById = (id: string) => {
   return trinkets.find(trinket => trinket.id === id);
 };
 
-// 饰品稀有度权重（用于随机生成）
+// TODO: update
 export const rarityWeights = {
   common: 40,
   uncommon: 30,
@@ -390,7 +390,7 @@ export const rarityWeights = {
   legendary: 2
 };
 
-// 饰品类型权重
+// TODO: update
 export const typeWeights = {
   offensive: 35,
   defensive: 30,

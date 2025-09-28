@@ -48,68 +48,7 @@ const TwistedSearch: React.FC<TwistedSearchProps> = ({ onSelectTwisted }) => {
       strategy: SurvivalStrategy;
       matchType: 'title' | 'description' | 'steps' | 'tips';
       matchText: string;
-    }> = [];
-    
-    twisted.forEach(entity => {
-      entity.survivalStrategies.forEach(strategy => {
-        // 搜索策略标题
-        if (strategy.title.toLowerCase().includes(searchQuery.toLowerCase())) {
-          results.push({
-            twisted: entity,
-            strategy,
-            matchType: 'title',
-            matchText: strategy.title
-          });
-        }
-        
-        // 搜索策略描述
-        if (strategy.description.toLowerCase().includes(searchQuery.toLowerCase())) {
-          results.push({
-            twisted: entity,
-            strategy,
-            matchType: 'description',
-            matchText: strategy.description
-          });
-        }
-        
-        // 搜索策略步骤
-        strategy.steps.forEach(step => {
-          if (step.toLowerCase().includes(searchQuery.toLowerCase())) {
-            results.push({
-              twisted: entity,
-              strategy,
-              matchType: 'steps',
-              matchText: step
-            });
-          }
-        });
-        
-        // 搜索策略提示
-        strategy.tips.forEach(tip => {
-          if (tip.toLowerCase().includes(searchQuery.toLowerCase())) {
-            results.push({
-              twisted: entity,
-              strategy,
-              matchType: 'tips',
-              matchText: tip
-            });
-          }
-        });
-      });
-    });
-    
-    return results;
-  }, [searchQuery]);
-
-  const highlightMatch = (text: string, query: string) => {
-    if (!query) return text;
-    
-    const regex = new RegExp(`(${query})`, 'gi');
-    const parts = text.split(regex);
-    
-    return parts.map((part, index) => 
-      regex.test(part) ? (
-        <mark key={index} className="bg-yellow-200 px-1 rounded">
+    }>Translation pending<mark key={index} className="bg-yellow-200 px-1 rounded">
           {part}
         </mark>
       ) : (
@@ -123,10 +62,7 @@ const TwistedSearch: React.FC<TwistedSearchProps> = ({ onSelectTwisted }) => {
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-white mb-2">Twisted Strategy Search</h2>
         <p className="text-gray-300">Search for specific survival strategies and scenarios</p>
-      </div>
-
-      {/* 搜索栏 */}
-      <div className="mb-6">
+      </div>Translation pending<div className="mb-6">
         <div className="relative">
           <input
             type="text"
@@ -141,10 +77,7 @@ const TwistedSearch: React.FC<TwistedSearchProps> = ({ onSelectTwisted }) => {
             </svg>
           </div>
         </div>
-      </div>
-
-      {/* 过滤器 */}
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      </div>Translation pending<div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">Strategy Category</label>
           <select
@@ -189,11 +122,7 @@ const TwistedSearch: React.FC<TwistedSearchProps> = ({ onSelectTwisted }) => {
             ))}
           </select>
         </div>
-      </div>
-
-      {/* 搜索结果 */}
-      {searchQuery && (
-        <div className="mb-8">
+      </div>Translation pending<div className="mb-8">
           <h3 className="text-lg font-semibold text-white mb-4">
             Strategy Search Results ({searchStrategies.length})
           </h3>
@@ -254,11 +183,7 @@ const TwistedSearch: React.FC<TwistedSearchProps> = ({ onSelectTwisted }) => {
               </div>
             ))}
           </div>
-        </div>
-      )}
-
-      {/* 过滤后的实体列表 */}
-      <div>
+        </div>Translation pending<div>
         <h3 className="text-lg font-semibold text-white mb-4">
           Available Entities ({filteredTwisted.length})
         </h3>

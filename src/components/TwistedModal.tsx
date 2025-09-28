@@ -42,9 +42,7 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-      <div className="bg-bg-card border border-gray-600 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        {/* 模态框头部 */}
-        <div className="p-6 border-b border-gray-600">
+      <div className="bg-bg-card border border-gray-600 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">Translation pending<div className="p-6 border-b border-gray-600">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="text-6xl">{twisted.image}</div>
@@ -67,18 +65,10 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
               ×
             </button>
           </div>
-        </div>
-
-        {/* 模态框内容 */}
-        <div className="p-6 space-y-6">
-          {/* 描述 */}
-          <div>
+        </div>Translation pending<div className="p-6 space-y-6">Translation pending<div>
             <h3 className="text-xl font-semibold text-text-primary mb-3">Description</h3>
             <p className="text-text-secondary leading-relaxed">{twisted.description}</p>
-          </div>
-
-          {/* 基本统计 */}
-          <div>
+          </div>Translation pending<div>
             <h3 className="text-xl font-semibold text-text-primary mb-3">Basic Stats</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-bg-secondary p-4 rounded-lg">
@@ -110,10 +100,7 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* 特殊能力 */}
-          <div>
+          </div>Translation pending<div>
             <h3 className="text-xl font-semibold text-text-primary mb-3">Special Abilities</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {twisted.specialAbilities.map((ability, index) => (
@@ -122,10 +109,7 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* 外观特征 */}
-          <div>
+          </div>Translation pending<div>
             <h3 className="text-xl font-semibold text-text-primary mb-3">Appearance & Identification</h3>
             <div className="bg-bg-secondary p-4 rounded-lg">
               <h4 className="font-semibold text-text-primary mb-2">Visual Characteristics</h4>
@@ -147,10 +131,7 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* 应对策略 */}
-          <div>
+          </div>Translation pending<div>
             <h3 className="text-xl font-semibold text-text-primary mb-3">Survival Strategies</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-bg-secondary p-4 rounded-lg">
@@ -176,10 +157,7 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* 行为模式和生成位置 */}
-          <div>
+          </div>Translation pending<div>
             <h3 className="text-xl font-semibold text-text-primary mb-3">Behavior & Locations</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-bg-secondary p-4 rounded-lg">
@@ -198,10 +176,7 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* 危险等级说明 */}
-          <div className={`border-2 rounded-lg p-4 ${getDangerLevelColor(twisted.dangerLevel)} border-current`}>
+          </div>Translation pending<div className={`border-2 rounded-lg p-4 ${getDangerLevelColor(twisted.dangerLevel)} border-current`}>
             <div className="text-center">
               <h3 className="text-xl font-bold mb-2">Danger Level: {twisted.dangerLevel.toUpperCase()}</h3>
               <p className="text-sm">
@@ -212,10 +187,7 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
               </p>
             </div>
           </div>
-        </div>
-
-        {/* 模态框底部 */}
-        <div className="p-6 border-t border-gray-600">
+        </div>Translation pending<div className="p-6 border-t border-gray-600">
           <div className="flex justify-end space-x-3">
             <button
               onClick={onClose}
@@ -224,14 +196,7 @@ const TwistedModal: React.FC<TwistedModalProps> = ({ twisted, isOpen, onClose })
               Close
             </button>
             <button
-              onClick={() => {
-                // 这里可以添加分享或保存功能
-                console.log('Share/Save functionality');
-              }}
-              className="px-6 py-2 bg-accent-main hover:bg-blue-600 text-white rounded-lg transition-colors"
-            >
-              Save to Guide
-            </button>
+              onClick={() =>Translation pending</button>
           </div>
         </div>
       </div>

@@ -2,35 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { UserProgress, loadUserProgress, updateUserProgress } from '../../utils/storage';
 import { twistedCharacters } from '../../data/characters';
 
-// 组件数据结构
+// TODO: update
 interface ResearchData {
   twistedName: string;
   currentProgress: number; // 0-100
   useRodger: boolean;
-  targetProgress: number; // 默认100
+  targetProgress: number; // TODO: update
 }
 
-// 计算逻辑
-const calculateResearchProgress = (data: ResearchData) => {
-  const progressNeeded = data.targetProgress - data.currentProgress;
-  const baseResearchPerChase = 5; // 普通角色被追击获得5%
-  const rodgerMultiplier = 2; // Rodger获得10% (5% * 2)
-  const researchPerCapsule = data.useRodger ? 2 : 1; // 研究胶囊
-  
-  const researchPerFloor = data.useRodger ? 
-    baseResearchPerChase * rodgerMultiplier : baseResearchPerChase;
-  
-  const floorsNeeded = Math.ceil(progressNeeded / researchPerFloor);
-  
-  return {
-    floorsNeeded,
-    estimatedTime: `${Math.round(floorsNeeded * 5)} minutes`, // 假设每局5分钟
-    recommendation: floorsNeeded > 10 ? 'Consider using Rodger for faster progress' : 'Continue with current strategy'
-  };
-};
-
-const ResearchCalculator: React.FC = () => {
-  const [researchData, setResearchData] = useState<ResearchData>({
+// TODO: update
+const calculateResearchProgress = (data: ResearchData) =>Translation pending<ResearchData>({
     twistedName: '',
     currentProgress: 0,
     useRodger: false,
@@ -38,86 +19,18 @@ const ResearchCalculator: React.FC = () => {
   });
 
   const [result, setResult] = useState<any>(null);
-  const [lastSaved, setLastSaved] = useState<string>('');
-
-  // 从真实数据获取Twisted角色列表
-  const twistedCharacterNames = twistedCharacters.map(char => char.name);
-
-  // 加载保存的用户进度
-  useEffect(() => {
-    const savedProgress = loadUserProgress();
-    if (savedProgress && savedProgress.researchProgress) {
-      // 找到第一个有进度的角色作为默认选择
-      const firstWithProgress = Object.entries(savedProgress.researchProgress).find(([, progress]) => progress > 0);
-      if (firstWithProgress) {
-        setResearchData(prev => ({
-          ...prev,
-          twistedName: firstWithProgress[0],
-          currentProgress: firstWithProgress[1]
-        }));
-      }
-      setLastSaved(savedProgress.lastUpdated);
-    }
-  }, []);
-
-  // 自动保存用户进度
-  const saveProgress = () => {
-    if (researchData.twistedName) {
-      const progress: UserProgress = {
-        ownedCharacters: [],
-        currentIchor: 0,
-        researchProgress: {
-          [researchData.twistedName]: researchData.currentProgress
-        },
-        lastUpdated: new Date().toISOString()
-      };
-      updateUserProgress(progress, progress);
-      setLastSaved(progress.lastUpdated);
-    }
-  };
-
-  // 当数据变化时自动保存
-  useEffect(() => {
-    if (lastSaved && researchData.twistedName) { // 避免初始加载时保存
-      saveProgress();
-    }
-  }, [researchData.twistedName, researchData.currentProgress]);
-
-  useEffect(() => {
-    if (researchData.twistedName && researchData.currentProgress >= 0) {
-      const calculation = calculateResearchProgress(researchData);
-      setResult(calculation);
-    }
-  }, [researchData]);
-
-  const handleInputChange = (field: keyof ResearchData, value: any) => {
-    setResearchData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  return (
-    <div className="max-w-4xl mx-auto">
+  const [lastSaved, setLastSaved] = useState<string>Translation pending<div className="max-w-4xl mx-auto">
       <div className="bg-bg-card rounded-lg p-8 shadow-lg">
         <h2 className="text-2xl font-bold text-text-primary mb-6 text-center">
           Research Progress Calculator
-        </h2>
-        
-        {/* 保存状态指示器 */}
-        {lastSaved && (
-          <div className="text-center mb-4">
+        </h2>Translation pending<div className="text-center mb-4">
             <span className="text-xs text-text-secondary">
               Last saved: {new Date(lastSaved).toLocaleString()}
             </span>
           </div>
         )}
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* 左侧表单 */}
-          <div className="space-y-6">
-            {/* Twisted角色选择 */}
-            <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">Translation pending<div className="space-y-6">Translation pending<div>
               <label className="block text-sm font-medium text-text-secondary mb-2">
                 Twisted Character
               </label>
@@ -131,10 +44,7 @@ const ResearchCalculator: React.FC = () => {
                   <option key={char} value={char}>{char}</option>
                 ))}
               </select>
-            </div>
-
-            {/* 当前研究进度 */}
-            <div>
+            </div>Translation pending<div>
               <label className="block text-sm font-medium text-text-secondary mb-2">
                 Current Progress: {researchData.currentProgress}%
               </label>
@@ -151,10 +61,7 @@ const ResearchCalculator: React.FC = () => {
                 <span>50%</span>
                 <span>100%</span>
               </div>
-            </div>
-
-            {/* 目标进度 */}
-            <div>
+            </div>Translation pending<div>
               <label className="block text-sm font-medium text-text-secondary mb-2">
                 Target Progress: {researchData.targetProgress}%
               </label>
@@ -171,10 +78,7 @@ const ResearchCalculator: React.FC = () => {
                 <span>50%</span>
                 <span>100%</span>
               </div>
-            </div>
-
-            {/* Rodger使用选项 */}
-            <div className="flex items-center space-x-3">
+            </div>Translation pending<div className="flex items-center space-x-3">
               <input
                 type="checkbox"
                 id="useRodger"
@@ -186,10 +90,7 @@ const ResearchCalculator: React.FC = () => {
                 Use Rodger (2x research speed)
               </label>
             </div>
-          </div>
-
-          {/* 右侧结果 */}
-          <div className="bg-bg-secondary rounded-lg p-6">
+          </div>Translation pending<div className="bg-bg-secondary rounded-lg p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Calculation Results</h3>
             
             {result ? (

@@ -35,26 +35,25 @@ const SEO: React.FC<SEOProps> = ({
   ogDescription,
   ogImage,
   ogUrl,
-  ogType = "website",
+  ogType = 'website',
   ogSiteName,
-  twitterCard = "summary_large_image",
+  twitterCard = 'summary_large_image',
   twitterTitle,
   twitterDescription,
   twitterImage,
   twitterSite,
   canonical,
-  robots = "index, follow",
-  viewport = "width=device-width, initial-scale=1.0",
+  robots = 'index, follow',
+  viewport = 'width=device-width, initial-scale=1.0',
   themeColor,
   mobileWebAppCapable,
   appleMobileWebAppCapable,
   appleMobileWebAppStatusBarStyle,
   appleMobileWebAppTitle,
-  formatDetection
+  formatDetection,
 }) => {
   return (
     <Helmet>
-      {/* 基本meta标签 */}
       <title>{title}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
@@ -84,8 +83,6 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:description" content={twitterDescription || ogDescription || description} />
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}
       {twitterSite && <meta name="twitter:site" content={twitterSite} />}
-      
-      {/* 规范链接 */}
       {canonical && <link rel="canonical" href={canonical} />}
     </Helmet>
   );
