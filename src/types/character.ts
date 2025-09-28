@@ -144,14 +144,3 @@ export interface Character {
   };
 }
 
-export interface CharacterSelectorProps {
-  characters: Character[];
-  selectedCharacters: Character[];
-  onAddCharacter: (character: Character) => void;
-  onRemoveCharacter: (characterId: string) => void;
-  onClearAll: () => void;
-}
-
-export interface ComparisonTableProps {
-  characters: Character[];
-}

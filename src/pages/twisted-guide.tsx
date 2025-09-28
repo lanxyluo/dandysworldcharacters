@@ -2,7 +2,7 @@ import React from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
-import TwistedMainPage from '../components/TwistedMainPage';
+import TwistedGuide from '../components/twisted-guide/TwistedGuide';
 
 const TwistedGuidePage: React.FC = () => {
   // Schema Markup for Guide
@@ -66,28 +66,11 @@ const TwistedGuidePage: React.FC = () => {
       />
       
       <Navigation />
-      
-      <div className="min-h-screen bg-bg-primary pt-20">
-        {/* 页面标题 */}
-        <div className="text-center mb-8 px-4">
-          <h1 className="text-5xl font-bold text-text-primary mb-4">
-            Dandys World Twisted Survival Guide
-          </h1>
-          <h2 className="text-2xl font-semibold text-text-secondary mb-2">
-            🚨 Master Enemy Strategy & Survival Techniques 🚨
-          </h2>
-          <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-            Master the art of survival against the twisted entities that lurk in the shadows. 
-            Learn to identify, avoid, and survive encounters with these dangerous beings.
-          </p>
-        </div>
 
-        {/* 增强版Twisted生存指南 */}
-        <div className="bg-white">
-          <TwistedMainPage />
-        </div>
-      </div>
-      
+      <main className="pt-16 bg-gray-900">
+        <TwistedGuide />
+      </main>
+
       <Footer />
     </>
   );

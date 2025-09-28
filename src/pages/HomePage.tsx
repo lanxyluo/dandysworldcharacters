@@ -1,69 +1,59 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import HeroSection from '../components/HeroSection';
-import CharacterCard from '../components/CharacterCard';
 import Footer from '../components/Footer';
-import { getOfficialPlayableCharacters } from '../data/characters/index';
-import { Character } from '../types/character';
+import { mainNavigation } from '../config/navigation';
 
 const HomePage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentFilter, setCurrentFilter] = useState('all');
-
-  // 过滤角色
-  const filteredCharacters = useMemo(() => {
-    return getOfficialPlayableCharacters().filter(character => {
-      const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           character.description.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      if (currentFilter === 'all') return matchesSearch;
-      if (currentFilter === 'main') return matchesSearch && character.type === 'main';
-      if (currentFilter === 'regular') return matchesSearch && character.type === 'regular';
-      if (currentFilter === 'event') return matchesSearch && character.type === 'event';
-      
-      return matchesSearch;
-    });
-  }, [searchTerm, currentFilter]);
-
-  // 网站结构化数据
   const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Dandys World Characters Database",
-    "description": "Complete database and tools for Dandys World game characters",
-    "url": "https://dandysworldcharacters.com",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://dandysworldcharacters.com/characters?search={search_term_string}",
-      "query-input": "required name=search_term_string"
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: "Dandy's World Strategy Hub",
+    description: 'Optimize trinket builds, counter Twisted threats, and plan progression with tailored tools.',
+    url: 'https://dandysworldcharacters.com',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://dandysworldcharacters.com/trinket-builds?query={search_term_string}',
+      'query-input': 'required name=search_term_string',
     },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Dandys World Characters",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://dandysworldcharacters.com/logo.png"
-      }
-    }
+    publisher: {
+      '@type': 'Organization',
+      name: "Dandy's World Characters",
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://dandysworldcharacters.com/logo.png',
+      },
+    },
   };
 
   return (
     <>
       <Helmet>
-        <title>Dandys World Characters Database | Complete Character Stats & Guide</title>
-        <meta name="description" content="Complete Dandys World characters database with stats, abilities, unlock guides and tools. Explore all 36+ Toons including Main Characters like Astro, Sprout, Vee with detailed builds and strategies." />
-        <meta name="keywords" content="dandys world, characters database, character stats, abilities, unlock guides, main characters, astro, sprout, vee, character builds" />
-        <meta property="og:title" content="Dandys World Characters Database | Complete Guide" />
-        <meta property="og:description" content="Complete database for all Dandys World characters with stats, guides and tools. Master all 36+ Toons including Main Characters." />
+        <title>Dandy's World Strategy Hub | Trinket Builds & Twisted Counter Guide</title>
+        <meta
+          name="description"
+          content="Centralize your Dandy's World tools: optimize trinket builds, counter Twisted threats, compare characters, and track research progress."
+        />
+        <meta
+          name="keywords"
+          content="dandys world, trinket builds, twisted guide, character recommender, research tracker"
+        />
+        <meta property="og:title" content="Dandy's World Strategy Hub" />
+        <meta
+          property="og:description"
+          content="Access optimized trinket builds, rapid Twisted counter strategies, and progression planning tools."
+        />
         <meta property="og:image" content="https://dandysworldcharacters.com/images/og-homepage.png" />
         <meta property="og:url" content="https://dandysworldcharacters.com" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Dandys World Characters" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Dandys World Characters Database" />
-        <meta name="twitter:description" content="Complete character database and tools for Dandys World game" />
+        <meta name="twitter:title" content="Dandy's World Strategy Hub" />
+        <meta
+          name="twitter:description"
+          content="Plan your next run with smarter trinket builds, Twisted counters, and research tracking."
+        />
         <meta name="twitter:image" content="https://dandysworldcharacters.com/images/twitter-card.png" />
         <meta name="twitter:site" content="@DandysWorldChars" />
         <link rel="canonical" href="https://dandysworldcharacters.com/" />
@@ -73,7 +63,7 @@ const HomePage: React.FC = () => {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Dandys World" />
+        <meta name="apple-mobile-web-app-title" content="Dandy's World" />
         <meta name="format-detection" content="telephone=no" />
       </Helmet>
       
@@ -84,86 +74,76 @@ const HomePage: React.FC = () => {
       />
       
       <Navigation />
-      
-      <HeroSection 
-        totalCharacters={getOfficialPlayableCharacters().length}
-        mainCharacters={getOfficialPlayableCharacters().filter(c => c.type === 'main').length}
-        eventCharacters={getOfficialPlayableCharacters().filter(c => c.type === 'event').length}
-      />
-      
-      {/* Simple search and filter controls for homepage */}
-      <section className="px-4 mb-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="glass-effect rounded-2xl p-6">
-            <div className="flex flex-col lg:flex-row gap-4 items-center">
-              <div className="flex-1 relative w-full">
-                <input
-                  type="text"
-                  placeholder="Search characters..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-bg-card text-white px-4 py-3 pl-12 rounded-lg border border-gray-600 focus:border-accent-main focus:outline-none transition-colors"
-                />
-                <svg className="w-5 h-5 absolute left-4 top-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
+
+      <main className="bg-gray-900 text-white">
+        <section className="bg-gradient-to-b from-purple-900 via-gray-900 to-gray-900 py-20 border-b border-purple-700/30">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <h1 className="text-5xl font-extrabold mb-6">Dandy's World 策略工具中枢</h1>
+            <p className="text-xl text-gray-200 mb-8">
+              智能配装、Twisted 对抗、角色推荐与进度追踪，帮你在每一次运行中保持领先。
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/trinket-builds"
+                className="px-8 py-4 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold text-lg transition-colors"
+              >
+                🛠️ 立即优化 Trinket 配装
+              </Link>
+              <Link
+                to="/twisted-guide"
+                className="px-8 py-4 bg-red-600 hover:bg-red-700 rounded-lg font-semibold text-lg transition-colors"
+              >
+                ⚔️ 查询 Twisted 紧急对策
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16">
+          <div className="max-w-6xl mx-auto px-6">
+            <h2 className="text-3xl font-bold text-center mb-12">核心功能一览</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {mainNavigation.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.path}
+                  className="bg-gray-800/70 border border-gray-700 hover:border-purple-500 transition-colors rounded-xl p-6 flex flex-col"
+                >
+                  <div className="text-4xl mb-4">{item.icon}</div>
+                  <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
+                  <p className="text-sm text-gray-300 flex-1">{item.description}</p>
+                  <span className="mt-4 inline-flex items-center text-sm text-purple-300">了解更多 →</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 border-t border-gray-800 bg-gray-950">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="grid gap-8 md:grid-cols-2">
+              <div className="bg-gray-900/80 border border-gray-800 rounded-xl p-6">
+                <h3 className="text-2xl font-bold mb-3">🔥 更新亮点</h3>
+                <ul className="space-y-3 text-sm text-gray-300">
+                  <li>• 全新 Twisted 对抗手册，支持威胁等级与稀有度快速筛选。</li>
+                  <li>• Trinket 配装器支持智能推荐、社区评分与使用率排序。</li>
+                  <li>• 进度追踪整合 Research Calculator、Unlock Optimizer 与策略板。</li>
+                </ul>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { key: 'all', label: 'All' },
-                  { key: 'main', label: 'Main' },
-                  { key: 'regular', label: 'Regular' },
-                  { key: 'event', label: 'Event' },
-                ].map((f) => (
-                  <button
-                    key={f.key}
-                    onClick={() => setCurrentFilter(f.key)}
-                    className={`filter-btn ${currentFilter === f.key ? 'active' : ''}`}
-                  >
-                    {f.label}
-                  </button>
-                ))}
+
+              <div className="bg-gray-900/80 border border-gray-800 rounded-xl p-6">
+                <h3 className="text-2xl font-bold mb-3">📆 下一步路线图</h3>
+                <ul className="space-y-3 text-sm text-gray-300">
+                  <li>• Phase 3：角色推荐器整合对比功能与团队组合建议。</li>
+                  <li>• Phase 4：进度追踪扩展至解锁提醒与历史记录。</li>
+                  <li>• Phase 5：团队战术模拟与楼层挑战指导。</li>
+                </ul>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      
-      {/* Characters Grid */}
-      <section id="characters" className="px-4 pb-16">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-8">
-            Dandys World Characters Database
-          </h1>
-          
-          <h2 className="text-2xl font-semibold text-center mb-4 text-gray-300">
-            All Characters
-          </h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {filteredCharacters.map((character) => (
-              <Link key={character.id} to={`/characters/${character.id}`}>
-                <CharacterCard
-                  character={character}
-                  onClick={() => {}} // 空函数，因为现在使用Link导航
-                />
-              </Link>
-            ))}
-          </div>
-          
-          {/* 查看更多角色按钮 */}
-          <div className="text-center mt-8">
-            <Link 
-              to="/characters"
-              className="inline-flex items-center px-6 py-3 bg-accent-main hover:bg-accent-main/80 text-white font-semibold rounded-lg transition-colors"
-            >
-              <span>View All Characters</span>
-              <span className="ml-2">→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-      
+        </section>
+      </main>
+
       <Footer />
     </>
   );

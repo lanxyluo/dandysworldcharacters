@@ -3,8 +3,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
 import CharactersPage from './pages/characters';
-import ComparePage from './pages/compare';
-import CalculatorPage from './pages/calculator';
+import CharacterRecommenderPage from './pages/character-recommender';
+import ProgressTrackerPage from './pages/progress-tracker';
 import GameMechanicsGuide from './pages/guides/game-mechanics';
 import SkillCheckGuide from './pages/guides/skill-check-guide';
 import StaminaManagementGuide from './pages/guides/stamina-management';
@@ -14,7 +14,9 @@ import TrinketCombinationsGuide from './pages/guides/trinket-combinations';
 import FloorProgressionGuide from './pages/guides/floor-progression';
 import TeamStrategiesGuide from './pages/guides/team-strategies';
 import BeginnerTipsGuide from './pages/guides/beginner-tips';
+import GuidesHubPage from './pages/guides';
 import TrinketOptimizer from './pages/trinket-optimizer';
+import TrinketBuildsPage from './pages/trinket-builds';
 import TwistedGuidePage from './pages/twisted-guide';
 import FloorPredictor from './pages/floor-predictor';
 
@@ -25,10 +27,14 @@ function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/trinket-builds" element={<TrinketBuildsPage />} />
+          <Route path="/trinket-optimizer" element={<TrinketOptimizer />} />
+          <Route path="/twisted-guide" element={<TwistedGuidePage />} />
+          <Route path="/character-recommender" element={<CharacterRecommenderPage />} />
           <Route path="/characters" element={<CharactersPage />} />
           <Route path="/characters/:characterId" element={<CharactersPage />} />
-          <Route path="/compare" element={<ComparePage />} />
-          <Route path="/calculator" element={<CalculatorPage />} />
+          <Route path="/progress-tracker" element={<ProgressTrackerPage />} />
+          <Route path="/guides" element={<GuidesHubPage />} />
           <Route path="/guides/game-mechanics" element={<GameMechanicsGuide />} />
           <Route path="/guides/skill-check-guide" element={<SkillCheckGuide />} />
           <Route path="/guides/stamina-management" element={<StaminaManagementGuide />} />
@@ -38,8 +44,6 @@ function App() {
           <Route path="/guides/floor-progression" element={<FloorProgressionGuide />} />
           <Route path="/guides/team-strategies" element={<TeamStrategiesGuide />} />
           <Route path="/guides/beginner-tips" element={<BeginnerTipsGuide />} />
-          <Route path="/trinket-optimizer" element={<TrinketOptimizer />} />
-          <Route path="/twisted-guide" element={<TwistedGuidePage />} />
           <Route path="/floor-predictor" element={<FloorPredictor />} />
         </Routes>
       </div>

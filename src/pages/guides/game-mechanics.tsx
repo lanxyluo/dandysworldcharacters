@@ -7,31 +7,30 @@ import SEO from '../../components/SEO';
 const GameMechanicsGuide: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Schema Markup for Guide
   const guideSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Dandys World Complete Game Mechanics Guide",
-    "description": "Master all aspects of Dandys World game mechanics with comprehensive tutorials",
-    "author": {
-      "@type": "Organization",
-      "name": "Dandys World Characters"
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Dandys World Complete Game Mechanics Guide',
+    description: 'Master all aspects of Dandys World game mechanics with comprehensive tutorials',
+    author: {
+      '@type': 'Organization',
+      name: "Dandys World Characters",
     },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Dandys World Characters",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://dandysworldcharacters.com/logo.png"
-      }
+    publisher: {
+      '@type': 'Organization',
+      name: "Dandys World Characters",
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://dandysworldcharacters.com/logo.png',
+      },
     },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://dandysworldcharacters.com/guides/game-mechanics"
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': 'https://dandysworldcharacters.com/guides/game-mechanics',
     },
-    "datePublished": "2025-01-01",
-    "dateModified": "2025-01-15"
-  };
+    datePublished: '2025-01-01',
+    dateModified: '2025-01-15',
+  } as const;
 
   const guideCategories = [
     {
@@ -40,7 +39,6 @@ const GameMechanicsGuide: React.FC = () => {
       description: 'Master various skill check triggers and strategies',
       icon: '🎯',
       href: '/guides/skill-check-guide',
-      color: 'from-blue-500 to-cyan-500'
     },
     {
       id: 'stamina',
@@ -48,7 +46,6 @@ const GameMechanicsGuide: React.FC = () => {
       description: 'Optimize stamina usage and extend exploration time',
       icon: '⚡',
       href: '/guides/stamina-management',
-      color: 'from-yellow-500 to-orange-500'
     },
     {
       id: 'stealth',
@@ -56,7 +53,6 @@ const GameMechanicsGuide: React.FC = () => {
       description: 'Learn hiding and evading Twisted characters',
       icon: '👻',
       href: '/guides/stealth-system',
-      color: 'from-purple-500 to-pink-500'
     },
     {
       id: 'twisted',
@@ -64,7 +60,6 @@ const GameMechanicsGuide: React.FC = () => {
       description: 'Deep understanding of Twisted behavior patterns',
       icon: '🚨',
       href: '/guides/twisted-mechanics',
-      color: 'from-red-500 to-pink-500'
     },
     {
       id: 'trinkets',
@@ -72,7 +67,6 @@ const GameMechanicsGuide: React.FC = () => {
       description: 'Best trinket synergies and combinations',
       icon: '💎',
       href: '/guides/trinket-combinations',
-      color: 'from-green-500 to-emerald-500'
     },
     {
       id: 'floors',
@@ -80,7 +74,6 @@ const GameMechanicsGuide: React.FC = () => {
       description: 'Efficient strategies for clearing each floor',
       icon: '🏢',
       href: '/guides/floor-progression',
-      color: 'from-indigo-500 to-purple-500'
     },
     {
       id: 'teams',
@@ -88,7 +81,6 @@ const GameMechanicsGuide: React.FC = () => {
       description: 'Best coordination methods for multiplayer',
       icon: '👥',
       href: '/guides/team-strategies',
-      color: 'from-teal-500 to-blue-500'
     },
     {
       id: 'beginner',
@@ -96,21 +88,21 @@ const GameMechanicsGuide: React.FC = () => {
       description: 'Complete game guide from scratch',
       icon: '🌟',
       href: '/guides/beginner-tips',
-      color: 'from-amber-500 to-yellow-500'
-    }
-  ];
+    },
+  ] as const;
 
-  const filteredCategories = guideCategories.filter(category =>
-    category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    category.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCategories = guideCategories.filter((category) =>
+    [category.title, category.description].some((field) =>
+      field.toLowerCase().includes(searchTerm.toLowerCase()),
+    ),
   );
 
   const quickTips = [
     'Twisted characters track by sound, staying quiet is crucial',
-    'Find rest points when stamina is low, don\'t take risks',
+    "Find rest points when stamina is low, don't take risks",
     'Trinket combinations are stronger than individual trinkets',
-    'Don\'t panic if skill checks fail, there are alternatives',
-    'Assign roles efficiently for better team coordination'
+    "Don't panic if skill checks fail, there are alternatives",
+    'Assign roles efficiently for better team coordination',
   ];
 
   return (
@@ -140,137 +132,127 @@ const GameMechanicsGuide: React.FC = () => {
         appleMobileWebAppTitle="Dandys World"
         formatDetection="telephone=no"
       />
-      
-      {/* Schema Markup */}
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(guideSchema) }}
       />
-      
+
       <Navigation />
-      <div className="min-h-screen bg-bg-primary text-white pt-20">
+
+      <div className="min-h-screen bg-gray-900 text-white pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Breadcrumb */}
           <nav className="text-sm text-gray-400 mb-8">
-            <Link to="/" className="hover:text-white">Home</Link>
+            <Link to="/" className="hover:text-white">
+              Home
+            </Link>
             <span className="mx-2">/</span>
-            <Link to="/guides" className="hover:text-white">Guides</Link>
+            <Link to="/guides" className="hover:text-white">
+              Guides
+            </Link>
             <span className="mx-2">/</span>
             <span className="text-white">Game Mechanics</span>
           </nav>
 
-          {/* Page Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">
-              Dandys World Complete Game Mechanics Guide
-            </h1>
+            <h1 className="text-4xl font-bold mb-4">Dandys World Complete Game Mechanics Guide</h1>
             <h2 className="text-2xl font-semibold text-gray-300 mb-4">
-              Master Survival Skills & Game Techniques
+              Master Survival Skills &amp; Game Techniques
             </h2>
             <p className="text-lg text-gray-400 max-w-3xl mx-auto">
               Comprehensive tutorials covering all aspects of Dandys World gameplay, from basic mechanics to advanced survival strategies.
             </p>
           </div>
 
-          {/* 搜索栏 */}
           <div className="max-w-2xl mx-auto mb-12">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search game mechanics, tips, or strategies..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 bg-bg-card text-text-primary rounded-lg border border-border-primary focus:outline-none focus:ring-2 focus:ring-accent-main focus:border-transparent"
+                onChange={(event) => setSearchTerm(event.target.value)}
+                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
-              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary">
-                🔍
-              </div>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</div>
             </div>
           </div>
 
-          {/* 快速提示 */}
           <div className="max-w-4xl mx-auto mb-12">
             <div className="flex items-center justify-center mb-6">
               <span className="text-2xl mr-2">💡</span>
-              <h2 className="text-2xl font-bold text-text-primary">Quick Tips</h2>
+              <h2 className="text-2xl font-bold text-white">Quick Tips</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {quickTips.map((tip, index) => (
-                <div key={index} className="bg-bg-card p-4 rounded-lg border border-border-primary">
-                  <p className="text-text-secondary text-sm">{tip}</p>
+              {quickTips.map((tip) => (
+                <div key={tip} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                  <p className="text-gray-300 text-sm">{tip}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* 指南分类网格 */}
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredCategories.map((category) => (
-                <ScrollToTopLink
-                  key={category.id}
-                  to={category.href}
-                  className="group block bg-bg-card rounded-lg p-6 border border-border-primary hover:border-accent-main transition-all duration-300 hover:shadow-lg hover:shadow-accent-main/20"
-                >
-                  <div className="text-4xl mb-4">{category.icon}</div>
-                  <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-accent-main transition-colors">
-                    {category.title}
-                  </h3>
-                  <p className="text-text-secondary text-sm leading-relaxed">
-                    {category.description}
-                  </p>
-                  <div className="mt-4 flex items-center text-accent-main text-sm font-medium group-hover:text-accent-light transition-colors">
-                    Learn More →
-                  </div>
-                </ScrollToTopLink>
-              ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
+            {filteredCategories.map((category) => (
+              <ScrollToTopLink
+                key={category.id}
+                to={category.href}
+                className="group block bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20"
+              >
+                <div className="text-4xl mb-4">{category.icon}</div>
+                <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
+                  {category.title}
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">{category.description}</p>
+                <div className="mt-4 flex items-center text-purple-300 text-sm font-medium group-hover:text-purple-200 transition-colors">
+                  Learn More →
+                </div>
+              </ScrollToTopLink>
+            ))}
           </div>
-          
-          {/* 相关工具推荐区域 - 内链建设 */}
-          <div className="mt-16 pt-8 border-t border-border-primary">
+
+          <div className="mt-16 pt-8 border-t border-gray-800">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-text-primary mb-4">Put Knowledge Into Practice</h2>
-              <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold text-white mb-4">Put Knowledge Into Practice</h2>
+              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
                 Now that you've learned the mechanics, use these tools to optimize your gameplay and character progression.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <ScrollToTopLink 
-                to="/calculator" 
-                className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
+              <ScrollToTopLink
+                to="/progress-tracker"
+                className="group bg-gray-800 hover:bg-purple-500/20 rounded-lg p-6 text-center transition-all duration-300 border border-gray-700 hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🧮</div>
-                <h3 className="text-lg font-semibold text-text-primary mb-2">Research Calculator</h3>
-                <p className="text-sm text-text-secondary">Calculate Ichor costs and plan your unlocks</p>
+                <h3 className="text-lg font-semibold text-white mb-2">Progress Tracker</h3>
+                <p className="text-sm text-gray-300">Plan research, unlocks, and combined strategies in one hub.</p>
               </ScrollToTopLink>
-              
-              <ScrollToTopLink 
-                to="/compare" 
-                className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
+
+              <ScrollToTopLink
+                to="/character-recommender"
+                className="group bg-gray-800 hover:bg-purple-500/20 rounded-lg p-6 text-center transition-all duration-300 border border-gray-700 hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20"
               >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">⚖️</div>
-                <h3 className="text-lg font-semibold text-text-primary mb-2">Character Compare</h3>
-                <p className="text-sm text-text-secondary">Compare stats and build optimal teams</p>
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🎭</div>
+                <h3 className="text-lg font-semibold text-white mb-2">Character Recommender</h3>
+                <p className="text-sm text-gray-300">Compare roles and build optimal teams for every run.</p>
               </ScrollToTopLink>
-              
-              <ScrollToTopLink 
-                to="/trinket-optimizer" 
-                className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
+
+              <ScrollToTopLink
+                to="/trinket-builds"
+                className="group bg-gray-800 hover:bg-purple-500/20 rounded-lg p-6 text-center transition-all duration-300 border border-gray-700 hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">⚡</div>
-                <h3 className="text-lg font-semibold text-text-primary mb-2">Trinket Optimizer</h3>
-                <p className="text-sm text-text-secondary">Find the best trinket combinations</p>
+                <h3 className="text-lg font-semibold text-white mb-2">Trinket Builds</h3>
+                <p className="text-sm text-gray-300">Unlock the best trinket combinations powered by AI insights.</p>
               </ScrollToTopLink>
-              
-              <ScrollToTopLink 
-                to="/floor-predictor" 
-                className="group bg-bg-card hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-6 text-center transition-all duration-300 border border-border-primary hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
+
+              <ScrollToTopLink
+                to="/floor-predictor"
+                className="group bg-gray-800 hover:bg-purple-500/20 rounded-lg p-6 text-center transition-all duration-300 border border-gray-700 hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20"
               >
                 <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🏢</div>
-                <h3 className="text-lg font-semibold text-text-primary mb-2">Floor Predictor</h3>
-                <p className="text-sm text-text-secondary">Plan your floor progression strategy</p>
+                <h3 className="text-lg font-semibold text-white mb-2">Floor Predictor</h3>
+                <p className="text-sm text-gray-300">Plan floor objectives and anticipate Twisted encounters.</p>
               </ScrollToTopLink>
             </div>
           </div>

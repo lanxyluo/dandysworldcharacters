@@ -407,21 +407,21 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, isOpen, onCl
               <h3 className="text-xl font-bold mb-4 text-center">Related Tools & Resources</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <ScrollToTopLink 
-                  to="/calculator" 
+                  to="/progress-tracker" 
                   className="group bg-bg-secondary hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-4 text-center transition-all duration-300 border border-gray-600 hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
                 >
-                  <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">🧮</div>
-                  <h4 className="font-semibold mb-1">Calculate Resources</h4>
-                  <p className="text-sm text-text-secondary">Plan your unlock strategy</p>
+                  <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">📈</div>
+                  <h4 className="font-semibold mb-1">Track Research</h4>
+                  <p className="text-sm text-text-secondary">规划解锁路线与研究节奏</p>
                 </ScrollToTopLink>
                 
                 <ScrollToTopLink 
-                  to="/compare" 
+                  to="/character-recommender" 
                   className="group bg-bg-secondary hover:bg-accent-main hover:bg-opacity-20 rounded-lg p-4 text-center transition-all duration-300 border border-gray-600 hover:border-accent-main hover:shadow-lg hover:shadow-accent-main/20"
                 >
-                  <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">⚖️</div>
-                  <h4 className="font-semibold mb-1">Compare Characters</h4>
-                  <p className="text-sm text-text-secondary">Find the best team composition</p>
+                  <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">🎭</div>
+                  <h4 className="font-semibold mb-1">Character Recommender</h4>
+                  <p className="text-sm text-text-secondary">快速筛选最佳角色组合</p>
                 </ScrollToTopLink>
                 
                 <ScrollToTopLink 

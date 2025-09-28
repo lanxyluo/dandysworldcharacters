@@ -324,7 +324,7 @@ const TrinketOptimizer: React.FC = () => {
                   <ul className="text-sm text-blue-200 space-y-1">
                     {alternative.tradeoffs.map((tradeoff, idx) => (
                       <li key={idx} className="flex items-center space-x-2">
-                        <span className="text-red-400">⚠</span>
+                        <span className="text-red-400">×</span>
                         <span>{tradeoff}</span>
                       </li>
                     ))}
@@ -582,10 +582,10 @@ const TrinketOptimizer: React.FC = () => {
           </p>
           <div className="flex justify-center space-x-4 mt-4">
             <Link 
-              to="/calculator" 
+              to="/progress-tracker" 
               className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
             >
-              ← Back to Calculator
+              ← Back to Progress Tracker
             </Link>
             <button
               onClick={openBuildHistory}
@@ -715,7 +715,7 @@ const TrinketOptimizer: React.FC = () => {
                               {trinket.name}
                             </div>
                             <div className="text-sm text-blue-200">
-                              {trinket.slot} • {trinket.type}
+                              {trinket.slot} → {trinket.type}
                             </div>
                           </div>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRarityBgColor(trinket.rarity)} ${getRarityColor(trinket.rarity)}`}>
@@ -869,3 +869,5 @@ const TrinketOptimizer: React.FC = () => {
 };
 
 export default TrinketOptimizer;
+
+

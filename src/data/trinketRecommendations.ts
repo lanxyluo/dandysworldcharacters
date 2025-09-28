@@ -1,4 +1,6 @@
-import { Trinket } from './trinkets';
+import { trinkets, Trinket } from './trinkets';
+import { enhancedTrinkets } from './enhancedTrinkets';
+import { getAllCharacters } from './characters';
 import { Character } from '../types/character';
 
 // 推荐系统类型定义
@@ -32,6 +34,185 @@ export interface CharacterBuildProfile {
     utility: number; // 0-100
   };
 }
+
+export interface EnhancedTrinketRecommendation {
+  id: string;
+  characterId: string;
+  trinketIds: [string, string];
+  trinkets: [TrinketRecommendation, TrinketRecommendation];
+  strategy: 'speed' | 'extraction' | 'survival' | 'balanced';
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  description: string;
+  reasons: string[];
+  warnings: string[];
+  popularityScore: number;
+  gameMode: 'normal' | 'dandy-run' | 'main-run';
+  communityRating: number;
+  usageRate: number;
+}
+
+interface RecommendationSeed {
+  id: string;
+  characterId: string;
+  trinketIds: [string, string];
+  strategy: 'speed' | 'extraction' | 'survival' | 'balanced';
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  description: string;
+  reasons: string[];
+  warnings: string[];
+  popularityScore: number;
+  gameMode: 'normal' | 'dandy-run' | 'main-run';
+}
+
+const knownCharacterIds = new Set(getAllCharacters().map((character) => character.id));
+
+const findTrinketById = (id: string): Trinket | undefined => {
+  const base = trinkets.find((trinket) => trinket.id === id);
+  if (base) {
+    return base;
+  }
+
+  const enhanced = enhancedTrinkets.find((trinket) => trinket.id === id);
+  if (enhanced) {
+    const {
+      acquisition,
+      metaTags,
+      difficulty,
+      communityRating,
+      usageRate,
+      ...core
+    } = enhanced;
+    return core;
+  }
+
+  return undefined;
+};
+
+const toTrinketRecommendation = (
+  trinketId: string,
+  reasons: string[],
+  warnings: string[],
+  fallbackScore: number
+): TrinketRecommendation | null => {
+  const trinket = findTrinketById(trinketId);
+  if (!trinket) {
+    return null;
+  }
+
+  return {
+    trinket,
+    score: fallbackScore,
+    reasons,
+    synergies: trinket.synergies,
+    warnings,
+  };
+};
+
+const getAggregateMeta = (trinketIds: [string, string]) => {
+  const matched = trinketIds
+    .map((id) => enhancedTrinkets.find((trinket) => trinket.id === id))
+    .filter((value): value is typeof enhancedTrinkets[number] => Boolean(value));
+
+  if (matched.length === 0) {
+    return { communityRating: 4, usageRate: 0.35 };
+  }
+
+  const totalRating = matched.reduce((acc, trinket) => acc + trinket.communityRating, 0);
+  const totalUsage = matched.reduce((acc, trinket) => acc + trinket.usageRate, 0);
+
+  return {
+    communityRating: parseFloat((totalRating / matched.length).toFixed(2)),
+    usageRate: parseFloat(((totalUsage / matched.length) / 100).toFixed(2)),
+  };
+};
+
+const rawGameRecommendations: RecommendationSeed[] = [
+  {
+    id: 'vee-extraction-velocity',
+    characterId: 'vee',
+    trinketIds: ['extraction-expert', 'lightning-core'],
+    strategy: 'extraction',
+    difficulty: 'advanced',
+    description: '高阶提取组合，兼顾技能检查与移动效率',
+    reasons: ['提取速度显著提升', '技能检查成功率强化', '适合高压节奏'],
+    warnings: ['需要熟练掌握高阶技能检查', '对战斗支援较少'],
+    popularityScore: 95,
+    gameMode: 'normal',
+  },
+  {
+    id: 'vee-extraction-stealth',
+    characterId: 'vee',
+    trinketIds: ['extraction-expert', 'stealth-cloak'],
+    strategy: 'balanced',
+    difficulty: 'intermediate',
+    description: '兼顾提取效率与安全机动的综合配装',
+    reasons: ['快速完成机器', '潜行能力提升', '适合多楼层推进'],
+    warnings: ['需要保持潜行节奏', '团队战斗收益有限'],
+    popularityScore: 90,
+    gameMode: 'normal',
+  },
+  {
+    id: 'pebble-distractor-core',
+    characterId: 'pebble',
+    trinketIds: ['distraction-master', 'stealth-cloak'],
+    strategy: 'speed',
+    difficulty: 'beginner',
+    description: '高移动与干扰效率的入门分散组合',
+    reasons: ['移动速度提升', '干扰效果稳定', '适合带新队友'],
+    warnings: ['缺乏直接输出能力', '需要掌握路线规划'],
+    popularityScore: 88,
+    gameMode: 'normal',
+  },
+  {
+    id: 'astro-support-conductor',
+    characterId: 'astro',
+    trinketIds: ['support-aura', 'stealth-cloak'],
+    strategy: 'survival',
+    difficulty: 'intermediate',
+    description: '团队增益与安全撤离兼顾的支援组合',
+    reasons: ['团队支援能力显著提升', '提供额外隐蔽与速度', '适合高层支援'],
+    warnings: ['个人输出有限', '需要队伍配合位置'],
+    popularityScore: 86,
+    gameMode: 'normal',
+  },
+  {
+    id: 'boxten-extraction-anchor',
+    characterId: 'boxten',
+    trinketIds: ['extraction-expert', 'support-aura'],
+    strategy: 'balanced',
+    difficulty: 'beginner',
+    description: '稳健的机器专注组合，适合团队推进',
+    reasons: ['强化提取效率', '为队友提供支援光环', '易于上手'],
+    warnings: ['需要团队配合收集资源', '战斗对抗力一般'],
+    popularityScore: 82,
+    gameMode: 'normal',
+  },
+];
+
+export const gameSpecificRecommendations: EnhancedTrinketRecommendation[] = rawGameRecommendations
+  .map((seed) => {
+    if (!knownCharacterIds.has(seed.characterId)) {
+      return null;
+    }
+
+    const [firstId, secondId] = seed.trinketIds;
+    const first = toTrinketRecommendation(firstId, seed.reasons, seed.warnings, seed.popularityScore);
+    const second = toTrinketRecommendation(secondId, seed.reasons, seed.warnings, seed.popularityScore - 2);
+
+    if (!first || !second) {
+      return null;
+    }
+
+    const meta = getAggregateMeta(seed.trinketIds);
+
+    return {
+      ...seed,
+      trinkets: [first, second],
+      communityRating: meta.communityRating,
+      usageRate: meta.usageRate,
+    };
+  })
+  .filter((value): value is EnhancedTrinketRecommendation => Boolean(value));
 
 // 角色构建配置文件
 export const characterBuildProfiles: Record<string, CharacterBuildProfile> = {
