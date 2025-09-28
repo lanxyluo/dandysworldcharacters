@@ -69,7 +69,7 @@ body {
   @apply bg-accent-main text-white border-accent-main;
 }
 
-/* 自定义复选框样式 - 使用简单类名避免冲突 */
+/* Custom checkbox styling */
 .custom-checkbox {
   appearance: none !important;
   -webkit-appearance: none !important;
