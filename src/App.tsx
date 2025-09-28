@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
@@ -31,7 +31,7 @@ function App() {
           <Route path="/trinket-optimizer" element={<TrinketOptimizer />} />
           <Route path="/twisted-guide" element={<TwistedGuidePage />} />
           <Route path="/character-recommender" element={<CharacterRecommenderPage />} />
-          <Route path="/characters" element={<CharactersPage />} />
+          <Route path="/characters" element={<Navigate to="/character-recommender" replace />} />
           <Route path="/characters/:characterId" element={<CharactersPage />} />
           <Route path="/progress-tracker" element={<ProgressTrackerPage />} />
           <Route path="/guides" element={<GuidesHubPage />} />

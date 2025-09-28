@@ -30,7 +30,7 @@ const ProgressTrackerPage: React.FC = () => {
     <>
       <SEO
         title="Dandy's World Progress Tracker"
-        description="Track your Dandy's World research progress, optimize unlock sequences, and create combined plans with a streamlined toolkit."
+        description="Track your Dandy's World research progress, optimize unlock sequences, and build long-term plans with a streamlined toolkit."
         keywords="dandys world, progress tracker, research calculator, unlock optimizer, twisted research"
         ogTitle="Dandy's World Progress Tracker"
         ogDescription="Stay on top of your research and unlock goals with guided planning."
@@ -63,14 +63,15 @@ const ProgressTrackerPage: React.FC = () => {
           <div className="max-w-5xl mx-auto px-6 text-center">
             <h1 className="text-4xl font-extrabold mb-4">📊 Dandy's World Progress Tracker</h1>
             <p className="text-lg text-gray-300 mb-6">
-              管理你的 Twisted Research、角色解锁和长期目标。选择合适的工具，保持进度领先。
+              Monitor Twisted research, unlock timing, and long-term plans without spreadsheets.
+              Pick the tab that matches your current objective and keep the run on schedule.
             </p>
             <div className="bg-gray-900/60 border border-purple-500/40 inline-flex rounded-lg p-1">
               {(
                 [
-                  { key: 'research', label: 'Research 进度' },
-                  { key: 'unlock', label: '解锁规划' },
-                  { key: 'plan', label: '综合策略' },
+                  { key: 'research', label: 'Research progress' },
+                  { key: 'unlock', label: 'Unlock planner' },
+                  { key: 'plan', label: 'Combined strategy' },
                 ] as Array<{ key: TrackerTab; label: string }>
               ).map((tab) => (
                 <button
@@ -87,23 +88,25 @@ const ProgressTrackerPage: React.FC = () => {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-6 py-10">
+        <section className="max-w-6xl mx-auto px-6 py-10 space-y-16">
           <div className="bg-gray-800/80 border border-gray-700 rounded-xl p-6 shadow-xl">
             {activeTab === 'research' && <ResearchCalculator />}
             {activeTab === 'unlock' && <UnlockOptimizer />}
             {activeTab === 'plan' && <CombinedStrategy />}
           </div>
 
-          <div className="mt-16">
-            <h2 className="text-3xl font-bold text-white text-center mb-8">接下来探索这些核心工具</h2>
+          <div>
+            <h2 className="text-3xl font-bold text-white text-center mb-8">Explore other high-impact tools</h2>
             <div className="grid gap-6 md:grid-cols-2">
               <ScrollToTopLink
                 to="/trinket-builds"
                 className="group bg-gray-800/70 border border-gray-700 hover:border-purple-500 transition-colors rounded-xl p-6"
               >
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">🛠️</div>
-                <h3 className="text-xl font-semibold text-white mb-2">Trinket 配装优化</h3>
-                <p className="text-sm text-gray-300">使用智能推荐引擎获取适配角色的最佳 Trinket 组合。</p>
+                <h3 className="text-xl font-semibold text-white mb-2">Trinket Builds</h3>
+                <p className="text-sm text-gray-300">
+                  Let the optimizer surface best-in-slot trinket rotations tailored to your roster.
+                </p>
               </ScrollToTopLink>
 
               <ScrollToTopLink
@@ -111,8 +114,10 @@ const ProgressTrackerPage: React.FC = () => {
                 className="group bg-gray-800/70 border border-gray-700 hover:border-purple-500 transition-colors rounded-xl p-6"
               >
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">🎭</div>
-                <h3 className="text-xl font-semibold text-white mb-2">角色推荐中心</h3>
-                <p className="text-sm text-gray-300">对比角色数据、筛选能力属性，为团队快速选角。</p>
+                <h3 className="text-xl font-semibold text-white mb-2">Character Recommender</h3>
+                <p className="text-sm text-gray-300">
+                  Compare roles, close team gaps, and prioritise unlocks with personalized suggestions.
+                </p>
               </ScrollToTopLink>
             </div>
           </div>
