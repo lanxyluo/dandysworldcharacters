@@ -225,7 +225,7 @@ const TrinketOptimizer: React.FC = () => {
           <h4 className="text-lg font-semibold text-white">
             Unlock Steps
           </h4>
-          {recommendation.progressionPath.steps.map((step, index) => (
+          {(recommendation.progressionPath?.steps || []).map((step, index) => (
             <div key={index} className="flex items-start space-x-4 p-4 bg-white/10 rounded-lg border border-white/20">
               <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
                 {step.step}
@@ -260,7 +260,7 @@ const TrinketOptimizer: React.FC = () => {
             Resource Requirements
           </h4>
           <div className="flex flex-wrap gap-2">
-            {recommendation.progressionPath.resourceRequirements.map((resource, index) => (
+            {(recommendation.progressionPath?.resourceRequirements || []).map((resource, index) => (
               <span key={index} className="px-3 py-1 bg-white/20 text-blue-100 rounded-full text-sm border border-white/30">
                 {resource}
               </span>
@@ -280,7 +280,7 @@ const TrinketOptimizer: React.FC = () => {
         </h3>
         
         <div className="space-y-4">
-          {recommendation.alternatives.map((alternative, index) => (
+          {(recommendation.alternatives || []).map((alternative, index) => (
             <div key={index} className="border border-white/20 rounded-lg p-4 bg-white/5">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-lg font-semibold text-white">
@@ -318,11 +318,11 @@ const TrinketOptimizer: React.FC = () => {
                 </button>
               </div>
               
-              {alternative.tradeoffs.length > 0 && (
+              {(alternative.tradeoffs || []).length > 0 && (
                 <div className="mt-3">
                   <div className="text-sm text-blue-300 mb-1">Tradeoffs:</div>
                   <ul className="text-sm text-blue-200 space-y-1">
-                    {alternative.tradeoffs.map((tradeoff, idx) => (
+                    {(alternative.tradeoffs || []).map((tradeoff, idx) => (
                       <li key={idx} className="flex items-center space-x-2">
                         <span className="text-red-400">×</span>
                         <span>{tradeoff}</span>
@@ -355,7 +355,7 @@ const TrinketOptimizer: React.FC = () => {
               {recommendation.difficulty}
             </span>
             <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-900/50 text-blue-200 border border-blue-400/50">
-              {recommendation.metaAnalysis.tier} Tier
+              {recommendation.metaAnalysis?.tier ?? '待完善'} Tier
             </span>
           </div>
         </div>
@@ -412,7 +412,7 @@ const TrinketOptimizer: React.FC = () => {
             📊 Stat Synergy
           </h4>
           <div className="space-y-3">
-            {recommendation.reasoning.statSynergy.map((synergy, index) => (
+            {(recommendation.reasoning?.statSynergy || []).map((synergy, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-white/10 rounded-lg border border-white/20">
                 <div>
                   <div className="font-medium text-white">
@@ -441,7 +441,7 @@ const TrinketOptimizer: React.FC = () => {
             🎯 Applicable Scenarios
           </h4>
           <div className="flex flex-wrap gap-2">
-            {recommendation.scenarios.map((scenario, index) => (
+            {(recommendation.scenarios || []).map((scenario, index) => (
               <span key={index} className="px-3 py-1 bg-green-900/50 text-green-200 rounded-full text-sm border border-green-400/50">
                 {scenario}
               </span>
@@ -457,25 +457,25 @@ const TrinketOptimizer: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-lg font-bold text-blue-300">
-                {recommendation.metaAnalysis.popularity}%
+                {typeof recommendation.metaAnalysis?.popularity === 'number' ? `${recommendation.metaAnalysis.popularity}%` : '数据收集中'}
               </div>
               <div className="text-sm text-blue-200">Usage Rate</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-green-300">
-                {recommendation.metaAnalysis.winRate}%
+                {typeof recommendation.metaAnalysis?.winRate === 'number' ? `${recommendation.metaAnalysis.winRate}%` : '数据收集中'}
               </div>
               <div className="text-sm text-blue-200">Win Rate</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-purple-300">
-                {recommendation.metaAnalysis.tier}
+                {recommendation.metaAnalysis?.tier ?? '待完善'}
               </div>
               <div className="text-sm text-blue-200">Tier</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-yellow-300">
-                {recommendation.metaAnalysis.counterStrategies.length}
+                {Array.isArray(recommendation.metaAnalysis?.counterStrategies) ? recommendation.metaAnalysis!.counterStrategies.length : 0}
               </div>
               <div className="text-sm text-blue-200">Counter Strategies</div>
             </div>
@@ -696,7 +696,7 @@ const TrinketOptimizer: React.FC = () => {
                         {recommendation.difficulty}
                       </span>
                       <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-900/50 text-blue-200 border border-blue-400/50">
-                        {recommendation.metaAnalysis.tier} Tier
+                        {recommendation.metaAnalysis?.tier ?? '待完善'} Tier
                       </span>
                     </div>
                   </div>
@@ -707,7 +707,7 @@ const TrinketOptimizer: React.FC = () => {
                       Trinket Combination:
                     </h4>
                     <div className="space-y-2">
-                      {recommendation.trinkets.map((trinket, idx) => (
+              {(recommendation.trinkets || []).map((trinket, idx) => (
                         <div key={idx} className="flex items-center space-x-3 p-3 bg-white/10 rounded-lg border border-white/20">
                           <span className="text-2xl">{trinket.image}</span>
                           <div className="flex-1">
