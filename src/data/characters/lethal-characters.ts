@@ -119,34 +119,4 @@ export const lethalCharacters: Character[] = [
       }
     }
   },
-  {
-    id: "dyle-lethal",
-    name: "Dyle",
-    fullName: "Dyle",
-    type: "lethal",
-    rarity: "legendary",
-    image: "👹",
-    description: "A powerful and dangerous character in Dandy's World",
-    stats: {
-      skillCheck: 4,
-      stealth: 4,
-      speed: 4,
-      health: 4,
-      damage: 4
-    },
-    abilities: {
-      active: {
-        name: "Terrorize",
-        description: "Instills fear in nearby Toons, reducing their effectiveness",
-        cooldown: 45
-      },
-      passive: {
-        name: "Dark Presence",
-        description: "Makes the environment more dangerous for Toons"
-      }
-    },
-    requirements: {
-      note: "Unlocked through special game events or achievements"
-    }
-  }
 ];
