@@ -16,7 +16,7 @@ export const commonCharacters: Character[] = [
       skillCheck: 3,
       movementSpeed: 3,
       stamina: 3,
-      stealth: 2,
+      stealth: 3,
       extractionSpeed: 3
     },
     
@@ -40,10 +40,10 @@ export const commonCharacters: Character[] = [
     },
     
     unlockRequirements: {
-      ichorCost: 0,
+      ichorCost: 250,
       researchRequirements: [],
       taskCompletion: [],
-      prerequisites: ["Starter character"]
+      prerequisites: ["Starter selection (free if chosen during tutorial)"]
     },
     
     features: {
@@ -77,7 +77,7 @@ export const commonCharacters: Character[] = [
     attributes: {
       health: 3,
       skillCheck: 3,
-      movementSpeed: 2,
+      movementSpeed: 3,
       stamina: 3,
       stealth: 3,
       extractionSpeed: 3
@@ -103,10 +103,10 @@ export const commonCharacters: Character[] = [
     },
     
     unlockRequirements: {
-      ichorCost: 0,
+      ichorCost: 250,
       researchRequirements: [],
       taskCompletion: [],
-      prerequisites: ["Starter character"]
+      prerequisites: ["Starter selection (free if chosen during tutorial)"]
     },
     
     features: {
@@ -140,9 +140,9 @@ export const commonCharacters: Character[] = [
     
     attributes: {
       health: 3,
-      skillCheck: 2,
+      skillCheck: 3,
       movementSpeed: 4,
-      stamina: 3,
+      stamina: 2,
       stealth: 3,
       extractionSpeed: 2
     },
@@ -167,7 +167,7 @@ export const commonCharacters: Character[] = [
     },
     
     unlockRequirements: {
-      ichorCost: 50,
+      ichorCost: 500,
       researchRequirements: [],
       taskCompletion: [],
       prerequisites: []
@@ -196,7 +196,7 @@ export const commonCharacters: Character[] = [
     name: "Cosmo",
     fullName: "Cosmo",
     type: "regular",
-    rarity: "common",
+    rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
     image: "🌼",
@@ -230,8 +230,8 @@ export const commonCharacters: Character[] = [
     },
     
     unlockRequirements: {
-      ichorCost: 100,
-      researchRequirements: [],
+      ichorCost: 1000,
+      researchRequirements: ["Complete 100% research on Twisted Cosmo"],
       taskCompletion: [],
       prerequisites: []
     },
@@ -244,12 +244,12 @@ export const commonCharacters: Character[] = [
       lightProducing: false
     },
     
-    description: "A flower character providing economical healing and team stamina support",
-    overview: "Cosmo serves as an accessible healer with team stamina management capabilities",
+    description: "A devoted caretaker who trades tapes for reliable mid-run healing",
+    overview: "Cosmo specializes in affordable burst healing and stamina regeneration for coordinated squads",
     gameplay: {
-      strengths: ["Cost-effective healing", "Good stealth", "Stamina support", "Low unlock cost"],
-      weaknesses: ["Very low skill check", "Limited healing compared to Sprout"],
-      bestStrategy: "Focus on support role with economical healing and stealth positioning",
+      strengths: ["Cost-efficient healing", "High stealth", "Stamina regeneration aura"],
+      weaknesses: ["Very low skill check", "Requires tape management"],
+      bestStrategy: "Focus on support role, budgeting tapes for critical heals while staying hidden",
       teamRole: "Budget Healer/Support"
     }
   },
@@ -266,9 +266,9 @@ export const commonCharacters: Character[] = [
     
     attributes: {
       health: 3,
-      skillCheck: 2,
+      skillCheck: 3,
       movementSpeed: 4,
-      stamina: 3,
+      stamina: 2,
       stealth: 3,
       extractionSpeed: 2
     },
@@ -276,24 +276,24 @@ export const commonCharacters: Character[] = [
     abilities: {
       active: {
         name: "Tidy Up!",
-        description: "Increases movement speed by 25% for 8 seconds",
-        cooldown: "60 seconds",
-        detailedDescription: "Tisha cleans up her act and moves with increased efficiency",
-        howItWorks: "Provides personal movement speed boost for quick repositioning",
-        bestUsage: "Use for escaping danger or quickly reaching important objectives",
-        visualEffects: "Cleaning sparkles and speed trails around Tisha"
+        description: "Grants nearby Toons 25% movement speed for 5 seconds",
+        cooldown: "50 seconds",
+        detailedDescription: "Tisha rallies teammates with a burst of movement speed to reposition quickly.",
+        howItWorks: "All allies within range gain +25% movement speed for 5 seconds.",
+        bestUsage: "Trigger during rescues, final machine pushes, or emergency retreats.",
+        visualEffects: "Sparkling dust and sweeping animations surrounding affected teammates"
       },
       passive: {
         name: "Cluttered",
-        description: "Leaves behind items occasionally when completing machines",
-        detailedDescription: "Tisha's messy nature sometimes results in finding extra items",
-        howItWorks: "5% chance to spawn a random item when completing a machine",
-        strategicValue: "Provides team with occasional bonus resources"
+        description: "Occasionally drops useful supplies after objectives",
+        detailedDescription: "Tisha's stash of items spills out during machine completion, offering bonus resources.",
+        howItWorks: "Small chance to spawn a random support item when finishing machines.",
+        strategicValue: "Provides opportunistic item economy for the squad"
       }
     },
     
     unlockRequirements: {
-      ichorCost: 120,
+      ichorCost: 500,
       researchRequirements: [],
       taskCompletion: [],
       prerequisites: []
@@ -322,7 +322,7 @@ export const commonCharacters: Character[] = [
     name: "Rodger",
     fullName: "Rodger",
     type: "regular",
-    rarity: "common",
+    rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
     image: "🔎",
@@ -331,7 +331,7 @@ export const commonCharacters: Character[] = [
       health: 3,
       skillCheck: 4,
       movementSpeed: 2,
-      stamina: 2,
+      stamina: 3,
       stealth: 4,
       extractionSpeed: 3
     },
@@ -356,7 +356,7 @@ export const commonCharacters: Character[] = [
     },
     
     unlockRequirements: {
-      ichorCost: 200,
+      ichorCost: 1000,
       researchRequirements: [],
       taskCompletion: [],
       prerequisites: []
@@ -385,18 +385,18 @@ export const commonCharacters: Character[] = [
     name: "Teagan",
     fullName: "Teagan",
     type: "regular",
-    rarity: "common",
+    rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
     image: "☕",
     
     attributes: {
-      health: 4,
+      health: 3,
       skillCheck: 2,
       movementSpeed: 3,
-      stamina: 2,
+      stamina: 4,
       stealth: 2,
-      extractionSpeed: 4
+      extractionSpeed: 3
     },
     
     abilities: {
@@ -419,7 +419,7 @@ export const commonCharacters: Character[] = [
     },
     
     unlockRequirements: {
-      ichorCost: 150,
+      ichorCost: 1250,
       researchRequirements: [],
       taskCompletion: [],
       prerequisites: []
@@ -436,9 +436,9 @@ export const commonCharacters: Character[] = [
     description: "A teacup character with anger-fueled extraction abilities",
     overview: "Teagan specializes in high-intensity extraction with risk-reward mechanics",
     gameplay: {
-      strengths: ["High health", "Extreme extraction burst", "Scales with damage taken"],
-      weaknesses: ["Long cooldown", "Low stamina", "Requires injury for optimal performance"],
-      bestStrategy: "Use calculated risks to trigger passive bonuses while saving active for critical moments",
+      strengths: ["High health", "Powerful extraction burst", "Scales with damage taken"],
+      weaknesses: ["Long cooldown", "Needs careful health management", "Limited stealth"],
+      bestStrategy: "Use calculated risks to trigger passive bonuses while saving the active for crucial machines",
       teamRole: "Burst Extractor/Risk-Reward Specialist"
     }
   },
@@ -448,41 +448,41 @@ export const commonCharacters: Character[] = [
     name: "Toodles",
     fullName: "Toodles",
     type: "regular",
-    rarity: "common",
+    rarity: "uncommon",
     isMainCharacter: false,
     totalAttributePoints: 15,
     image: "🧸",
     
     attributes: {
-      health: 2,
+      health: 3,
       skillCheck: 3,
-      movementSpeed: 4,
-      stamina: 4,
-      stealth: 2,
+      movementSpeed: 3,
+      stamina: 3,
+      stealth: 4,
       extractionSpeed: 2
     },
     
     abilities: {
       active: {
-        name: "Friendship Hug",
-        description: "Restores 50% stamina to targeted teammate",
-        cooldown: "45 seconds",
-        detailedDescription: "Toodles provides comfort and energy restoration to a chosen ally",
-        howItWorks: "Restores half stamina to target Toon through supportive interaction",
-        bestUsage: "Help teammates maintain mobility during extended operations",
-        visualEffects: "Heart particles and warm glow effects around both characters"
+        name: "Care Package",
+        description: "Grants a random +15% buff to one core stat for 25 seconds",
+        cooldown: "25 seconds",
+        detailedDescription: "Toodles hands out a surprise gift that boosts a teammate's movement, stamina, stealth, or extraction.",
+        howItWorks: "Applies one random +15% stat buff to the targeted Toon for 25 seconds.",
+        bestUsage: "Trigger before risky objectives or when rotating between major encounters.",
+        visualEffects: "Gift ribbon particles and playful sparkles around the target"
       },
       passive: {
-        name: "Energetic",
-        description: "Moves 15% faster when near other Toons",
-        detailedDescription: "Toodles draws energy from social interaction and teamwork",
-        howItWorks: "Gains movement speed bonus when within proximity of any teammate",
-        strategicValue: "Encourages team coordination and group movement strategies"
+        name: "Playful Spirit",
+        description: "Gains 10% movement speed when staying close to teammates",
+        detailedDescription: "Toodles feels safest with friends nearby and naturally moves faster in groups.",
+        howItWorks: "While within a short radius of allies, Toodles gains a 10% movement speed bonus.",
+        strategicValue: "Rewards coordinated team movement and reduces chase pressure when grouped"
       }
     },
     
     unlockRequirements: {
-      ichorCost: 125,
+      ichorCost: 350,
       researchRequirements: [],
       taskCompletion: [],
       prerequisites: []
@@ -496,13 +496,13 @@ export const commonCharacters: Character[] = [
       lightProducing: false
     },
     
-    description: "A young character focused on friendship and team stamina support",
-    overview: "Toodles excels at team-based gameplay with social bonuses and stamina support",
+    description: "A playful support specialist who hands out random performance boosts",
+    overview: "Toodles excels at party-wide mobility and surprise stat buffs that keep the squad adaptable",
     gameplay: {
-      strengths: ["Good mobility", "Team-based bonuses", "Stamina support", "Social synergy"],
-      weaknesses: ["Low health", "Dependent on teammates", "Limited solo capabilities"],
-      bestStrategy: "Stay close to team for bonuses while providing stamina support as needed",
-      teamRole: "Team Player/Stamina Support"
+      strengths: ["Randomized buff utility", "Group speed bonuses", "High stealth"],
+      weaknesses: ["Average base stats", "Supports best when grouped", "Buff outcomes are RNG"],
+      bestStrategy: "Stay close to teammates to trigger the passive bonus and time Care Package before objectives",
+      teamRole: "Support/Distraction Runner"
     }
   }
 ];

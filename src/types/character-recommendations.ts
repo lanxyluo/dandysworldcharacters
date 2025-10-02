@@ -1,6 +1,7 @@
 export type RecommendationDifficulty = 'beginner' | 'intermediate' | 'advanced';
 export type RecommendationRole = 'extractor' | 'distractor' | 'support' | 'hybrid';
 export type UnlockPriority = 'immediate' | 'short_term' | 'long_term';
+export type RecommendationAvailability = 'available' | 'needs_ichor' | 'locked';
 
 export interface CharacterRecommendation {
   characterId: string;
@@ -11,6 +12,15 @@ export interface CharacterRecommendation {
   role: RecommendationRole;
   teamFit: string[];
   unlockPriority: UnlockPriority;
+  availability: RecommendationAvailability;
+  ichorCost: number | null;
+  ichorShortfall: number;
+  unmetRequirements: string[];
+}
+
+export interface RecommendationBundle {
+  available: CharacterRecommendation[];
+  future: CharacterRecommendation[];
 }
 
 export interface TeamAnalysis {

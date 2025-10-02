@@ -2,6 +2,7 @@ import { getAllCharacters } from '../data/characters';
 import type { Character } from '../types/character';
 import type {
   CharacterRecommendation,
+  RecommendationBundle,
   TeamAnalysis,
   UserPreferences,
   RecommendationDifficulty,
@@ -12,6 +13,8 @@ import type {
 type StatKey = 'health' | 'movementSpeed' | 'extractionSpeed' | 'stealth' | 'stamina' | 'skillCheck';
 
 const statKeys: StatKey[] = ['health', 'movementSpeed', 'extractionSpeed', 'stealth', 'stamina', 'skillCheck'];
+
+const INTERMEDIATE_CHARACTER_IDS = new Set(['cosmo', 'rodger', 'teagan']);
 
 const getStatValue = (character: Character, key: StatKey): number => {
   if (character.attributes && typeof character.attributes[key] === 'number') {
@@ -42,12 +45,39 @@ const clampScore = (score: number): number => Math.max(0, Math.min(100, score));
 export class CharacterRecommender {
   private readonly characters: Character[] = getAllCharacters();
 
-  getRecommendations(preferences: UserPreferences): CharacterRecommendation[] {
-    return this.characters
+  getRecommendations(preferences: UserPreferences): RecommendationBundle {
+    const scored = this.characters
       .map((character) => this.scoreCharacter(character, preferences))
-      .filter((rec) => rec.recommendationScore > 30)
-      .sort((a, b) => b.recommendationScore - a.recommendationScore)
-      .slice(0, 8);
+      .filter(
+        (rec): rec is CharacterRecommendation => rec !== null && rec.recommendationScore > 30,
+      )
+      .sort((a, b) => b.recommendationScore - a.recommendationScore);
+
+    const available = scored.filter((rec) => rec.availability === 'available');
+    const lockedOrFuture = scored.filter((rec) => rec.availability !== 'available');
+
+    const isNewPlayer = preferences.experience === 'new';
+    const beginnerFriendly = isNewPlayer ? available.filter((rec) => rec.difficulty === 'beginner') : available;
+    const primaryList = beginnerFriendly.length > 0 ? beginnerFriendly : available;
+
+    const advancedButAffordable = isNewPlayer
+      ? available.filter((rec) => rec.difficulty !== 'beginner')
+      : [];
+
+    const future: CharacterRecommendation[] = [];
+    const seen = new Set<string>();
+
+    [...lockedOrFuture, ...advancedButAffordable].forEach((rec) => {
+      if (!seen.has(rec.characterId)) {
+        seen.add(rec.characterId);
+        future.push(rec);
+      }
+    });
+
+    return {
+      available: primaryList.slice(0, 8),
+      future: future.slice(0, 6),
+    };
   }
 
   analyzeTeam(teamIds: string[]): TeamAnalysis {
@@ -128,25 +158,78 @@ export class CharacterRecommender {
     return analysis;
   }
 
-  private scoreCharacter(character: Character, prefs: UserPreferences): CharacterRecommendation {
+  private scoreCharacter(character: Character, prefs: UserPreferences): CharacterRecommendation | null {
     let score = 50;
     const reasons: string[] = [];
     const warnings: string[] = [];
 
-    if (prefs.unlocked_characters.includes(character.id)) {
+    const isUnlocked = prefs.unlocked_characters.includes(character.id);
+    const unlocks = character.unlockRequirements ?? {
+      ichorCost: null,
+      researchRequirements: [],
+      taskCompletion: [],
+      prerequisites: [],
+    };
+
+    const ichorCost = getIchorCost(character);
+    const unmetRequirements: string[] = [];
+
+    if (!isUnlocked) {
+      if (Array.isArray(unlocks.researchRequirements)) {
+        unlocks.researchRequirements.forEach((req) => unmetRequirements.push(`Research: ${req}`));
+      }
+      if (Array.isArray(unlocks.taskCompletion)) {
+        unlocks.taskCompletion.forEach((task) => unmetRequirements.push(`Task: ${task}`));
+      }
+      if (Array.isArray(unlocks.prerequisites)) {
+        unlocks.prerequisites
+          .filter((req) => !req.toLowerCase().includes('starter selection'))
+          .forEach((req) => unmetRequirements.push(`Prerequisite: ${req}`));
+      }
+    }
+
+    let availability: 'available' | 'needs_ichor' | 'locked' = 'available';
+    let ichorShortfall = 0;
+
+    if (isUnlocked) {
       score += 10;
       reasons.push('Already unlocked and ready to deploy.');
     }
 
+    if (!isUnlocked && unmetRequirements.length > 0) {
+      availability = 'locked';
+      warnings.push('Complete the listed requirements to unlock this character.');
+      score -= 20;
+    }
+
+    if (!isUnlocked && availability === 'available' && ichorCost != null && ichorCost > prefs.available_ichor) {
+      availability = 'needs_ichor';
+      ichorShortfall = ichorCost - prefs.available_ichor;
+      warnings.push(`Need ${ichorShortfall} more Ichor to unlock.`);
+      score -= 15;
+    }
+
+    if (availability === 'available' && ichorCost != null) {
+      if (ichorCost === 0) {
+        reasons.push('No Ichor cost required.');
+      } else if (!isUnlocked) {
+        reasons.push(`Unlocks for ${ichorCost} Ichor within your budget.`);
+      }
+    }
+
     switch (prefs.experience) {
       case 'new':
-        if (['tisha', 'boxten', 'poppy', 'sprout'].includes(character.id)) {
+        if (['tisha', 'boxten', 'poppy', 'toodles', 'sprout'].includes(character.id)) {
           score += 25;
           reasons.push('Friendly learning curve for new players.');
         }
         if (character.type === 'main') {
           score -= 20;
           warnings.push('Main story characters demand advanced unlock requirements.');
+        }
+        if (this.getDifficulty(character) !== 'beginner') {
+          score -= 15;
+          warnings.push('Consider unlocking this pick after more experience.');
         }
         break;
       case 'experienced':
@@ -186,19 +269,6 @@ export class CharacterRecommender {
       }
     }
 
-    const ichorCost = getIchorCost(character);
-    if (ichorCost != null) {
-      if (ichorCost > prefs.available_ichor) {
-        score -= 30;
-        warnings.push(`Requires ${ichorCost} Ichor, which exceeds your current budget.`);
-      } else if (ichorCost === 0) {
-        reasons.push('No Ichor cost required.');
-      } else if (ichorCost <= prefs.available_ichor) {
-        score += 5;
-        reasons.push('Unlockable with your available Ichor.');
-      }
-    }
-
     if (prefs.current_team?.length) {
       const teamScore = this.evaluateTeamFit(character, prefs.current_team);
       score += teamScore;
@@ -212,15 +282,20 @@ export class CharacterRecommender {
       reasons.push('Scales well for late-floor challenges.');
     }
 
+    const recommendationScore = clampScore(score);
     return {
       characterId: character.id,
-      recommendationScore: clampScore(score),
+      recommendationScore,
       reasons,
       warnings,
       difficulty: this.getDifficulty(character),
       role: this.getRole(character),
       teamFit: this.getTeamFitRoles(character),
       unlockPriority: this.getUnlockPriority(character, prefs),
+      availability,
+      ichorCost,
+      ichorShortfall,
+      unmetRequirements,
     };
   }
 
@@ -252,7 +327,10 @@ export class CharacterRecommender {
     if (character.type === 'main' || character.rarity === 'legendary') {
       return 'advanced';
     }
-    if (character.rarity === 'rare' || character.rarity === 'twisted') {
+    if (character.rarity === 'twisted') {
+      return 'intermediate';
+    }
+    if (character.rarity === 'rare' || INTERMEDIATE_CHARACTER_IDS.has(character.id)) {
       return 'intermediate';
     }
     return 'beginner';
@@ -296,6 +374,15 @@ export class CharacterRecommender {
     }
 
     const ichorCost = getIchorCost(character);
+    const unlocks = character.unlockRequirements;
+
+    if (
+      unlocks &&
+      ((Array.isArray(unlocks.researchRequirements) && unlocks.researchRequirements.length > 0) ||
+        (Array.isArray(unlocks.taskCompletion) && unlocks.taskCompletion.length > 0))
+    ) {
+      return 'long_term';
+    }
 
     if (character.type === 'main') {
       return 'long_term';

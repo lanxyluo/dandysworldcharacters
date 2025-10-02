@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { CharacterRecommender, STAT_KEYS, getCharacterStat } from '../../utils/character-recommender';
-import type { UserPreferences } from '../../types/character-recommendations';
+import type { CharacterRecommendation, UserPreferences } from '../../types/character-recommendations';
 import type { Character } from '../../types/character';
 import { getAllCharacters } from '../../data/characters';
 import ScrollToTopLink from '../ScrollToTopLink';
@@ -27,7 +27,7 @@ const CharacterRecommenderComponent: React.FC = () => {
     return getAllCharacters().slice().sort((a, b) => a.name.localeCompare(b.name));
   }, []);
 
-  const recommendations = useMemo(() => {
+  const { available: availableRecommendations, future: futureRecommendations } = useMemo(() => {
     return recommender.getRecommendations(preferences);
   }, [preferences]);
 
@@ -74,6 +74,217 @@ const CharacterRecommenderComponent: React.FC = () => {
   const comparisonCharacters = selectedForComparison
     .map((id) => allCharacters.find((character) => character.id === id))
     .filter((character): character is Character => Boolean(character));
+
+  const renderRecommendationCard = (
+    recommendation: CharacterRecommendation,
+    index: number,
+    variant: 'available' | 'future',
+  ) => {
+    const character = allCharacters.find((item) => item.id === recommendation.characterId);
+    if (!character) {
+      return null;
+    }
+
+    const isSelected = selectedForComparison.includes(character.id);
+    const ichorCost = recommendation.ichorCost ?? character.unlockRequirements?.ichorCost ?? null;
+    const availabilityLabel =
+      recommendation.availability === 'available'
+        ? variant === 'future'
+          ? { text: 'Advanced difficulty', className: 'bg-blue-500/20 text-blue-200' }
+          : { text: 'Purchasable now', className: 'bg-green-500/20 text-green-300' }
+        : recommendation.availability === 'needs_ichor'
+        ? {
+            text: `Need ${recommendation.ichorShortfall} Ichor`,
+            className: 'bg-amber-500/20 text-amber-300',
+          }
+        : { text: 'Unlock requirements pending', className: 'bg-red-500/20 text-red-200' };
+
+    const unlocks = character.unlockRequirements ?? {
+      researchRequirements: [],
+      taskCompletion: [],
+      prerequisites: [],
+    };
+
+    const informationalRequirements: string[] = [];
+    const requirementSet = new Set<string>();
+
+    if (Array.isArray(unlocks.researchRequirements)) {
+      unlocks.researchRequirements.forEach((req) => requirementSet.add(`Research: ${req}`));
+    }
+    if (Array.isArray(unlocks.taskCompletion)) {
+      unlocks.taskCompletion.forEach((task) => requirementSet.add(`Task: ${task}`));
+    }
+    if (Array.isArray(unlocks.prerequisites)) {
+      unlocks.prerequisites.forEach((prereq) => {
+        if (prereq.toLowerCase().includes('starter selection')) {
+          informationalRequirements.push(prereq);
+        } else {
+          requirementSet.add(`Prerequisite: ${prereq}`);
+        }
+      });
+    }
+
+    const unmetSet = new Set(recommendation.unmetRequirements);
+    const satisfiedRequirements = Array.from(requirementSet).filter((item) => !unmetSet.has(item));
+
+    const rankLabel = variant === 'available' ? `Rank #${index + 1}` : `Goal #${index + 1}`;
+    const articleBorder = variant === 'future' ? 'border-amber-500/40' : 'border-gray-700';
+
+    return (
+      <article
+        key={character.id}
+        className={`bg-gray-800/60 border ${articleBorder} rounded-xl p-6 flex flex-col gap-4`}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-wide text-gray-400">{rankLabel}</p>
+            <h3 className="text-xl font-semibold">{character.name}</h3>
+            <div className="flex flex-wrap items-center gap-2 text-xs mt-2">
+              <span
+                className={`px-2 py-1 rounded-full font-semibold ${
+                  recommendation.role === 'extractor'
+                    ? 'bg-green-500/20 text-green-300'
+                    : recommendation.role === 'distractor'
+                    ? 'bg-blue-500/20 text-blue-300'
+                    : recommendation.role === 'support'
+                    ? 'bg-purple-500/20 text-purple-300'
+                    : 'bg-gray-500/20 text-gray-200'
+                }`}
+              >
+                {recommendation.role === 'extractor'
+                  ? 'Machine specialist'
+                  : recommendation.role === 'distractor'
+                  ? 'Distraction'
+                  : recommendation.role === 'support'
+                  ? 'Support'
+                  : 'Hybrid'}
+              </span>
+              <span className="px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300 font-semibold">
+                {recommendation.recommendationScore}/100 score
+              </span>
+              <span className="px-2 py-1 rounded-full bg-gray-500/20 text-gray-200 font-semibold">
+                {recommendation.difficulty.charAt(0).toUpperCase() + recommendation.difficulty.slice(1)}
+              </span>
+              <span className={`px-2 py-1 rounded-full font-semibold ${availabilityLabel.className}`}>
+                {availabilityLabel.text}
+              </span>
+            </div>
+          </div>
+          {showComparison && (
+            <button
+              onClick={() => toggleComparison(character.id)}
+              disabled={!isSelected && selectedForComparison.length >= 3}
+              className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors ${
+                isSelected
+                  ? 'bg-purple-700/20 border-purple-500 text-purple-200'
+                  : 'bg-gray-900 border-gray-700 text-gray-200 hover:bg-gray-800'
+              } ${!isSelected && selectedForComparison.length >= 3 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {isSelected ? 'Remove' : 'Compare'}
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div>Health: {'❤️'.repeat(getCharacterStat(character, 'health'))}</div>
+          <div>Speed: {'⭐'.repeat(getCharacterStat(character, 'movementSpeed'))}</div>
+          <div>Extraction: {'⭐'.repeat(getCharacterStat(character, 'extractionSpeed'))}</div>
+          <div>Stealth: {'⭐'.repeat(getCharacterStat(character, 'stealth'))}</div>
+        </div>
+
+        <div className="rounded-lg bg-gray-900/60 border border-gray-700 p-3 text-sm text-gray-200 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="font-semibold text-gray-300">Ichor cost</span>
+            <span>
+              {ichorCost == null ? 'Unknown' : ichorCost === 0 ? 'Free' : `${ichorCost} Ichor`}
+            </span>
+          </div>
+          {recommendation.availability === 'needs_ichor' && recommendation.ichorShortfall > 0 && (
+            <p className="text-xs text-amber-300">
+              Save {recommendation.ichorShortfall} more Ichor to unlock this character.
+            </p>
+          )}
+          {recommendation.unmetRequirements.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-red-200 uppercase tracking-wide">Unlock requirements</p>
+              <ul className="mt-1 space-y-1 text-xs text-gray-200">
+                {recommendation.unmetRequirements.map((req) => (
+                  <li key={req}>• {req}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {informationalRequirements.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Notes</p>
+              <ul className="mt-1 space-y-1 text-xs text-gray-300">
+                {informationalRequirements.map((note) => (
+                  <li key={note}>• {note}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {satisfiedRequirements.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Requirements</p>
+              <ul className="mt-1 space-y-1 text-xs text-gray-300">
+                {satisfiedRequirements.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {recommendation.teamFit.length > 0 && (
+          <div>
+            <h4 className="text-sm font-semibold text-purple-300 mb-2">Ideal roles</h4>
+            <ul className="text-sm text-gray-200 space-y-1">
+              {recommendation.teamFit.map((fit, fitIndex) => (
+                <li key={fitIndex}>• {fit}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {recommendation.reasons.length > 0 && (
+          <div>
+            <h4 className="text-sm font-semibold text-green-300 mb-2">Why it works</h4>
+            <ul className="text-sm text-gray-200 space-y-1">
+              {recommendation.reasons.map((reason, reasonIndex) => (
+                <li key={reasonIndex}>✅ {reason}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {recommendation.warnings.length > 0 && (
+          <div>
+            <h4 className="text-sm font-semibold text-yellow-300 mb-2">Keep in mind</h4>
+            <ul className="text-sm text-gray-200 space-y-1">
+              {recommendation.warnings.map((warning, warningIndex) => (
+                <li key={warningIndex}>⚠️ {warning}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="mt-auto pt-4 border-t border-gray-700 flex items-center justify-between text-sm text-gray-300">
+          <span>
+            Unlock priority:{' '}
+            {recommendation.unlockPriority === 'immediate'
+              ? 'Ready now'
+              : recommendation.unlockPriority === 'short_term'
+              ? 'Short-term goal'
+              : 'Long-term plan'}
+          </span>
+          <ScrollToTopLink to={`/characters/${character.id}`} className="text-blue-300 hover:text-blue-200 font-medium">
+            View character guide →
+          </ScrollToTopLink>
+        </div>
+      </article>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-16">
@@ -323,124 +534,28 @@ const CharacterRecommenderComponent: React.FC = () => {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {recommendations.map((recommendation, index) => {
-              const character = allCharacters.find((item) => item.id === recommendation.characterId);
-              if (!character) {
-                return null;
-              }
-
-              const isSelected = selectedForComparison.includes(character.id);
-
-              return (
-                <article key={character.id} className="bg-gray-800/60 border border-gray-700 rounded-xl p-6 flex flex-col gap-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-wide text-gray-400">Rank #{index + 1}</p>
-                      <h3 className="text-xl font-semibold">{character.name}</h3>
-                      <div className="flex flex-wrap items-center gap-2 text-xs mt-2">
-                        <span
-                          className={`px-2 py-1 rounded-full font-semibold ${
-                            recommendation.role === 'extractor'
-                              ? 'bg-green-500/20 text-green-300'
-                              : recommendation.role === 'distractor'
-                              ? 'bg-blue-500/20 text-blue-300'
-                              : recommendation.role === 'support'
-                              ? 'bg-purple-500/20 text-purple-300'
-                              : 'bg-gray-500/20 text-gray-200'
-                          }`}
-                        >
-                          {recommendation.role === 'extractor'
-                            ? 'Machine specialist'
-                            : recommendation.role === 'distractor'
-                            ? 'Distraction'
-                            : recommendation.role === 'support'
-                            ? 'Support'
-                            : 'Hybrid'}
-                        </span>
-                        <span className="px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-300 font-semibold">
-                          {recommendation.recommendationScore}/100 score
-                        </span>
-                        <span className="px-2 py-1 rounded-full bg-gray-500/20 text-gray-200 font-semibold">
-                          {recommendation.difficulty.charAt(0).toUpperCase() + recommendation.difficulty.slice(1)}
-                        </span>
-                      </div>
-                    </div>
-                    {showComparison && (
-                      <button
-                        onClick={() => toggleComparison(character.id)}
-                        disabled={!isSelected && selectedForComparison.length >= 3}
-                        className={`px-3 py-2 rounded-lg border transition-colors ${
-                          isSelected
-                            ? 'bg-blue-600 border-blue-400 text-white'
-                            : 'bg-gray-900 border-gray-700 text-gray-200 hover:bg-gray-800'
-                        }`}
-                      >
-                        {isSelected ? 'Selected' : 'Compare'}
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div>Health: {'❤️'.repeat(getCharacterStat(character, 'health'))}</div>
-                    <div>Speed: {'⭐'.repeat(getCharacterStat(character, 'movementSpeed'))}</div>
-                    <div>Extraction: {'⭐'.repeat(getCharacterStat(character, 'extractionSpeed'))}</div>
-                    <div>Stealth: {'⭐'.repeat(getCharacterStat(character, 'stealth'))}</div>
-                  </div>
-
-                  {recommendation.teamFit.length > 0 && (
-                    <div>
-                      <h4 className="text-sm font-semibold text-purple-300 mb-2">Ideal roles</h4>
-                      <ul className="text-sm text-gray-200 space-y-1">
-                        {recommendation.teamFit.map((fit, fitIndex) => (
-                          <li key={fitIndex}>• {fit}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {recommendation.reasons.length > 0 && (
-                    <div>
-                      <h4 className="text-sm font-semibold text-green-300 mb-2">Why it works</h4>
-                      <ul className="text-sm text-gray-200 space-y-1">
-                        {recommendation.reasons.map((reason, reasonIndex) => (
-                          <li key={reasonIndex}>✅ {reason}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {recommendation.warnings.length > 0 && (
-                    <div>
-                      <h4 className="text-sm font-semibold text-yellow-300 mb-2">Keep in mind</h4>
-                      <ul className="text-sm text-gray-200 space-y-1">
-                        {recommendation.warnings.map((warning, warningIndex) => (
-                          <li key={warningIndex}>⚠️ {warning}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <div className="mt-auto pt-4 border-t border-gray-700 flex items-center justify-between text-sm text-gray-300">
-                    <span>
-                      Unlock priority:{' '}
-                      {recommendation.unlockPriority === 'immediate'
-                        ? 'Ready now'
-                        : recommendation.unlockPriority === 'short_term'
-                        ? 'Short-term goal'
-                        : 'Long-term plan'}
-                    </span>
-                    <ScrollToTopLink
-                      to={`/characters/${character.id}`}
-                      className="text-blue-300 hover:text-blue-200 font-medium"
-                    >
-                      View character guide →
-                    </ScrollToTopLink>
-                  </div>
-                </article>
-              );
-            })}
+            {availableRecommendations.map((recommendation, index) =>
+              renderRecommendationCard(recommendation, index, 'available'),
+            )}
           </div>
         </section>
+
+        {futureRecommendations.length > 0 && (
+          <section className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-semibold text-amber-200">Future unlock goals</h2>
+              <p className="text-sm text-gray-400">
+                Save additional Ichor or complete the listed requirements before picking up these characters.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {futureRecommendations.map((recommendation, index) =>
+                renderRecommendationCard(recommendation, index, 'future'),
+              )}
+            </div>
+          </section>
+        )}
 
         {showComparison && comparisonCharacters.length > 0 && (
           <section className="bg-gray-800/60 border border-gray-700 rounded-xl p-6 shadow-lg shadow-purple-500/10 space-y-4">
