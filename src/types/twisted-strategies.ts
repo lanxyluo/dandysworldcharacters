@@ -2,6 +2,26 @@ export type TwistedThreatLevel = 'low' | 'medium' | 'high' | 'extreme';
 export type TwistedSpeedRating = 'very_slow' | 'slow' | 'normal' | 'fast' | 'very_fast';
 export type TwistedRarity = 'common' | 'uncommon' | 'rare' | 'main' | 'lethal';
 
+export interface TwistedMechanicDetail {
+  icon: string;
+  description: string;
+  emphasis?: 'danger';
+}
+
+export interface TwistedMechanicsSection {
+  speed: TwistedMechanicDetail;
+  attentionSpan: TwistedMechanicDetail;
+  detectionRange: TwistedMechanicDetail;
+  damage: TwistedMechanicDetail;
+  special?: string;
+}
+
+export interface TwistedAudioProfile {
+  intensityIcon: string;
+  intensityLabel: string;
+  cues: string[];
+}
+
 export interface TwistedStrategyProfile {
   twistedId: string;
   name: string;
@@ -14,6 +34,8 @@ export interface TwistedStrategyProfile {
     audio_cues: string[];
     spawn_conditions: string[];
   };
+  mechanics: TwistedMechanicsSection;
+  audioProfile: TwistedAudioProfile;
   strategies: {
     avoidance: string[];
     if_spotted: string[];

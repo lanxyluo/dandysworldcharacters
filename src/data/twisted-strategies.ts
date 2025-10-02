@@ -17,6 +17,36 @@ export const twistedStrategies: TwistedStrategyProfile[] = [
         'Enhanced vision and barking reveal distant players quickly',
       ],
     },
+    mechanics: {
+      speed: {
+        icon: '⚡⚡⚡⚡⚡',
+        description: 'Extremely Fast (10 walking, 25 chasing | Panic: 12.5 walking, 31.25 chasing)',
+      },
+      attentionSpan: {
+        icon: '⏱️½',
+        description: 'Very Weak (~1.5 seconds)',
+      },
+      detectionRange: {
+        icon: '👁️👁️👁️👁️👁️',
+        description: 'Extremely Large (enhanced vision, long-distance bark detection)',
+      },
+      damage: {
+        icon: '💔',
+        description: '1 Heart per hit',
+      },
+      special: 'Uses enhanced vision and bark detection to reveal players from long distances.',
+    },
+    audioProfile: {
+      intensityIcon: '🔊🔊🔊',
+      intensityLabel: 'Extremely Loud',
+      cues: [
+        'Extremely loud, thundering footsteps (loudest in the game)',
+        'Feral growling and barking sounds while roaming',
+        'Distinctive bark when detecting players from long distance',
+        'Sound volume barely drops with distance, making Pebble easy to locate',
+        'Custom sound effect built from real dog bark recordings',
+      ],
+    },
     strategies: {
       avoidance: [
         'Stick to cover-heavy paths and avoid open courtyards.',
@@ -61,6 +91,38 @@ export const twistedStrategies: TwistedStrategyProfile[] = [
         'Each additional consecutive skip further increases the spawn rate',
       ],
     },
+    mechanics: {
+      speed: {
+        icon: '⚡⚡⚡',
+        description: 'Average (10 walking, 16 chasing | Panic: 12.5 walking, 20 chasing)',
+      },
+      attentionSpan: {
+        icon: '⏱️⏱️⏱️⏱️⏱️',
+        description: 'Very Long (6 seconds)',
+      },
+      detectionRange: {
+        icon: '👁️👁️👁️',
+        description: 'Average (30 circular, 60 direct, 140 hearing)',
+      },
+      damage: {
+        icon: '💀',
+        description: 'INSTANT KILL (lethal - ignores hearts and health)',
+        emphasis: 'danger',
+      },
+      special: 'Immediately rushes to completed machines at full speed.',
+    },
+    audioProfile: {
+      intensityIcon: '🔊🔊🔊',
+      intensityLabel: 'Haunting & Loud',
+      cues: [
+        'Distorted lullaby version of “Clair de Lune” plays across the map once he spawns',
+        'Music box timbre that is haunting and eerie',
+        'The music is the primary indicator that Twisted Dandy is active',
+        'Theme plays continuously while he remains on the floor',
+        'Same melody can be heard within his Gardenview shop',
+        'Extremely distinct cue – impossible to miss after you learn it',
+      ],
+    },
     strategies: {
       avoidance: [
         'Leave the area immediately after finishing a machine.',
@@ -103,6 +165,37 @@ export const twistedStrategies: TwistedStrategyProfile[] = [
         'Appears from floor 5 onward as a main character Twisted',
         'Initial 5% spawn chance, +4% every 5 floors (max 20%)',
         'Aggro on failed skill-checks, rushing from anywhere on the map',
+      ],
+    },
+    mechanics: {
+      speed: {
+        icon: '⚡⚡⚡',
+        description: 'Average (10 walking, 18 chasing | Panic: 12.5 walking, 22.5 chasing)',
+      },
+      attentionSpan: {
+        icon: '⏱️⏱️⏱️⏱️',
+        description: 'Long (3 seconds)',
+      },
+      detectionRange: {
+        icon: '👁️👁️👁️',
+        description: 'Average (30 circular, 60 direct, 140 hearing)',
+      },
+      damage: {
+        icon: '💔',
+        description: '1 Heart per hit',
+      },
+      special: 'Applies Slow II debuff during chases (-25% movement speed).',
+    },
+    audioProfile: {
+      intensityIcon: '🔊🔊',
+      intensityLabel: 'Robotic & Moderate',
+      cues: [
+        'Mechanical, robotic footsteps reminiscent of Twisted Shelly but with a distinct pattern',
+        'Leaves audible Ichor trail footprints with each step',
+        'Emits agitated electronic noises when locking onto players',
+        'Popup ad sound effects sourced from Tower Heroes mimic spawn audio',
+        'Failed Skill Check detection cue borrowed from the Undertale Mettaton fight',
+        'Nearby presence adds layers of electronic buzzing and static',
       ],
     },
     strategies: {
@@ -152,6 +245,37 @@ export const twistedStrategies: TwistedStrategyProfile[] = [
         'Main character Twisted spawning from floor 5 onward',
         'Initial 5% spawn chance, +4% every 5 floors (max 20%)',
         'Hardest Main to detect by sound cues alone',
+      ],
+    },
+    mechanics: {
+      speed: {
+        icon: '⚡⚡⚡⚡',
+        description: 'Above Average (10 walking, 19 chasing | Panic: 12.5 walking, 23.75 chasing)',
+      },
+      attentionSpan: {
+        icon: '⏱️⏱️⏱️⏱️',
+        description: 'Long (3 seconds)',
+      },
+      detectionRange: {
+        icon: '👁️👁️👁️👁️',
+        description: 'Above Average (35 circular, 70 direct, 150 hearing)',
+      },
+      damage: {
+        icon: '💔',
+        description: '1 Heart per hit',
+      },
+      special: 'Failed Skill Checks drain ~50% machine progress and chasing targets suffer Tired III (-75% stamina regen).',
+    },
+    audioProfile: {
+      intensityIcon: '🔊',
+      intensityLabel: 'Subtle & Quiet',
+      cues: [
+        'Very soft, quiet footsteps – hardest Main Twisted to detect by ear',
+        'Ethereal, space-inspired ambient layering the environment',
+        'Celestial whooshing and atmospheric noise trails',
+        'Sound profile is subtle and easy to miss in tense moments',
+        'Warning: low volume cues make Twisted Astro exceptionally dangerous',
+        'Rely on visual confirmation and teammate callouts to track him',
       ],
     },
     strategies: {
@@ -204,6 +328,36 @@ export const twistedStrategies: TwistedStrategyProfile[] = [
         'Initial 5% spawn chance, +4% every 5 floors (max 20%)',
       ],
     },
+    mechanics: {
+      speed: {
+        icon: '⚡⚡⚡⚡',
+        description: 'High (12 walking, 20 chasing | Panic: 15 walking, 25 chasing)',
+      },
+      attentionSpan: {
+        icon: '⏱️⏱️',
+        description: 'Below Average (1 second)',
+      },
+      detectionRange: {
+        icon: '👁️👁️👁️',
+        description: 'Average (30 circular, 60 direct, 140 hearing)',
+      },
+      damage: {
+        icon: '💔',
+        description: '1 Heart per hit',
+      },
+      special: 'Applies permanent Confused I to the entire floor (-25% extraction speed).',
+    },
+    audioProfile: {
+      intensityIcon: '🔊🔊🔊',
+      intensityLabel: 'Heavy & Loud',
+      cues: [
+        'Loud, heavy footsteps comparable to Twisted Pebble',
+        'Footsteps land with wider spacing than Pebble, changing the cadence',
+        'Theropod or dinosaur-like movement sounds accompany each stride',
+        'Distinct from Pebble thanks to the spaced rhythm pattern',
+        'High volume cues carry across long distances for easy identification',
+      ],
+    },
     strategies: {
       avoidance: [
         'Plan for a 25% extraction speed penalty and adjust pacing.',
@@ -254,6 +408,36 @@ export const twistedStrategies: TwistedStrategyProfile[] = [
       spawn_conditions: [
         'Main character Twisted spawning from floor 5 onward',
         'Initial 5% spawn chance, +4% every 5 floors (max 20%)',
+      ],
+    },
+    mechanics: {
+      speed: {
+        icon: '⚡⚡',
+        description: 'Below Average (8.5 walking, 17 chasing | Panic: 10.62 walking, 21.25 chasing)',
+      },
+      attentionSpan: {
+        icon: '⏱️⏱️⏱️',
+        description: 'Average (2 seconds)',
+      },
+      detectionRange: {
+        icon: '👁️👁️👁️',
+        description: 'Average (30 circular, 60 direct, 140 hearing)',
+      },
+      damage: {
+        icon: '💔',
+        description: '1 Heart per hit (physical attacks and tendrils)',
+      },
+      special: 'Summons Ichor tendrils at detected player positions (10s cooldown, max 2 active).',
+    },
+    audioProfile: {
+      intensityIcon: '🔊🔊',
+      intensityLabel: 'Moderate Volume',
+      cues: [
+        'Standard Main-character footsteps at moderate volume',
+        'Distinct squelching sound when summoning Ichor tendrils',
+        'Tendrils emerge with a sprouting, wet crackle',
+        'Ichor puddles emit subtle bubbling while tendrils are active',
+        'Listening for tendril audio warns teammates about incoming ability use',
       ],
     },
     strategies: {

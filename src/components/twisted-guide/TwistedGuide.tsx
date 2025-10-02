@@ -1,6 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { twistedStrategies } from '../../data/twisted-strategies';
-import type { TwistedStrategyProfile, TwistedThreatLevel, TwistedRarity } from '../../types/twisted-strategies';
+import type {
+  TwistedMechanicsSection,
+  TwistedStrategyProfile,
+  TwistedThreatLevel,
+  TwistedRarity,
+} from '../../types/twisted-strategies';
 
 type ThreatFilter = '' | TwistedThreatLevel;
 type RarityFilter = '' | TwistedRarity;
@@ -32,6 +37,13 @@ const difficultyStars = (rating: number): string => {
   return '★'.repeat(stars);
 };
 
+const MECHANIC_CONFIG: Array<{ key: keyof TwistedMechanicsSection; label: string; color: string }> = [
+  { key: 'speed', label: 'Speed', color: 'text-yellow-300' },
+  { key: 'attentionSpan', label: 'Attention Span', color: 'text-blue-300' },
+  { key: 'detectionRange', label: 'Detection Range', color: 'text-purple-300' },
+  { key: 'damage', label: 'Damage', color: 'text-red-300' },
+];
+
 const TwistedCard: React.FC<{ profile: TwistedStrategyProfile; onQuickView: (name: string) => void }> = ({
   profile,
   onQuickView,
@@ -50,19 +62,62 @@ const TwistedCard: React.FC<{ profile: TwistedStrategyProfile; onQuickView: (nam
 
     <div className="grid gap-4 lg:grid-cols-3">
       <div className="space-y-3">
-        <div>
-          <h4 className="text-sm font-semibold text-purple-300 mb-2">Identification cues</h4>
-          <div className="text-sm text-gray-300 space-y-1">
-            <div>
-              <strong className="text-gray-200">Visual:</strong> {profile.identification.visual_cues.join(', ')}
-            </div>
-            <div>
-              <strong className="text-gray-200">Audio:</strong> {profile.identification.audio_cues.join(', ')}
-            </div>
-            <div>
-              <strong className="text-gray-200">Spawn:</strong> {profile.identification.spawn_conditions.join(', ')}
+        <div className="space-y-3">
+          <div>
+            <h4 className="text-sm font-semibold text-purple-300 mb-2">Identification cues</h4>
+            <div className="text-sm text-gray-300 space-y-1">
+              <div>
+                <strong className="text-gray-200">Visual:</strong> {profile.identification.visual_cues.join(', ')}
+              </div>
             </div>
           </div>
+
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <span className="text-lg">🔊</span>
+              <h4 className="text-sm font-semibold text-indigo-300">Audio Cues</h4>
+              <span className="text-sm font-semibold text-gray-200">{profile.audioProfile.intensityIcon}</span>
+              <span className="text-xs uppercase tracking-wide text-gray-400">{profile.audioProfile.intensityLabel}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-1 list-disc list-inside">
+              {profile.audioProfile.cues.map((cue) => (
+                <li key={cue}>{cue}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="text-sm text-gray-300">
+            <strong className="text-gray-200">Spawn:</strong> {profile.identification.spawn_conditions.join(', ')}
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-cyan-300 mb-2">Stats &amp; Mechanics</h4>
+          <ul className="text-sm text-gray-300 space-y-2">
+            {MECHANIC_CONFIG.map(({ key, label, color }) => {
+              const detail = profile.mechanics[key];
+              if (!detail) return null;
+              const highlight = key === 'damage' && detail.emphasis === 'danger';
+              const descriptionClass = highlight
+                ? 'bg-red-800/70 border border-red-500 text-red-100 font-semibold px-2 py-1 rounded'
+                : 'text-gray-200';
+
+              return (
+                <li key={key} className="flex flex-col gap-1 sm:flex-row sm:items-start sm:gap-3">
+                  <span className="font-semibold text-gray-200 sm:w-40">{label}:</span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`font-semibold ${color}`}>{detail.icon}</span>
+                    <span className={descriptionClass}>{detail.description}</span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+          {profile.mechanics.special && (
+            <p className="mt-2 rounded border border-dashed border-gray-600 bg-gray-900/60 p-2 text-xs text-gray-300">
+              <span className="font-semibold text-gray-200">Special:</span> {profile.mechanics.special}
+            </p>
+          )}
         </div>
 
         <div>
@@ -179,6 +234,18 @@ const TwistedGuide: React.FC = () => {
           </p>
         </header>
 
+        <section className="bg-blue-900/40 border border-blue-700 rounded-lg p-5 text-sm text-blue-100 space-y-2">
+          <div className="flex items-start gap-3">
+            <span className="text-lg">💡</span>
+            <div>
+              <p className="font-semibold text-blue-50">Audio Detection Tip</p>
+              <p>
+                Sound is one of your best tools for detecting Twisteds early. Play with headphones and adjust audio settings to hear footsteps clearly. Each Main Twisted has unique audio signatures—learning these can save your life!
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section className="bg-red-900/40 border border-red-700 rounded-lg p-6 space-y-4">
           <h2 className="text-xl font-semibold text-red-100">🚨 Emergency lookup</h2>
           <div className="grid gap-4 md:grid-cols-3">
@@ -189,7 +256,7 @@ const TwistedGuide: React.FC = () => {
                 onClick={() => handleQuickSelect(profile.name)}
               >
                 <div className="font-semibold text-white">{profile.name}</div>
-                <div className="text-sm text-red-200 mt-2">{profile.identification.audio_cues[0]}</div>
+                <div className="text-sm text-red-200 mt-2">{profile.audioProfile.cues[0]}</div>
                 <div className="text-xs text-red-300 mt-3">Tap to load the full strategy card</div>
               </button>
             ))}
