@@ -22,6 +22,31 @@ export interface TwistedAudioProfile {
   cues: string[];
 }
 
+export interface TwistedThreatAssessment {
+  rating: number;
+  stars: string;
+  label: string;
+  color: 'lethal' | 'extreme' | 'high' | 'moderateHigh';
+  difficulty: string;
+  reason: string;
+  warning?: string;
+}
+
+export interface TwistedComparisonMetrics {
+  chaseSpeed: number;
+  panicSpeed: number;
+  attentionSpanSeconds: number;
+  detectionDescriptor: string;
+  detectionScore: number;
+  damageType: string;
+  specialHighlight: string;
+  spawnFloor: string;
+  spawnFloorValue: number;
+  audioVolume: string;
+  audioIntensityScore: number;
+  difficultyLabel: string;
+}
+
 export interface TwistedStrategyProfile {
   twistedId: string;
   name: string;
@@ -36,12 +61,15 @@ export interface TwistedStrategyProfile {
   };
   mechanics: TwistedMechanicsSection;
   audioProfile: TwistedAudioProfile;
+  threatAssessment: TwistedThreatAssessment;
+  comparisonMetrics: TwistedComparisonMetrics;
   strategies: {
     avoidance: string[];
     if_spotted: string[];
     team_coordination: string[];
   };
   common_mistakes: string[];
+  corrective_actions: string[];
   counters: string[];
   difficulty_rating: number;
 }
