@@ -1,6 +1,8 @@
 import type { UserProgressProfile } from '../types/progress-tracking';
 
 const STORAGE_KEY = 'dandys-world-progress';
+const TRACKED_CHARACTERS_KEY = 'dandys-world-tracked-characters';
+const DEFAULT_TRACKED_CHARACTERS = ['brightney', 'toodles'];
 
 const hasWindow = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 
@@ -75,5 +77,45 @@ export class ProgressStorage {
     }
 
     this.saveProgress(profile);
+  }
+
+  loadTrackedCharacters(): string[] {
+    if (!hasWindow) {
+      return DEFAULT_TRACKED_CHARACTERS;
+    }
+
+    try {
+      const stored = window.localStorage.getItem(TRACKED_CHARACTERS_KEY);
+      if (!stored) {
+        return DEFAULT_TRACKED_CHARACTERS;
+      }
+
+      const parsed = JSON.parse(stored) as string[];
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        return DEFAULT_TRACKED_CHARACTERS;
+      }
+
+      return parsed.filter((value): value is string => typeof value === 'string' && value.length > 0);
+    } catch (error) {
+      console.warn('Failed to load tracked characters:', error);
+      return DEFAULT_TRACKED_CHARACTERS;
+    }
+  }
+
+  updateTrackedCharacters(characterIds: string[]): void {
+    if (!hasWindow) {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(TRACKED_CHARACTERS_KEY, JSON.stringify(characterIds));
+    } catch (error) {
+      console.warn('Failed to persist tracked characters:', error);
+    }
+
+    const profile = this.loadProgress();
+    if (profile) {
+      this.saveProgress(profile);
+    }
   }
 }

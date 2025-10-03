@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import ScrollToTopLink from '../ScrollToTopLink';
 import { ProgressTracker } from '../../utils/progress-tracker';
 import { ProgressStorage } from '../../utils/progress-storage';
-import { getMasteryData } from '../../data/mastery-data';
+import { getMasteryData, getCharactersWithMastery } from '../../data/mastery-data';
 import type { MasteryProgress, UserProgressProfile } from '../../types/progress-tracking';
 
 type TrackerTab = 'overview' | 'research' | 'unlocks' | 'mastery';
@@ -53,7 +53,7 @@ const buildMasteryProgress = (characterId: string): MasteryProgress | null => {
   data.tasks.forEach((task) => {
     const override = overrides[task.id];
     const current = override?.current ?? 0;
-    const status = current >= task.target ? 'complete' : 'in_progress';
+    const status = current >= task.target ? 'complete' : current > 0 ? 'in_progress' : 'not_started';
     const note = override?.note && status === 'in_progress' ? override.note : undefined;
     const taskEntry = {
       description: task.description,
@@ -152,6 +152,7 @@ const ProgressTrackerDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TrackerTab>('overview');
   const [profile, setProfile] = useState<UserProgressProfile>(DEFAULT_PROFILE);
   const [selectedGoals, setSelectedGoals] = useState<string[]>(['vee', 'pebble']);
+  const [trackedCharacters, setTrackedCharacters] = useState<string[]>(['brightney', 'toodles']);
 
   useEffect(() => {
     const stored = storage.loadProgress();
@@ -167,8 +168,32 @@ const ProgressTrackerDashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const storedTracked = storage.loadTrackedCharacters();
+    if (storedTracked && storedTracked.length > 0) {
+      setTrackedCharacters(storedTracked);
+    }
+  }, []);
+
+  useEffect(() => {
     storage.saveProgress(profile);
   }, [profile]);
+
+  useEffect(() => {
+    storage.updateTrackedCharacters(trackedCharacters);
+  }, [trackedCharacters]);
+
+  const addCharacterTracking = (characterId: string) => {
+    setTrackedCharacters((prev) => {
+      if (prev.includes(characterId)) {
+        return prev;
+      }
+      return [...prev, characterId];
+    });
+  };
+
+  const removeCharacterTracking = (characterId: string) => {
+    setTrackedCharacters((prev) => prev.filter((id) => id !== characterId));
+  };
 
   const unlockPaths = useMemo(() => tracker.optimizeUnlockOrder(selectedGoals, profile), [selectedGoals, profile]);
 
@@ -187,6 +212,30 @@ const ProgressTrackerDashboard: React.FC = () => {
 
   const completedResearch = profile.researchProgress.filter((entry) => entry.currentProgress >= 100).length;
   const twistedDandyEncounter = profile.specialEncounters?.find((entry) => entry.id === 'twisted-dandy');
+
+  const masteryProgressEntries = useMemo(() => {
+    return trackedCharacters
+      .map((characterId) => {
+        const baseData = getMasteryData(characterId);
+        const existing = profile.masteryProgress.find((entry) => entry.characterId === characterId);
+        if (existing) {
+          return {
+            ...existing,
+            maxLevel: baseData?.totalTasks ?? existing.maxLevel,
+            rewardSummary: existing.rewardSummary ?? baseData?.rewardSummary,
+            unlockTargets: baseData?.unlocks ?? existing.unlockTargets ?? [],
+          } satisfies MasteryProgress;
+        }
+        return buildMasteryProgress(characterId);
+      })
+      .filter((entry): entry is MasteryProgress => Boolean(entry));
+  }, [trackedCharacters, profile.masteryProgress]);
+
+  const availableMasteryOptions = useMemo(() => {
+    return getCharactersWithMastery()
+      .filter((id) => !trackedCharacters.includes(id))
+      .sort((a, b) => a.localeCompare(b));
+  }, [trackedCharacters]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12">
@@ -588,94 +637,150 @@ const ProgressTrackerDashboard: React.FC = () => {
             <header className="space-y-3">
               <h2 className="text-2xl font-semibold">Mastery tracker</h2>
               <p className="text-sm text-gray-300">
-                Monitor Mastery ranks for key characters. Push to 100% to unlock certain main cast members.
+                Track Mastery quest completion for key characters. Complete all 6 tasks to unlock main cast rewards and vintage skins.
               </p>
             </header>
 
-            <div className="grid gap-6 md:grid-cols-2">
-              {profile.masteryProgress.map((entry) => {
-                const completedTasks = entry.completedTasks ?? [];
-                const pendingTasks = entry.availableTasks ?? [];
-                const totalTasks = completedTasks.length + pendingTasks.length;
-                const percentComplete = totalTasks === 0 ? 0 : Math.round((completedTasks.length / totalTasks) * 100);
-                const statusLabel = pendingTasks.length === 0
-                  ? 'Complete! All tasks cleared.'
-                  : pendingTasks.length === 1
-                  ? 'Almost complete! 1 task remaining'
-                  : `In progress - ${pendingTasks.length} tasks remaining`;
-                const rewardSummary = entry.rewardSummary
-                  ?? (entry.rewards && entry.rewards.length > 0 ? entry.rewards[0].description : '');
+            <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 space-y-3">
+              <h3 className="text-sm font-semibold text-gray-200">Tracked characters</h3>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {trackedCharacters.map((id) => (
+                  <span
+                    key={id}
+                    className="inline-flex items-center gap-2 px-3 py-1 bg-purple-600/30 border border-purple-500 rounded-full text-sm"
+                  >
+                    <span>{formatCharacterName(id)}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeCharacterTracking(id)}
+                      className="hover:text-red-400 transition-colors"
+                      title="Remove tracking"
+                    >
+                      ✕
+                    </button>
+                  </span>
+                ))}
+                {trackedCharacters.length === 0 && (
+                  <span className="text-sm text-gray-400">No characters tracked yet.</span>
+                )}
+              </div>
 
-                return (
-                  <article key={entry.characterId} className="bg-gray-900/40 border border-gray-700 rounded-lg p-6 space-y-4">
-                    <header className="space-y-1">
-                      <h3 className="text-xl font-semibold capitalize">{entry.characterId}</h3>
-                      <p className="text-sm text-gray-300">
-                        Progress: {completedTasks.length}/{totalTasks} tasks completed ({percentComplete}%)
-                      </p>
-                    </header>
-
-                    {completedTasks.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold text-sm text-gray-200">Completed tasks</h4>
-                        <ul className="mt-2 space-y-1 text-sm text-gray-300">
-                          {completedTasks.map((task) => (
-                            <li key={`${task.description}-${task.target}`} className="flex items-start gap-2">
-                              <span>✓</span>
-                              <span>
-                                {task.description} ({task.current.toLocaleString()}/{task.target.toLocaleString()})
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    <div>
-                      <h4 className="font-semibold text-sm text-gray-200">In progress</h4>
-                      <ul className="mt-2 space-y-1 text-sm text-gray-300">
-                        {pendingTasks.map((task) => {
-                          const remaining = Math.max(0, task.target - task.current);
-                          const note = task.note ?? (remaining > 0 ? `${remaining.toLocaleString()} remaining` : '');
-                          return (
-                            <li key={`${task.description}-${task.target}`} className="flex items-start gap-2">
-                              <span>⏳</span>
-                              <span>
-                                {task.description} ({task.current.toLocaleString()}/{task.target.toLocaleString()})
-                                {note ? ` — ${note}` : ''}
-                              </span>
-                            </li>
-                          );
-                        })}
-                        {pendingTasks.length === 0 && (
-                          <li className="flex items-start gap-2"><span>✅</span><span>All tasks complete.</span></li>
-                        )}
-                      </ul>
-                    </div>
-
-                    <div className="space-y-1 text-sm text-gray-300">
-                      <p>Status: {statusLabel}</p>
-                      {rewardSummary && <p>Reward: {rewardSummary}</p>}
-                      {entry.unlockTargets && entry.unlockTargets.length > 0 && (
-                        <p>
-                          Unlocks: {entry.unlockTargets.map((target, index) => (
-                            <span key={target}>
-                              {index > 0 ? ', ' : ''}
-                              {formatCharacterName(target)}
-                            </span>
-                          ))}
-                        </p>
-                      )}
-                    </div>
-                  </article>
-                );
-              })}
+              <div className="flex gap-3">
+                <select
+                  className="flex-1 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-sm"
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value) {
+                      addCharacterTracking(value);
+                      event.target.value = '';
+                    }
+                  }}
+                  defaultValue=""
+                >
+                  <option value="">+ Add character to track...</option>
+                  {availableMasteryOptions.map((id) => (
+                    <option key={id} value={id} className="capitalize">
+                      {formatCharacterName(id)}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            <footer className="text-sm text-gray-400">
-              Tip: Rotate daily tasks, blackout farming, and multiplayer runs to wrap up the remaining Mastery quests.
-            </footer>
+            {masteryProgressEntries.length > 0 && (
+              <div className="grid gap-6 md:grid-cols-2">
+                {masteryProgressEntries.map((entry) => {
+                  const completedTasks = entry.completedTasks ?? [];
+                  const pendingTasks = entry.availableTasks ?? [];
+                  const totalTasks = completedTasks.length + pendingTasks.length;
+                  const percentComplete = totalTasks === 0 ? 0 : Math.round((completedTasks.length / totalTasks) * 100);
+                  const statusLabel = pendingTasks.length === 0
+                    ? 'Complete! All tasks cleared.'
+                    : pendingTasks.length === 1
+                    ? 'Almost complete! 1 task remaining'
+                    : `In progress - ${pendingTasks.length} tasks remaining`;
+                  const rewardSummary = entry.rewardSummary
+                    ?? (entry.rewards && entry.rewards.length > 0 ? entry.rewards[0].description : '');
+                  const displayName = formatCharacterName(entry.characterId);
 
+                  return (
+                    <article key={entry.characterId} className="bg-gray-900/40 border border-gray-700 rounded-lg p-6 space-y-4">
+                      <header className="space-y-1">
+                        <h3 className="text-xl font-semibold">{displayName}</h3>
+                        <p className="text-sm text-gray-300">
+                          Progress: {completedTasks.length}/{totalTasks} tasks completed ({percentComplete}%)
+                        </p>
+                      </header>
+
+                      {completedTasks.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold text-sm text-gray-200">Completed tasks</h4>
+                          <ul className="mt-2 space-y-1 text-sm text-gray-300">
+                            {completedTasks.map((task) => (
+                              <li key={`${task.description}-${task.target}`} className="flex items-start gap-2">
+                                <span>✓</span>
+                                <span>
+                                  {task.description} ({task.current.toLocaleString()}/{task.target.toLocaleString()})
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      <div>
+                        <h4 className="font-semibold text-sm text-gray-200">In progress</h4>
+                        <ul className="mt-2 space-y-1 text-sm text-gray-300">
+                          {pendingTasks.map((task) => {
+                            const remaining = Math.max(0, task.target - task.current);
+                            const note = task.note ?? (remaining > 0 ? `${remaining.toLocaleString()} remaining` : '');
+                            const icon = task.status === 'in_progress' ? '⏳' : '•';
+                            return (
+                              <li key={`${task.description}-${task.target}`} className="flex items-start gap-2">
+                                <span>{icon}</span>
+                                <span>
+                                  {task.description} ({task.current.toLocaleString()}/{task.target.toLocaleString()})
+                                  {note ? ` — ${note}` : ''}
+                                </span>
+                              </li>
+                            );
+                          })}
+                          {pendingTasks.length === 0 && (
+                            <li className="flex items-start gap-2"><span>✅</span><span>All tasks complete.</span></li>
+                          )}
+                        </ul>
+                      </div>
+
+                      <div className="space-y-1 text-sm text-gray-300">
+                        <p>Status: {statusLabel}</p>
+                        {rewardSummary && <p>Reward: {rewardSummary}</p>}
+                        {entry.unlockTargets && entry.unlockTargets.length > 0 && (
+                          <p>
+                            Unlocks: {entry.unlockTargets.map((target, index) => (
+                              <span key={target}>
+                                {index > 0 ? ', ' : ''}
+                                {formatCharacterName(target)}
+                              </span>
+                            ))}
+                          </p>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+
+            {masteryProgressEntries.length === 0 && (
+              <div className="text-center py-12 text-gray-400 space-y-2">
+                <p>No characters tracked yet.</p>
+                <p className="text-sm">Use the dropdown above to add characters you want to track.</p>
+              </div>
+            )}
+
+            <footer className="text-sm text-gray-400">
+              💡 Tip: Focus on unfinished tasks, queue multiplayer for faster floor clears, and use items actively to close remaining objectives.
+            </footer>
           </section>
         )}
 

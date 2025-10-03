@@ -73,7 +73,7 @@ export interface MasteryTaskProgress {
   description: string;
   current: number;
   target: number;
-  status: 'complete' | 'in_progress';
+  status: 'complete' | 'in_progress' | 'not_started';
   note?: string;
 }
 
