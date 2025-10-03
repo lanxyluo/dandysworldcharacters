@@ -1,5 +1,6 @@
 import { getAllCharacters } from '../data/characters';
 import { twistedStrategies } from '../data/twisted-strategies';
+import { getMasteryData } from '../data/mastery-data';
 import type { Character } from '../types/character';
 import type {
   CharacterUnlockPath,
@@ -58,11 +59,12 @@ export class ProgressTracker {
         });
         pushRequirement({
           type: 'ichor',
-          target: '10000',
+          target: '4500',
           currentProgress: profile.currentIchor,
-          maxProgress: 10000,
-          description: 'Collect 10,000 Ichor',
-          completed: profile.currentIchor >= 10000,
+          maxProgress: 4500,
+          description: 'Collect 4,500 Ichor',
+          completed: profile.currentIchor >= 4500,
+          readyNote: 'READY TO PURCHASE!',
         });
         break;
 
@@ -85,11 +87,12 @@ export class ProgressTracker {
         });
         pushRequirement({
           type: 'ichor',
-          target: '15000',
+          target: '3750',
           currentProgress: profile.currentIchor,
-          maxProgress: 15000,
-          description: 'Collect 15,000 Ichor',
-          completed: profile.currentIchor >= 15000,
+          maxProgress: 3750,
+          description: 'Collect 3,750 Ichor',
+          completed: profile.currentIchor >= 3750,
+          readyNote: 'READY (once Mastery complete)',
         });
         break;
 
@@ -109,6 +112,15 @@ export class ProgressTracker {
           maxProgress: 100,
           description: 'Finish Twisted Astro research (100%)',
           completed: this.getResearchProgress(profile, 'twisted-astro') >= 100,
+        });
+        pushRequirement({
+          type: 'ichor',
+          target: '5000',
+          currentProgress: profile.currentIchor,
+          maxProgress: 5000,
+          description: 'Collect 5,000 Ichor',
+          completed: profile.currentIchor >= 5000,
+          readyNote: profile.currentIchor >= 5000 ? 'READY (after Twisted Astro research)' : undefined,
         });
         break;
 
@@ -168,43 +180,80 @@ export class ProgressTracker {
   }
 
   calculateResearchNeeded(twistedId: TwistedId, currentProgress: number, useRodger = false): {
-    encountersNeeded: number;
+    estimatedEncounters: string;
     timeEstimate: string;
     strategy: string;
+    assumption: string;
   } {
     const remaining = Math.max(0, 100 - currentProgress);
-    const baseRate = useRodger ? 10 : 5;
-    const capsuleRate = useRodger ? 2 : 1;
 
-    const encountersNeeded = Math.ceil(remaining / baseRate);
-    const capsulesNeeded = Math.ceil(remaining / capsuleRate);
+    if (remaining === 0) {
+      return {
+        estimatedEncounters: '0',
+        timeEstimate: 'Already complete',
+        strategy: 'Research dossier is finished. Focus on other goals.',
+        assumption: 'Assumes 2 capsules per encounter.',
+      };
+    }
+
+    const capsulesPerEncounter = 2;
+    const capsuleValue = useRodger ? 2 : 1; // percent per capsule
+    const progressPerEncounter = capsulesPerEncounter * capsuleValue;
+
+    const expectedEncounters = remaining / progressPerEncounter;
+    const lowerBound = Math.max(1, Math.ceil(expectedEncounters * 0.8));
+    const upperBound = Math.max(lowerBound, Math.ceil(expectedEncounters * 1.2));
 
     let timeEstimate: string;
-    if (encountersNeeded <= 3) {
-      timeEstimate = '1-2 runs';
-    } else if (encountersNeeded <= 10) {
+    if (upperBound <= 2) {
+      timeEstimate = '1 run';
+    } else if (upperBound <= 6) {
+      timeEstimate = '2-3 runs';
+    } else if (upperBound <= 10) {
       timeEstimate = '3-5 runs';
     } else {
       timeEstimate = '5+ runs';
     }
 
+    const assumption = useRodger
+      ? 'Assumes 2 capsules per encounter (Rodger doubles capsule value to 2%).'
+      : 'Assumes 2 capsules per encounter (~1% per capsule).';
+
     const strategy = useRodger
-      ? `Use Rodger to halve the grind: expect ~${encountersNeeded} encounters or ${capsulesNeeded} capsules.`
-      : `Standard pace: ~${encountersNeeded} encounters or ${capsulesNeeded} capsules. Bring Rodger to speed this up.`;
+      ? `Use Rodger so each encounter yields ~${progressPerEncounter}% progress. Plan for ${lowerBound}-${upperBound} encounters.`
+      : `Aim for two capsules per encounter (~${progressPerEncounter}% progress). Switch to Rodger to shorten the grind.`;
 
     return {
-      encountersNeeded,
+      estimatedEncounters: `${lowerBound}-${upperBound}`,
       timeEstimate,
       strategy,
+      assumption,
     };
   }
 
   private getMasteryPercentage(profile: UserProgressProfile, characterId: string): number {
+    const masteryDefinition = getMasteryData(characterId);
     const mastery = profile.masteryProgress.find((entry) => entry.characterId === characterId);
-    if (!mastery || mastery.maxLevel === 0) {
+
+    if (!masteryDefinition) {
+      if (!mastery || mastery.maxLevel === 0) {
+        return 0;
+      }
+      return Math.min(100, (mastery.currentLevel / mastery.maxLevel) * 100);
+    }
+
+    if (!mastery || masteryDefinition.totalTasks === 0) {
       return 0;
     }
-    return Math.min(100, (mastery.currentLevel / mastery.maxLevel) * 100);
+
+    const completedCount = Array.isArray(mastery.completedTasks) ? mastery.completedTasks.length : 0;
+    const totalTasks = masteryDefinition.totalTasks;
+
+    if (totalTasks === 0) {
+      return 0;
+    }
+
+    return Math.min(100, Math.round((completedCount / totalTasks) * 100));
   }
 
   private getResearchProgress(profile: UserProgressProfile, twistedId: TwistedId): number {
@@ -251,6 +300,26 @@ export class ProgressTracker {
   }
 
   private getCharacterBenefits(character: Character): string[] {
+    if (character.id === 'vee') {
+      return [
+        'Best extraction speed (5★) in the game.',
+        'Active: Highlights all Twisteds on floor for 5 seconds (Mic Check).',
+        'Passive: Auto-highlights 2 nearest incomplete machines (Camera Hijack).',
+        'Ideal for speed-running floors with team support.',
+        'Weakness: Low stealth (2★) and movement (2★) - needs protection.',
+      ];
+    }
+
+    if (character.id === 'pebble') {
+      return [
+        'Fastest movement speed (5★) - best distractor in game.',
+        'Active: Bark to stun nearby Twisteds for 2 seconds.',
+        'Passive: Highlights items in vicinity for team support.',
+        'High stamina (4★) for sustained chases.',
+        'Ideal for distraction and item collection roles.',
+      ];
+    }
+
     const benefits: string[] = [];
 
     if (character.rarity === 'main') {
@@ -271,14 +340,6 @@ export class ProgressTracker {
     }
 
     switch (character.id) {
-      case 'vee':
-        benefits.push('Fastest machine completion in the roster.');
-        benefits.push('Locates and finishes machines instantly with actives.');
-        break;
-      case 'pebble':
-        benefits.push('Fastest movement speed available.');
-        benefits.push('Highlights items and assists team navigation.');
-        break;
       case 'astro':
         benefits.push('Exceptional stealth and night vision utility.');
         benefits.push('Superior stamina management for long chases.');

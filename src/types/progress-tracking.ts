@@ -2,6 +2,31 @@ export type ResearchPriority = 'high' | 'medium' | 'low';
 export type UnlockTimeline = 'immediate' | 'short_term' | 'long_term';
 export type RequirementType = 'research' | 'mastery' | 'ichor' | 'encounter' | 'special';
 export type MasteryRewardType = 'cosmetic' | 'trinket' | 'character_unlock' | 'lore';
+export type MasteryTaskType =
+  | 'ability'
+  | 'extraction'
+  | 'collection'
+  | 'survival'
+  | 'utility'
+  | 'movement'
+  | 'combat'
+  | 'environmental';
+
+export interface MasteryTaskDefinition {
+  id: string;
+  description: string;
+  target: number;
+  type: MasteryTaskType;
+  unit?: string;
+}
+
+export interface CharacterMasteryData {
+  characterId: string;
+  totalTasks: number;
+  tasks: MasteryTaskDefinition[];
+  rewardSummary: string;
+  unlocks: string[];
+}
 
 export interface ResearchProgress {
   twistedId: string;
@@ -10,7 +35,7 @@ export interface ResearchProgress {
   encountersNeeded: number;
   timeEstimate: string;
   priority: ResearchPriority;
-  unlocksBenefit: string;
+  unlockBenefits: string[];
   lastUpdated: Date;
 }
 
@@ -21,6 +46,7 @@ export interface UnlockRequirement {
   maxProgress: number;
   description: string;
   completed: boolean;
+  readyNote?: string;
 }
 
 export interface CharacterUnlockPath {
@@ -43,15 +69,31 @@ export interface MasteryReward {
   unlocked: boolean;
 }
 
+export interface MasteryTaskProgress {
+  description: string;
+  current: number;
+  target: number;
+  status: 'complete' | 'in_progress';
+  note?: string;
+}
+
 export interface MasteryProgress {
   characterId: string;
   currentLevel: number;
   maxLevel: number;
   currentExp: number;
   expToNext: number;
-  completedTasks: string[];
-  availableTasks: string[];
+  completedTasks: MasteryTaskProgress[];
+  availableTasks: MasteryTaskProgress[];
   rewards: MasteryReward[];
+  rewardSummary?: string;
+  unlockTargets?: string[];
+}
+
+export interface SpecialEncounterProgress {
+  id: string;
+  encountered: boolean;
+  note?: string;
 }
 
 export interface UserProgressProfile {
@@ -64,4 +106,5 @@ export interface UserProgressProfile {
   currentIchor: number;
   preferredGoals: string[];
   lastActive: Date;
+  specialEncounters?: SpecialEncounterProgress[];
 }
