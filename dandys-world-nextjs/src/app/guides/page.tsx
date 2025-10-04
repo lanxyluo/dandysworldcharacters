@@ -134,13 +134,6 @@ const TWISTED_SUMMARIES = twistedStrategies.map((entry) => ({
   team: entry.strategies?.team_coordination ?? [],
 }));
 
-const QUICK_TOOLS = [
-  { icon: '🎯', title: 'Character Picker', description: 'Find the main that matches your role preference', link: '/character-recommender', related: 'Getting Started' },
-  { icon: '💎', title: 'Trinket Builder', description: 'Assemble the strongest trinket synergy', link: '/trinket-optimizer', related: 'Pro Team Play' },
-  { icon: '🗺️', title: 'Floor Planner', description: 'Lay out an efficient path before you spawn', link: '/floor-predictor', related: 'Master Survival' },
-  { icon: '📊', title: 'Run Analyzer', description: 'Review a run and get improvement cues', link: '/progress-tracker', related: 'All Modules' },
-];
-
 const GuidesHubPage: React.FC = () => {
   const [selectedPainPoint, setSelectedPainPoint] = useState<PainPointId | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<ExperienceLevel | null>(null);
@@ -560,34 +553,6 @@ const GuidesHubPage: React.FC = () => {
                 </ul>
               </div>
             )}
-          </div>
-        </section>
-
-        <section className="border-t border-purple-900/30 bg-gradient-to-r from-gray-950 via-purple-950 to-gray-950">
-          <div className="mx-auto max-w-6xl space-y-6 px-6 py-12">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl" role="img" aria-label="lightning">
-                ⚡
-              </span>
-              <h2 className="text-2xl font-semibold">Quick Tools dock</h2>
-            </div>
-            <p className="text-sm text-gray-400">Tap a tool to jump straight into action. No login, no data saved.</p>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {QUICK_TOOLS.map((tool) => (
-                <a
-                  key={tool.title}
-                  href={tool.link}
-                  className="flex h-full flex-col justify-between rounded-2xl border border-purple-500/30 bg-gray-900/80 p-5 transition-transform hover:-translate-y-1 hover:border-purple-400"
-                >
-                  <div>
-                    <div className="mb-3 text-3xl">{tool.icon}</div>
-                    <h3 className="mb-1 text-lg font-semibold">{tool.title}</h3>
-                    <p className="text-sm text-gray-300">{tool.description}</p>
-                  </div>
-                  <div className="mt-4 text-xs text-purple-200">⟷ {tool.related}</div>
-                </a>
-              ))}
-            </div>
           </div>
         </section>
       </main>
