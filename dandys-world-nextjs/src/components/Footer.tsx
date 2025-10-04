@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-bg-card border-t border-border-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div>
             <h3 className="text-lg font-semibold text-text-primary mb-4">Core Modules</h3>
             <ul className="space-y-2">
@@ -45,32 +45,6 @@ const Footer: React.FC = () => {
               <li>
                 <ScrollToTopLink to="/floor-predictor" className="hover:text-accent-main transition-colors">
                   🗺️ Floor Predictor
-                </ScrollToTopLink>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">Guide Highlights</h3>
-            <ul className="space-y-2 text-text-secondary">
-              <li>
-                <ScrollToTopLink to="/guides/beginner-tips" className="hover:text-accent-main transition-colors">
-                  💡 Beginner Tips
-                </ScrollToTopLink>
-              </li>
-              <li>
-                <ScrollToTopLink to="/guides/skill-check-guide" className="hover:text-accent-main transition-colors">
-                  🎯 Skill Check Guide
-                </ScrollToTopLink>
-              </li>
-              <li>
-                <ScrollToTopLink to="/guides/stealth-system" className="hover:text-accent-main transition-colors">
-                  🕵️ Stealth System
-                </ScrollToTopLink>
-              </li>
-              <li>
-                <ScrollToTopLink to="/guides/team-strategies" className="hover:text-accent-main transition-colors">
-                  🤝 Team Strategies
                 </ScrollToTopLink>
               </li>
             </ul>
