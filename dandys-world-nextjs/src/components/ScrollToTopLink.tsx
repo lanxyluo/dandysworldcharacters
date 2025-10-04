@@ -3,12 +3,15 @@
 import React from 'react'
 import Link from 'next/link'
 
-type ScrollToTopLinkProps = React.ComponentProps<typeof Link>
+type ScrollToTopLinkProps = Omit<React.ComponentProps<typeof Link>, 'href'> & {
+  to: React.ComponentProps<typeof Link>['href']
+}
 
-const ScrollToTopLink: React.FC<ScrollToTopLinkProps> = ({ onClick, ...props }) => {
+const ScrollToTopLink: React.FC<ScrollToTopLinkProps> = ({ to, onClick, ...props }) => {
   return (
     <Link
       {...props}
+      href={to}
       onClick={(event) => {
         onClick?.(event)
         window.scrollTo({ top: 0, behavior: 'smooth' })
